@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Popup from "./Popup"; 
+import Popup from "./TagSelection"; 
 import "./Tag.css"; 
 
 function Tag({ tagText = "콘센트" }) {

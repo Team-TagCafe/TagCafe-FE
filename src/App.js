@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Tag from "./components2/Tag";
 import SelectTag from "./components2/selectTag";
-import Popup from "./components2/Popup";
+import Popup from "./components2/TagSelection";
 
 import './App.css';
 

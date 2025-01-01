@@ -1,6 +1,6 @@
 import React from "react";
 import SelectTag from "./selectTag";
-import "./Popup.css"; 
+import "./TagSelection.css"; 
 
 function Popup({ tagText, options, selectedOptions=[], onOptionToggle, onReset, onClose }) {
   return (
