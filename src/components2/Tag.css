@@ -10,7 +10,7 @@
     border: 1px solid #422919;
     border-radius: 20px;
     text-align: center;
-    padding: 10px 20px;
+    padding: 10px 15px;
     font-size: 13px;
     cursor: pointer;
     color: #422919;
@@ -29,4 +29,8 @@
     color: #fff;
   }
   
+  .dropdown-icon {
+    width: 18px; 
+    height: 18px; 
+  }
   

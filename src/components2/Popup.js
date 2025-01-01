@@ -2,8 +2,11 @@ import React from "react";
 import SelectTag from "./selectTag";
 import "./Popup.css"; 
 
-function Popup({ tagText, options, selectedOptions, onOptionToggle, onReset, onClose }) {
+function Popup({ tagText, options, selectedOptions=[], onOptionToggle, onReset, onClose }) {
   return (
+    <>
+    <div className="blur-background" onClick={onClose}></div>
+
     <div className="popup">
       <div className="popup-header">
         <span className="popup-title">#{tagText}</span>
@@ -21,7 +24,7 @@ function Popup({ tagText, options, selectedOptions, onOptionToggle, onReset, onC
           />
         ))}
       </div>
-      <div className="popup-footer">
+      <div className="popup-footer"> 
         <button className="footer-button" onClick={onReset}>
           초기화
         </button>
@@ -30,6 +33,7 @@ function Popup({ tagText, options, selectedOptions, onOptionToggle, onReset, onC
         </button>
       </div>
     </div>
+    </>
   );
 }
 

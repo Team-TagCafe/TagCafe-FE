@@ -32,7 +32,12 @@ function Tag({ tagText = "콘센트" }) {
     <div className="tag-container">
       {/* 버튼 */}
       <button className={buttonClassName} onClick={togglePopup}>
-        {selectedOption || tagText} ▼
+        <span>{selectedOption || tagText}</span>
+        <img
+          src="/img/dropdown.png"
+          alt="dropdown icon"
+          className="dropdown-icon"
+        />
       </button>
 
       {/* 팝업 */}
