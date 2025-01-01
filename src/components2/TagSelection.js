@@ -2,7 +2,7 @@ import React from "react";
 import SelectTag from "./selectTag";
 import "./TagSelection.css"; 
 
-function Popup({ tagText, options, selectedOptions=[], onOptionToggle, onReset, onClose }) {
+function TagSelection({ tagText, options, selectedOptions=[], onOptionToggle, onReset, onClose }) {
   return (
     <>
     <div className="blur-background" onClick={onClose}></div>
@@ -37,4 +37,4 @@ function Popup({ tagText, options, selectedOptions=[], onOptionToggle, onReset, 
   );
 }
 
-export default Popup;
+export default TagSelection;

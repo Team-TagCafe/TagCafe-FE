@@ -10,13 +10,14 @@
     border: 1px solid #422919;
     border-radius: 20px;
     text-align: center;
-    padding: 10px 20px;
-    font-size: 13px;
+    padding: 10px 10px 8px 8px;
+    font-size: 12px;
     cursor: pointer;
     color: #422919;
     display: flex;     
     justify-content: center; 
-    align-items: center;  
+    align-items: center; 
+    width: 80px;
   }
 
   .select-tag.selected {
