@@ -1,37 +1,29 @@
-import React, { useState } from "react";
-import Popup from "./TagSelection"; 
+import React from "react";
+import TagSelection from "./TagSelection";
 import TagFilter from "./TagFilter";
-import "./Tag.css"; 
+import "./Tag.css";
 
-function Tag({ tagText = "콘센트", popupType = "selection" }) {
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState("");
-
-  // 팝업 열기/닫기
-  const togglePopup = () => setIsPopupOpen(!isPopupOpen);
-
-  // 옵션 선택
-  const handleOptionClick = (option) => {
-    setSelectedOption(option);
-    setIsPopupOpen(false); // 팝업 닫기
-  };
-
-  // 초기화
-  const handleReset = () => {
-    setSelectedOption("");
-    setIsPopupOpen(false); // 초기화 후 팝업 닫기
-  };
-
-  // 버튼 색상 클래스 동적 설정
+function Tag({
+  tagText,
+  popupType,
+  options,
+  selectedOption,
+  selectedFilters,
+  onOptionSelect,
+  onFilterSelect,
+  onReset,
+  isPopupOpen,
+  togglePopup,
+}) {
   const buttonClassName = isPopupOpen
     ? "tag-button popup-open"
-    : selectedOption
+    : selectedOption || Object.keys(selectedFilters || {}).length > 0
     ? "tag-button option-selected"
     : "tag-button";
 
   return (
     <div className="tag-container">
-      {/* 버튼 */}
+      {/* 태그 버튼 */}
       <button className={buttonClassName} onClick={togglePopup}>
         <span>{selectedOption || tagText}</span>
         <img
@@ -41,19 +33,27 @@ function Tag({ tagText = "콘센트", popupType = "selection" }) {
         />
       </button>
 
-      {/* 팝업 */}
+      {/* 팝업 렌더링 */}
       {isPopupOpen && popupType === "selection" && (
-        <Popup
+        <TagSelection
           tagText={tagText}
-          options={["자리에마다", "일부", "없음"]}
+          options={options}
           selectedOption={selectedOption}
-          onOptionClick={handleOptionClick}
-          onReset={handleReset}
+          onOptionSelect={onOptionSelect}
+          onReset={onReset}
           onClose={togglePopup}
         />
       )}
+
       {isPopupOpen && popupType === "filter" && (
-        <TagFilter onClose={togglePopup} />
+        <TagFilter
+          tagText={tagText}
+          options={options}
+          selectedFilters={selectedFilters}
+          onFilterSelect={onFilterSelect}
+          onReset={onReset}
+          onClose={togglePopup}
+        />
       )}
     </div>
   );
