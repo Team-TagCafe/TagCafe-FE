@@ -2,6 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import LocationReset from "./components1/LocationReset";
 import VisitStatus from "./components1/VisitStatus";
+import Bookmark from "./components1/Bookmark";
 
 function App() {
   return (
@@ -11,6 +12,9 @@ function App() {
 
       {/* VisitStatus 버튼 */}
       <VisitStatus/>
+
+      {/* Bookmark 버튼 */}
+      <Bookmark/>
 
     </div>
   );
