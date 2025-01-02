@@ -1,0 +1,18 @@
+.location-reset-button {
+    background-color: transparent;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+  }
+  
+  .button-image {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .location-reset-button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
