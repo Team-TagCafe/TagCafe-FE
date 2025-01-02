@@ -7,6 +7,7 @@ import SideMenuButton from './components1/SideMenuButton';
 import LongButton from './components1/LongButton';
 import ShortButton from './components1/ShortButton';
 import ReviewStar from './components1/ReviewStar';
+import DetailButton from './components1/DetailButton';
 
 function App() {
   return (
@@ -32,6 +33,9 @@ function App() {
 
       {/* Bookmark 버튼 */}
       <ReviewStar/>
+
+      {/* DetailButton 버튼 */}
+      <DetailButton optionText="카페 상세보기 >" />
 
     </div>
   );
