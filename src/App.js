@@ -10,6 +10,12 @@ import DetailButton from './components1/DetailButton';
 import SearchResult from './components1/SearchResult';
 import TextInput from './components1/TextInput';
 import { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import BottomNavBar from './components1/BottomBar';
+
+const Home = () => <div>Home Page</div>;
+const Search = () => <div>Search Page</div>;
+const Profile = () => <div>Profile Page</div>;
 
 function App() {
   // LocationReset 동작 함수
@@ -116,6 +122,17 @@ function App() {
         onChange={handleInputChange}
         onKeyDown={handleKeyDown}
       />
+
+      <Router>
+        <div style={{ paddingBottom: '60px' }}>
+          <Routes>
+            <Route path="/home" element={<Home />} />
+            <Route path="/search" element={<Search />} />
+            <Route path="/profile" element={<Profile />} />
+          </Routes>
+          <BottomNavBar />
+        </div>
+      </Router>
     </div>
   );
 }

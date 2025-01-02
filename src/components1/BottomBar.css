@@ -1,0 +1,34 @@
+/* BottomNavBar.css */
+.bottom-nav-bar {
+    position: fixed;
+    bottom: 0; /* 화면의 하단에 고정 */
+    left: 50%; /* 화면의 가로 중앙 기준으로 배치 */
+    transform: translateX(-50%); /* 정확히 가운데 정렬 */
+    width: 393px; /* 고정된 너비 */
+    height: 80px; /* 높이 */
+    display: flex;
+    justify-content: space-around; /* 버튼 간격 균등 */
+    align-items: center; /* 세로 정렬 */
+    background-color: #fff; /* 배경색 */
+    border-top: 1px solid #CEC2B2; /* 위쪽 경계선 */
+    z-index: 1000; /* 다른 요소 위에 표시 */
+  }
+  
+  .nav-item {
+    flex: 1; /* 균등한 너비 */
+    height: 100%; /* 전체 높이 차지 */
+    display: flex;
+    justify-content: center; /* 아이콘 가로 정렬 */
+    align-items: center; /* 아이콘 세로 정렬 */
+    cursor: pointer; /* 클릭 가능하도록 포인터 표시 */
+    position: relative;
+  }
+  
+  .nav-item img {
+    position: fixed;
+    width: 25px; /* 아이콘 크기 */
+    height: 25px;
+    object-fit: contain;
+    top: 10px;
+  }
+  
