@@ -1,4 +1,4 @@
-.location-reset-button {
+.location-reset {
     background-color: transparent;
     border: none;
     padding: 10px;
@@ -10,7 +10,7 @@
     height: 40px;
   }
   
-  .location-reset-button-container {
+  .location-reset-container {
     display: flex;
     justify-content: center;
     align-items: center;

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import "./LocationResetButton.css"; // CSS 파일을 import
+import "./LocationReset.css"; // CSS 파일을 import
 
-function LocationResetButton({ onClick }) {
+function LocationReset({ onClick }) {
   const [isPressed, setIsPressed] = useState(false);
 
   // 버튼 눌렀을 때 상태 변경
@@ -9,7 +9,7 @@ function LocationResetButton({ onClick }) {
   const handleMouseUp = () => setIsPressed(false);
 
   // 동적 클래스 설정
-  const buttonClassName = isPressed ? "location-reset-button pressed" : "location-reset-button";
+  const buttonClassName = isPressed ? "location-reset pressed" : "location-reset";
 
   // 동적 이미지 경로 설정
   const imageSrc = isPressed
@@ -17,7 +17,7 @@ function LocationResetButton({ onClick }) {
     : "/img/locationReset_default.png"; // 기본 이미지
 
   return (
-    <div className="location-reset-button-container">
+    <div className="location-reset-container">
       <button
         className={buttonClassName}
         onMouseDown={handleMouseDown}
@@ -30,4 +30,4 @@ function LocationResetButton({ onClick }) {
   );
 }
 
-export default LocationResetButton;
+export default LocationReset;
