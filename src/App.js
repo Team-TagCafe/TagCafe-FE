@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import Tag from "./components2/Tag";
+import Popup from "./components2/Popup";
 import "./App.css";
 
 function App() {
   const [activePopup, setActivePopup] = useState(null); // "tagSelection" | "tagFilter" | null
   const [selectedOption, setSelectedOption] = useState(""); // 콘센트 선택 상태
   const [selectedFilters, setSelectedFilters] = useState({}); // 태그 필터 선택 상태
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   const handleOptionSelect = (option) => {
     setSelectedOption(option); // 콘센트 옵션 업데이트
@@ -23,6 +25,16 @@ function App() {
     setSelectedOption(""); // 콘센트 초기화
     setSelectedFilters({}); // 필터 초기화
   };
+
+  const handleConfirm = () => {
+    alert("확인 버튼이 눌렸습니다!");
+    setIsPopupOpen(false);
+  };
+
+  const handleCancel = () => {
+    setIsPopupOpen(false);
+  };
+
 
   return (
     <div className="App">
@@ -59,6 +71,16 @@ function App() {
           setActivePopup((prev) => (prev === "tagFilter" ? null : "tagFilter"))
         }
       />
+
+      <button onClick={() => setIsPopupOpen(true)}>팝업 열기</button>
+      {isPopupOpen && (
+        <Popup
+          message="정말 삭제하시겠습니까?"
+          onConfirm={handleConfirm}
+          onCancel={handleCancel}
+        />
+      )}
+
     </div>
   );
 }
