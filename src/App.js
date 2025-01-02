@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Tag from "./components2/Tag";
 import Popup from "./components2/Popup";
 import CafeInformation from "./components2/CafeInformation";
+import CafeInformationDetail from "./components2/CafeInformationDetail";
 import "./App.css";
 
 function App() {
@@ -88,7 +89,7 @@ function App() {
       )}
 
       <CafeInformation onChange={handleOptionChange} />
-
+      <CafeInformationDetail />
     </div>
   );
 }
