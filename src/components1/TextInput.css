@@ -1,0 +1,45 @@
+/* 기본 스타일 */
+.text-input {
+  width: 266px;
+  height: 43px;
+  background: #FFFFFF;
+  border: 1px solid #745D4C;
+  border-radius: 10px;
+
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 450;
+  font-size: 15px;
+  line-height: 18px;
+  display: flex;
+  align-items: center;
+  color: #2B2B2B;
+
+  padding: 12px;
+  outline: none;
+  box-sizing: border-box;
+  margin: 10px
+}
+
+/* 포커스 시 스타일 */
+.text-input:focus {
+  width: 266px;
+  height: 43px;
+  background: #FFFFFF;
+  border: 2px solid #A69180;
+  border-radius: 10px;
+
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 450;
+  font-size: 15px;
+  line-height: 18px;
+  display: flex;
+  align-items: center;
+  color: #2B2B2B;
+}
+
+/* placeholder 색상 변경 */
+.text-input::placeholder {
+  color: #E1E1E1; /* placeholder 텍스트 색상 */
+}
