@@ -15,13 +15,9 @@ function App() {
       {/* Tag 컴포넌트 */}
       <Tag tagText="콘센트" />
 
-      {/* TagFilter 버튼 */}
-      <button onClick={toggleTagFilter}>태그 필터</button>
-
+  
       {/* TagFilter 팝업 */}
-      {activeComponent === "tagFilter" && (
-        <TagFilter onClose={() => setActiveComponent(null)} />
-      )}
+      <Tag tagText="태그 필터" popupType="filter" />
     </div>
   );
 }

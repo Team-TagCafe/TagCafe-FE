@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import SelectTag from "./selectTag"; 
 import "./TagFilter.css";
 
 function TagFilter({ onClose }) {
@@ -12,10 +13,11 @@ function TagFilter({ onClose }) {
     { title: "화장실", options: ["있음", "없음"] },
   ];
 
+  // 특정 그룹에서 단일 옵션만 선택 가능하도록 업데이트
   const handleTagClick = (group, option) => {
     setSelectedTags((prev) => ({
       ...prev,
-      [group]: prev[group] === option ? null : option, // 선택/해제
+      [group]: prev[group] === option ? null : option, // 선택된 옵션을 토글
     }));
   };
 
@@ -39,15 +41,12 @@ function TagFilter({ onClose }) {
               <h4>#{group.title}</h4>
               <div className="tag-options">
                 {group.options.map((option) => (
-                  <button
+                  <SelectTag
                     key={option}
-                    className={`tag-button ${
-                      selectedTags[group.title] === option ? "selected" : ""
-                    }`}
-                    onClick={() => handleTagClick(group.title, option)}
-                  >
-                    {option}
-                  </button>
+                    tagText={option}
+                    isSelected={selectedTags[group.title] === option} // 단일 선택 여부 확인
+                    onClick={() => handleTagClick(group.title, option)} 
+                  />
                 ))}
               </div>
             </div>

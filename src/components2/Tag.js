@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import Popup from "./TagSelection"; 
+import TagFilter from "./TagFilter";
 import "./Tag.css"; 
 
-function Tag({ tagText = "콘센트" }) {
+function Tag({ tagText = "콘센트", popupType = "selection" }) {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState("");
 
@@ -41,7 +42,7 @@ function Tag({ tagText = "콘센트" }) {
       </button>
 
       {/* 팝업 */}
-      {isPopupOpen && (
+      {isPopupOpen && popupType === "selection" && (
         <Popup
           tagText={tagText}
           options={["자리에마다", "일부", "없음"]}
@@ -50,6 +51,9 @@ function Tag({ tagText = "콘센트" }) {
           onReset={handleReset}
           onClose={togglePopup}
         />
+      )}
+      {isPopupOpen && popupType === "filter" && (
+        <TagFilter onClose={togglePopup} />
       )}
     </div>
   );

@@ -1,18 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
 import "./selectTag.css";
 
-function SelectTag({ tagText = "tag" }) {
-  const [isSelected, setIsSelected] = useState(false);
-
-  // 클릭 시 상태 변경
-  const toggleSelect = () => setIsSelected(!isSelected);
-
+function SelectTag({ tagText = "tag", isSelected, onClick }) {
   // 동적 클래스 설정
   const buttonClassName = isSelected ? "select-tag selected" : "select-tag";
 
   return (
     <div className="select-tag-container">
-      <button className={buttonClassName} onClick={toggleSelect}>
+      <button className={buttonClassName} onClick={onClick}>
         {tagText}
       </button>
     </div>
