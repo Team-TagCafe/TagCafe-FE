@@ -1,0 +1,17 @@
+.visit-status {
+    background-color: transparent;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.visit-status-image {
+    width: 24px;
+    height: 24px;
+}
+
+.visit-status-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
