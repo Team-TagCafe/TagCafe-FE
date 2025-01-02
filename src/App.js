@@ -6,6 +6,7 @@ import Bookmark from "./components1/Bookmark";
 import SideMenuButton from './components1/SideMenuButton';
 import LongButton from './components1/LongButton';
 import ShortButton from './components1/ShortButton';
+import ReviewStar from './components1/ReviewStar';
 
 function App() {
   return (
@@ -28,6 +29,9 @@ function App() {
 
       {/* LongButton 버튼 */}
       <ShortButton optionText={"수정"} />
+
+      {/* Bookmark 버튼 */}
+      <ReviewStar/>
 
     </div>
   );
