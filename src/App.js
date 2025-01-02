@@ -8,6 +8,7 @@ import LongButton from './components1/LongButton';
 import ShortButton from './components1/ShortButton';
 import ReviewStar from './components1/ReviewStar';
 import DetailButton from './components1/DetailButton';
+import SearchResult from './components1/SearchResult';
 
 function App() {
   return (
@@ -36,6 +37,12 @@ function App() {
 
       {/* DetailButton 버튼 */}
       <DetailButton optionText="카페 상세보기 >" />
+
+      {/* SearchResult 버튼 */}
+      <SearchResult 
+      cafeName="스테이 어도러블" 
+      address="경기 용인시 기흥구 죽전로43번길 15-3 (보정동)"
+      />
 
     </div>
   );
