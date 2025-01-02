@@ -24,7 +24,7 @@ function LocationReset({ onClick }) {
         onMouseUp={handleMouseUp}
         onClick={onClick}
       >
-        <img src={imageSrc} alt="Reset Location" className="button-image" />
+        <img src={imageSrc} alt="Reset Location" className="location-reset-image" />
       </button>
     </div>
   );
