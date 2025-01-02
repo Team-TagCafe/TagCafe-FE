@@ -17,7 +17,9 @@
     display: flex;     
     justify-content: center; 
     align-items: center; 
-    width: 80px;
+    min-width: 80px;
+    width: fit-content;
+    height: 33px;
   }
 
   .select-tag.selected {

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Tag from "./components2/Tag";
 import Popup from "./components2/Popup";
+import CafeInformation from "./components2/CafeInformation";
 import "./App.css";
 
 function App() {
@@ -34,6 +35,11 @@ function App() {
   const handleCancel = () => {
     setIsPopupOpen(false);
   };
+
+  const handleOptionChange = (category, option) => {
+    console.log(`${category} 선택: ${option}`);
+  };
+
 
 
   return (
@@ -80,6 +86,8 @@ function App() {
           onCancel={handleCancel}
         />
       )}
+
+      <CafeInformation onChange={handleOptionChange} />
 
     </div>
   );
