@@ -12,6 +12,7 @@ import TextInput from './components1/TextInput';
 import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import BottomNavBar from './components1/BottomBar';
+import ReviewTag from './components1/ReviewTag';
 
 const Home = () => <div>Home Page</div>;
 const Search = () => <div>Search Page</div>;
@@ -133,6 +134,10 @@ function App() {
           <BottomNavBar />
         </div>
       </Router>
+
+      {/* ReviewTag */}
+      <ReviewTag tagText="와이파이 빠름" iconSrc="../../img/wifi.png" />
+
     </div>
   );
 }
