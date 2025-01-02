@@ -11,6 +11,16 @@ import DetailButton from './components1/DetailButton';
 import SearchResult from './components1/SearchResult';
 
 function App() {
+
+    // 북마크 상태가 변경될 때 실행되는 함수
+    const handleBookmarkChange = (isBookmarked) => {
+      if (isBookmarked) {
+        console.log("북마크가 설정되었습니다!");
+      } else {
+        console.log("북마크가 해제되었습니다!");
+      }
+    };
+
   return (
     <div className="App">
       {/* LocationReset 버튼 */}
@@ -20,7 +30,7 @@ function App() {
       <VisitStatus/>
 
       {/* Bookmark 버튼 */}
-      <Bookmark/>
+      <Bookmark onClick={handleBookmarkChange} />
 
       {/* SideMenuButton 버튼 */}
       <SideMenuButton buttonType="button1" optionText="개인정보처리방침" />
