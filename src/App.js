@@ -13,6 +13,7 @@ import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import BottomNavBar from './components1/BottomBar';
 import ReviewTag from './components1/ReviewTag';
+import MapCafe from './components1/MapCafe';
 
 const Home = () => <div>Home Page</div>;
 const Search = () => <div>Search Page</div>;
@@ -137,6 +138,9 @@ function App() {
 
       {/* ReviewTag */}
       <ReviewTag tagText="와이파이 빠름" iconSrc="../../img/wifi.png" />
+
+      {/* MapCafe */}
+      <MapCafe cafeName="스테이 어도러블" />
 
     </div>
   );
