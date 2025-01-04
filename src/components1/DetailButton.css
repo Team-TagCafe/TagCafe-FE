@@ -1,0 +1,34 @@
+/* 버튼을 감싸는 컨테이너 */
+.detail-button-container {
+    display: flex;
+    width: fit-content;
+    height: fit-content;
+    margin: auto;
+}
+
+/* 버튼 자체 */
+.detail-button {
+    width: fit-content;
+    height: fit-content;
+    background: transparent; /* 배경을 투명으로 설정 */
+    border: none;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.detail-button-text {
+    font-family: 'Inter';
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 15px;
+    text-align: center;
+    color: #745D4C;
+}
+
+/* 눌림 상태 (pressed) */
+.detail-button-container.pressed .detail-button-text {
+    font-weight: 700;
+}

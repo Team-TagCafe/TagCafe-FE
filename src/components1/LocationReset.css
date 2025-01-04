@@ -1,0 +1,18 @@
+.location-reset {
+    background-color: transparent;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+  }
+  
+  .location-reset-image {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .location-reset-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  

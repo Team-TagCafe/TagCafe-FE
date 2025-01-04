@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import "./LongButton.css"; // LongButton용 CSS 파일을 import
+import "./ShortButton.css"; // ShortButton용 CSS 파일을 import
 
-function LongButton({ optionText, onClick }) {
+function ShortButton({ optionText, onClick }) {
   const [isPressed, setIsPressed] = useState(false);
 
   // 버튼 눌렀을 때 상태 변경
@@ -9,20 +9,20 @@ function LongButton({ optionText, onClick }) {
   const handleMouseUp = () => setIsPressed(false);
 
   // 동적 클래스 설정
-  const buttonClassName = isPressed ? "long-button pressed" : "long-button";
+  const buttonClassName = isPressed ? "short-button pressed" : "short-button";
 
   return (
-    <div className="long-button-container">
+    <div className="short-button-container">
       <button
         className={buttonClassName}
         onMouseDown={handleMouseDown}
         onMouseUp={handleMouseUp}
         onClick={onClick}
       >
-        <span className="long-button-text">{optionText}</span>
+        <span className="short-button-text">{optionText}</span>
       </button>
     </div>
   );
 }
 
-export default LongButton;
+export default ShortButton;

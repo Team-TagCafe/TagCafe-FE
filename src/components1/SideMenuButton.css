@@ -1,0 +1,50 @@
+/* 공통 버튼 스타일 */
+.side-menu-button {
+  background-color: transparent;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  width: 210px;
+  height: 50px;
+  margin: auto;
+}
+
+/* 버튼1 텍스트 스타일 */
+.button1-text {
+  font-family: 'Inter';
+  font-size: 14px;
+  line-height: 17px;
+  color: #422919;
+}
+
+/* 버튼1 옵션 1 */
+.button1-text-option1 {
+  font-weight: 400; /* 기본 두께 */
+}
+
+/* 버튼1 옵션 2 */
+.button1-text-option2 {
+  font-weight: 700; /* 두꺼운 글씨 */
+}
+
+/* 버튼2 텍스트 스타일 */
+.button2-text {
+  font-family: 'Inter';
+  font-size: 14px;
+  line-height: 17px;
+  color: #A69180;
+}
+
+/* 버튼2 옵션 1 */
+.button2-text-option1 {
+  font-weight: 400; /* 기본 두께 */
+}
+
+/* 버튼2 옵션 2 */
+.button2-text-option2 {
+  font-weight: 700; /* 두꺼운 글씨 */
+}

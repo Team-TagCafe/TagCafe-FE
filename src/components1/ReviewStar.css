@@ -1,0 +1,17 @@
+.review-star {
+    background-color: transparent;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.review-star-image {
+    width: 20px;
+    height: 20px;
+}
+
+.review-star-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
