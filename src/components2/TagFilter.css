@@ -35,7 +35,7 @@
     margin-top: 20px;
     font-size: 20px;
     font-weight: bold;
-    color: #5d4536;
+    color: #422919;
   }
   
   .close-button {
@@ -44,17 +44,19 @@
     font-size: 30px;
     cursor: pointer;
   }
+  
   .tag-filter-content {
     flex: 1;
     overflow-y: auto; 
     padding: 10px;
   }
 
-  .tag-group {
+  .tag-filter-group {
     margin-bottom: 30px;
+
   }
   
-  .tag-group h4 {
+  .tag-filter-group h4 {
     font-family: "Inter", sans-serif;
     font-size: 16px;
     color: #422919;
@@ -62,43 +64,16 @@
     text-align: left;
   }
   
-  .tag-options {
+  .tag-filter-options {
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
   }
   
-  .tag-button {
-    background-color: #fff;
-    border: 1px solid #422919;
-    border-radius: 20px;
-    padding: 10px 15px;
-    font-family: "Inter", sans-serif;
-    font-size: 14px;
-    color: #422919;
-    cursor: pointer;
-    transition: background-color 0.3s, color 0.3s;
-  }
-  
-  .tag-button.selected {
-    background-color: #cec2b2;
-    border: 1px solid #a58973;
-  }
-  
+
   /* 푸터 */
   .tag-filter-footer {
     display: flex;
     justify-content: space-between;
     margin-top: auto;
-  }
-  
-  .footer-button {
-    background-color: #d3b8a3;
-    border: none;
-    border-radius: 10px;
-    padding: 10px 20px;
-    font-family: "Inter", sans-serif;
-    font-size: 14px;
-    color: #fff;
-    cursor: pointer;
   }
