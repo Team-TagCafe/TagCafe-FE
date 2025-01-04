@@ -148,7 +148,8 @@ function App() {
       <button onClick={() => updateReportStatus("accepted")}>accepted</button>
       <button onClick={() => updateReportStatus("denied")}>denied</button>
 
-      {/* <Router>
+      {/* <BottomBar/> */}
+      <Router>
         <div style={{ paddingBottom: '60px' }}>
           <Routes>
             <Route path="/home" element={<Home />} />
@@ -157,8 +158,11 @@ function App() {
           </Routes>
           <BottomBar />
         </div>
-      </Router> */}
+      </Router>
 
+      {/* <TopBar/> */}
+      <TopBar showSearchAndFilter={true} />
+      {/* <TopBar showSearchAndFilter={false} /> */}
     </div>
   );
 }
