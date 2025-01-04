@@ -4,6 +4,7 @@ import Popup from "./components2/Popup";
 import CafeInformation from "./components2/CafeInformation";
 import CafeInformationDetail from "./components2/CafeInformationDetail";
 import LongButton from "./components1/LongButton";
+import TagGroup from "./components2/TagGroup";
 import "./App.css";
 
 function App() {
@@ -11,6 +12,13 @@ function App() {
   const [selectedOption, setSelectedOption] = useState(""); // 콘센트 선택 상태
   const [selectedFilters, setSelectedFilters] = useState({}); // 태그 필터 선택 상태
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const tags = [
+    { icon: "/img/wifi.png", text: "와이파이 빠름" },
+    { icon: "/img/plug.png", text: "콘센트 일부" },
+    { icon: "/img/desk.png", text: "책상 적당함" },
+    { icon: "/img/toilet.png", text: "화장실 외부" },
+    { icon: "/img/park.png", text: "주차 가능(무료)" },
+  ];
 
   const handleOptionSelect = (option) => {
     setSelectedOption(option); // 콘센트 옵션 업데이트
@@ -92,6 +100,10 @@ function App() {
       <CafeInformation onChange={handleOptionChange} />
       <CafeInformationDetail />
       <LongButton optionText={"확인"} />
+
+      <div>
+      <TagGroup tags={tags} />
+      </div>
 
     </div>
   );
