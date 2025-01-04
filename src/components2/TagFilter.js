@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import SelectTag from "./selectTag"; 
+import LongButton from "../components1/LongButton";
 import "./TagFilter.css";
 
 function TagFilter({ onClose }) {
@@ -24,7 +25,6 @@ function TagFilter({ onClose }) {
   const handleReset = () => {
     setSelectedTags({});
   };
-
   return (
     <>
       <div className="blur-background" onClick={onClose}></div>
@@ -53,12 +53,8 @@ function TagFilter({ onClose }) {
           ))}
         </div>
         <div className="tag-filter-footer">
-          <button className="footer-button" onClick={handleReset}>
-            초기화
-          </button>
-          <button className="footer-button" onClick={onClose}>
-            저장
-          </button>
+          <LongButton optionText="초기화" onClick={handleReset}/>
+          <LongButton optionText="저장" onClick={onClose}/>
         </div>
       </div>
     </>

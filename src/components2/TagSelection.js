@@ -1,5 +1,6 @@
 import React from "react";
 import SelectTag from "./selectTag";
+import LongButton from "../components1/LongButton";
 import "./TagSelection.css"; 
 
 function TagSelection({ tagText, options, selectedOption, onOptionSelect, onReset, onClose }) {
@@ -23,14 +24,6 @@ function TagSelection({ tagText, options, selectedOption, onOptionSelect, onRese
               onClick={() => onOptionSelect(option)} // 단일 선택 처리
             />
           ))}
-        </div>
-        <div className="tag-selection__footer"> 
-          <button className="tag-selection__footer-button" onClick={onReset}>
-            초기화
-          </button>
-          <button className="tag-selection__footer-button" onClick={onClose}>
-            저장
-          </button>
         </div>
       </div>
     </>

@@ -4,7 +4,7 @@
   left: 50%;
   transform: translateX(-50%);
   width: 393px;
-  height: 220px;
+  height: 180px;
   background-color: #fff;
   border-top-left-radius: 30px;
   border-top-right-radius: 30px;
@@ -25,7 +25,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 }
 
 .tag-selection__title {
@@ -49,21 +49,6 @@
   gap: 10px;
   justify-content: left;
   margin-bottom: 40px;
-}
-
-.tag-selection__footer {
-  display: flex;
-  justify-content: space-between;
-}
-
-.tag-selection__footer-button {
-  background-color: #d3b8a3;
-  border: none;
-  border-radius: 10px;
-  padding: 10px 20px;
-  font-size: 14px;
-  color: #fff;
-  cursor: pointer;
 }
 
 .tag-selection__background {
