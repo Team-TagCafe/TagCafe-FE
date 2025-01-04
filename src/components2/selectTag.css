@@ -1,0 +1,28 @@
+.select-tag-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+  }
+  
+  .select-tag {
+    background-color: #fff;
+    border: 1px solid #422919;
+    border-radius: 20px;
+    text-align: center;
+    padding: 10px 10px 8px 8px;
+    font-size: 12px;
+    cursor: pointer;
+    color: #422919;
+    display: flex;     
+    justify-content: center; 
+    align-items: center; 
+    min-width: 80px;
+    width: fit-content;
+    height: 33px;
+  }
+
+  .select-tag.selected {
+    background-color: #cec2b2; 
+    color: #422919; 
+  }

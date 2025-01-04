@@ -1,0 +1,33 @@
+.tag-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px; /* 행 간 간격 */
+  }
+  
+  .tag-row {
+    display: flex;
+    flex-direction: row;
+    gap: 8px; /* 태그 간 간격 */
+  }
+  
+  .tag-item {
+    display: flex;
+    align-items: center;
+    background: #ffffff;
+    box-shadow: 0 0 0 0.5px #422919; /* Border 대신 얇은 박스 그림자 사용 */
+    border-radius: 30px;
+    padding: 6px 10px; /* 아이콘과 텍스트 간 여백 */
+    gap: 6px; 
+  }
+  
+  .tag-icon {
+    width: 10px;
+    height: 10px;
+  }
+  
+  .tag-text {
+    font-family: "Inter", sans-serif;
+    font-weight: 600;
+    font-size: 9px;
+    color: #422919;
+  }
