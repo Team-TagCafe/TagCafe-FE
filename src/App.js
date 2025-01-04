@@ -14,6 +14,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import BottomNavBar from './components1/BottomBar';
 import ReviewTag from './components1/ReviewTag';
 import MapCafe from './components1/MapCafe';
+import TopBar from './components1/TopBar';
 
 const Home = () => <div>Home Page</div>;
 const Search = () => <div>Search Page</div>;
@@ -142,6 +143,8 @@ function App() {
       {/* MapCafe */}
       <MapCafe cafeName="스테이 어도러블" />
 
+      <TopBar showSearchAndFilter={true} />
+      {/* <TopBar showSearchAndFilter={false} /> */}
     </div>
   );
 }
