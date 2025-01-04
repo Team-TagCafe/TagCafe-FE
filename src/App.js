@@ -1,7 +1,7 @@
 import './App.css';
 import LocationReset from "./components1/LocationReset";
 import VisitStatus from "./components1/VisitStatus";
-import Bookmark from "./components1/Bookmark";
+import Bookmark from './components1/Bookmark';
 import SideMenuButton from './components1/SideMenuButton';
 import LongButton from './components1/LongButton';
 import ShortButton from './components1/ShortButton';
@@ -11,10 +11,11 @@ import SearchResult from './components1/SearchResult';
 import TextInput from './components1/TextInput';
 import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import BottomNavBar from './components1/BottomBar';
+import BottomBar from './components1/BottomBar';
 import ReviewTag from './components1/ReviewTag';
 import MapCafe from './components1/MapCafe';
 import TopBar from './components1/TopBar';
+import ReportStatus from './components1/ReportStatus';
 
 const Home = () => <div>Home Page</div>;
 const Search = () => <div>Search Page</div>;
@@ -72,6 +73,7 @@ function App() {
 
   // TextInput 함수
   const [inputValue, setInputValue] = useState('');
+  const [reportStatus, setReportStatus] = useState("wait"); // State for report status
 
   const handleInputChange = (value) => {
     setInputValue(value);
@@ -82,6 +84,12 @@ function App() {
     if (event.key === 'Enter') {
       console.log('Enter key pressed');
     }
+  };
+
+  // Function to update report status
+  const updateReportStatus = (newStatus) => {
+    setReportStatus(newStatus); // Update the status dynamically
+    console.log(`Report status updated to: ${newStatus}`);
   };
 
   return (
@@ -126,25 +134,31 @@ function App() {
         onKeyDown={handleKeyDown}
       />
 
-      <Router>
-        <div style={{ paddingBottom: '60px' }}>
-          <Routes>
-            <Route path="/home" element={<Home />} />
-            <Route path="/search" element={<Search />} />
-            <Route path="/profile" element={<Profile />} />
-          </Routes>
-          <BottomNavBar />
-        </div>
-      </Router>
-
       {/* ReviewTag */}
       <ReviewTag tagText="와이파이 빠름" iconSrc="../../img/wifi.png" />
 
       {/* MapCafe */}
       <MapCafe cafeName="스테이 어도러블" />
 
-      <TopBar showSearchAndFilter={true} />
-      {/* <TopBar showSearchAndFilter={false} /> */}
+      {/* ReportStatus with dynamic status */}
+      <ReportStatus status={reportStatus} />
+
+      {/* Buttons to change status */}
+      <button onClick={() => updateReportStatus("wait")}>wait</button>
+      <button onClick={() => updateReportStatus("accepted")}>accepted</button>
+      <button onClick={() => updateReportStatus("denied")}>denied</button>
+
+      {/* <Router>
+        <div style={{ paddingBottom: '60px' }}>
+          <Routes>
+            <Route path="/home" element={<Home />} />
+            <Route path="/search" element={<Search />} />
+            <Route path="/profile" element={<Profile />} />
+          </Routes>
+          <BottomBar />
+        </div>
+      </Router> */}
+
     </div>
   );
 }
