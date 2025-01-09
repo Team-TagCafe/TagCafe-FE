@@ -23,12 +23,14 @@
 
 /* 버튼1 옵션 1 */
 .button1-text-option1 {
-  font-weight: 400; /* 기본 두께 */
+  font-weight: 400;
+  /* 기본 두께 */
 }
 
 /* 버튼1 옵션 2 */
 .button1-text-option2 {
-  font-weight: 700; /* 두꺼운 글씨 */
+  font-weight: 700;
+  /* 두꺼운 글씨 */
 }
 
 /* 버튼2 텍스트 스타일 */
@@ -41,10 +43,12 @@
 
 /* 버튼2 옵션 1 */
 .button2-text-option1 {
-  font-weight: 400; /* 기본 두께 */
+  font-weight: 400;
+  /* 기본 두께 */
 }
 
 /* 버튼2 옵션 2 */
 .button2-text-option2 {
-  font-weight: 700; /* 두꺼운 글씨 */
+  font-weight: 700;
+  /* 두꺼운 글씨 */
 }

@@ -10,7 +10,8 @@
 .detail-button {
     width: fit-content;
     height: fit-content;
-    background: transparent; /* 배경을 투명으로 설정 */
+    background: transparent;
+    /* 배경을 투명으로 설정 */
     border: none;
     padding: 10px;
     display: flex;
