@@ -37,7 +37,9 @@ function CafeInformationDetail() {
           className="cafe-information-detail__icon"
         />
         <div className="cafe-information-detail__label">운영시간</div>
-        <div className="cafe-information-detail__value">영업 중 21:00 까지</div>
+        <div className="cafe-information-detail__value">
+            <span className="operating">영업중 </span> 21:00 까지
+        </div>
         <img
           src={isHoursOpen ? "/img/toggle-up.png" : "/img/toggle-down.png"}
           alt="Toggle"
@@ -49,7 +51,7 @@ function CafeInformationDetail() {
         <div className="cafe-information-detail__dropdown">
           {Object.entries(operatingHours).map(([day, time]) => (
             <div key={day} className="cafe-information-detail__dropdown-item">
-              {day} {time}
+              <span className="day">{day}</span> {time}
             </div>
           ))}
         </div>

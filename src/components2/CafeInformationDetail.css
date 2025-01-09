@@ -3,7 +3,7 @@
     flex-direction: column;
     align-items: flex-start;
     padding: 20px;
-    gap: 18px;
+    gap: 10px;
     width: 266px;
     position: relative; 
   }
@@ -14,7 +14,7 @@
     align-items: center;
     width: 100%;
     gap: 15px; 
-    padding: 8px 0;
+    padding: 6px 0;
     justify-content: flex-start; 
   }
 
@@ -51,6 +51,12 @@
     text-align: left; 
     white-space: nowrap; 
   }
+
+  .cafe-information-detail__value .operating {
+    font-weight: bold;
+    margin-left: 12px;
+    margin-right: 5px;;
+  }
   
   /* 토글 버튼 (이미지) */
   .cafe-information-detail__toggle {
@@ -62,7 +68,7 @@
   
   /* 드롭다운 (운영시간 상세) */
   .cafe-information-detail__dropdown {
-    margin-left: 110px;
+    margin-left: 95px;
     text-align: left;
     display: flex;
     flex-direction: column;
@@ -90,4 +96,9 @@
     font-weight: bold;
     font-size: 8px;
     color: #A9A9A9;
+  }
+
+  .cafe-information-detail__dropdown-item .day {
+    font-weight: bold; /* 요일만 Bold */
+    margin-right: 5px; /* 요일과 시간 간 간격 */
   }
