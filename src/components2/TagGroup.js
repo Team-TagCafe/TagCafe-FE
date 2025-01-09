@@ -8,11 +8,11 @@ function TagGroup({ tags }) {
   return (
     <div className="tag-group">
       {[row1, row2].map((row, rowIndex) => (
-        <div key={rowIndex} className="tag-row">
+        <div key={rowIndex} className="tag-group-row">
           {row.map((tag, index) => (
-            <div key={index} className="tag-item">
-              <img src={tag.icon} alt={tag.text} className="tag-icon" />
-              <span className="tag-text">{tag.text}</span>
+            <div key={index} className="tag-group-item">
+              <img src={tag.icon} alt={tag.text} className="tag-group-icon" />
+              <span className="tag-group-text">{tag.text}</span>
             </div>
           ))}
         </div>

@@ -1,29 +1,75 @@
 import './App.css';
-import { useState } from 'react';
+import LocationReset from "./components1/LocationReset";
+import VisitStatus from "./components1/VisitStatus";
+import Bookmark from './components1/Bookmark';
+import SideMenuButton from './components1/SideMenuButton';
+import LongButton from './components1/LongButton';
+import ShortButton from './components1/ShortButton';
+import ReviewStar from './components1/ReviewStar';
+import DetailButton from './components1/DetailButton';
+import SearchResult from './components1/SearchResult';
+import TextInput from './components1/TextInput';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import {
-  Bookmark,
-  BottomBar,
-  DetailButton,
-  LocationReset,
-  LongButton,
-  MapCafe,
-  ReportStatus,
-  ReviewStar,
-  ReviewTag,
-  SearchResult,
-  ShortButton,
-  SideMenuButton,
-  TextInput,
-  TopBar,
-  VisitStatus
-} from './components1'
+import BottomBar from './components1/BottomBar';
+import ReviewTag from './components1/ReviewTag';
+import MapCafe from './components1/MapCafe';
+import TopBar from './components1/TopBar';
+import ReportStatus from './components1/ReportStatus';
+import Tag from "./components2/Tag";
+import Popup from "./components2/Popup";
+import CafeInformation from "./components2/CafeInformation";
+import CafeInformationDetail from "./components2/CafeInformationDetail";
+import TagGroup from "./components2/TagGroup";
+import React, { useState } from "react";
+
 
 const Home = () => <div>Home Page</div>;
 const Search = () => <div>Search Page</div>;
 const Profile = () => <div>Profile Page</div>;
 
 function App() {
+  const [activePopup, setActivePopup] = useState(null); // "tagSelection" | "tagFilter" | null
+  const [selectedOption, setSelectedOption] = useState(""); // 콘센트 선택 상태
+  const [selectedFilters, setSelectedFilters] = useState({}); // 태그 필터 선택 상태
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const tags = [
+    { icon: "/img/wifi.png", text: "와이파이 빠름" },
+    { icon: "/img/plug.png", text: "콘센트 일부" },
+    { icon: "/img/desk.png", text: "책상 적당함" },
+    { icon: "/img/toilet.png", text: "화장실 외부" },
+    { icon: "/img/park.png", text: "주차 가능(무료)" },
+  ];
+
+  const handleOptionSelect = (option) => {
+    setSelectedOption(option); // 콘센트 옵션 업데이트
+    setActivePopup(null); // 팝업 닫기
+  };
+
+  const handleFilterSelect = (filterGroup, option) => {
+    setSelectedFilters((prev) => ({
+      ...prev,
+      [filterGroup]: prev[filterGroup] === option ? null : option, // 필터 선택/해제
+    }));
+  };
+
+  const handleReset = () => {
+    setSelectedOption(""); // 콘센트 초기화
+    setSelectedFilters({}); // 필터 초기화
+  };
+
+  const handleConfirm = () => {
+    alert("확인 버튼이 눌렸습니다!");
+    setIsPopupOpen(false);
+  };
+
+  const handleCancel = () => {
+    setIsPopupOpen(false);
+  };
+
+  const handleOptionChange = (category, option) => {
+    console.log(`${category} 선택: ${option}`);
+  };
+
   // LocationReset 동작 함수
   const handleLocationReset = () => {
     console.log("위치가 초기화되었습니다.");
@@ -96,6 +142,16 @@ function App() {
 
   return (
     <div className="App">
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
+
       {/* LocationReset 버튼 */}
       <LocationReset onClick={handleLocationReset} />
 
@@ -165,6 +221,57 @@ function App() {
       {/* <TopBar/> */}
       <TopBar showSearchAndFilter={true} />
       {/* <TopBar showSearchAndFilter={false} /> */}
+
+      {/* 콘센트 태그 */}
+      <Tag
+        tagText="콘센트"
+        popupType="selection"
+        options={["자리에마다", "일부", "없음"]}
+        selectedOption={selectedOption}
+        onOptionSelect={handleOptionSelect}
+        onReset={handleReset}
+        isPopupOpen={activePopup === "tagSelection"}
+        togglePopup={() =>
+          setActivePopup((prev) =>
+            prev === "tagSelection" ? null : "tagSelection"
+          )
+        }
+      />
+
+      {/* 태그 필터 */}
+      <Tag
+        tagText="태그 필터"
+        popupType="filter"
+        options={[
+          { group: "운영시간", options: ["영업중", "24시간"] },
+          { group: "와이파이", options: ["빠름", "보통", "없음"] },
+          { group: "콘센트", options: ["자리에마다", "일부", "없음"] },
+        ]}
+        selectedFilters={selectedFilters}
+        onFilterSelect={handleFilterSelect}
+        onReset={handleReset}
+        isPopupOpen={activePopup === "tagFilter"}
+        togglePopup={() =>
+          setActivePopup((prev) => (prev === "tagFilter" ? null : "tagFilter"))
+        }
+      />
+
+      <button onClick={() => setIsPopupOpen(true)}>팝업 열기</button>
+      {isPopupOpen && (
+        <Popup
+          message="정말 삭제하시겠습니까?"
+          onConfirm={handleConfirm}
+          onCancel={handleCancel}
+        />
+      )}
+
+      <CafeInformation onChange={handleOptionChange} />
+      <CafeInformationDetail />
+      <LongButton optionText={"확인"} />
+
+      <div>
+      <TagGroup tags={tags} />
+      </div>
     </div>
   );
 }

@@ -37,9 +37,9 @@ function TagFilter({ onClose }) {
         </div>
         <div className="tag-filter-content">
           {tagGroups.map((group) => (
-            <div key={group.title} className="tag-group">
+            <div key={group.title} className="tag-filter-group">
               <h4>#{group.title}</h4>
-              <div className="tag-options">
+              <div className="tag-filter-options">
                 {group.options.map((option) => (
                   <SelectTag
                     key={option}
