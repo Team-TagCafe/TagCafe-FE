@@ -1,5 +1,5 @@
 import React from "react";
-import LongButton from "../components1/LongButton";
+import LongButton from "./LongButton";
 import "./Popup.css";
 
 function Popup({ message, onConfirm, onCancel }) {

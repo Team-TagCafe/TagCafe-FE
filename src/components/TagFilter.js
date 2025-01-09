@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import SelectTag from "./selectTag"; 
-import LongButton from "../components1/LongButton";
+import LongButton from "./LongButton";
 import "./TagFilter.css";
 
 function TagFilter({ onClose }) {

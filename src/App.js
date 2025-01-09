@@ -8,20 +8,19 @@ import {
   MapCafe,
   ReportStatus,
   ReviewStar,
-  ReviewTag,
   SearchResult,
   ShortButton,
   SideMenuButton,
   TextInput,
   TopBar,
   VisitStatus
-} from './components1'
+} from './components'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Tag from "./components2/Tag";
-import Popup from "./components2/Popup";
-import CafeInformation from "./components2/CafeInformation";
-import CafeInformationDetail from "./components2/CafeInformationDetail";
-import TagGroup from "./components2/TagGroup";
+import Tag from "./components/Tag";
+import Popup from "./components/Popup";
+import CafeInformation from "./components/CafeInformation";
+import CafeInformationDetail from "./components/CafeInformationDetail";
+import TagGroup from "./components/TagGroup";
 import React, { useState } from "react";
 
 
@@ -184,9 +183,6 @@ function App() {
         onChange={handleInputChange}
         onKeyDown={handleKeyDown}
       />
-
-      {/* ReviewTag */}
-      <ReviewTag tagText="와이파이 빠름" iconSrc="../../img/wifi.png" />
 
       {/* MapCafe */}
       <MapCafe cafeName="스테이 어도러블" />
