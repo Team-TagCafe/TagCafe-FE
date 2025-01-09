@@ -14,13 +14,13 @@ import {
   TextInput,
   TopBar,
   VisitStatus
-} from './components1'
+} from './components'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Tag from "./components2/Tag";
-import Popup from "./components2/Popup";
-import CafeInformation from "./components2/CafeInformation";
-import CafeInformationDetail from "./components2/CafeInformationDetail";
-import TagGroup from "./components2/TagGroup";
+import Tag from "./components/Tag";
+import Popup from "./components/Popup";
+import CafeInformation from "./components/CafeInformation";
+import CafeInformationDetail from "./components/CafeInformationDetail";
+import TagGroup from "./components/TagGroup";
 import React, { useState } from "react";
 
 

@@ -1,6 +1,6 @@
 import React from "react";
 import SelectTag from "./selectTag";
-import LongButton from "../components1/LongButton";
+import LongButton from "./LongButton";
 import "./TagSelection.css"; 
 
 function TagSelection({ tagText, options, selectedOption, onOptionSelect, onReset, onClose }) {
