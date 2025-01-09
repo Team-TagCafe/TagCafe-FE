@@ -1,0 +1,38 @@
+.search-result-button {
+    width: 393px;
+    height: 58px;
+    padding: 8px 16px;
+    /* 적절한 내부 여백을 설정 (위아래 8px, 좌우 16px) */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* 세로 중앙 정렬 */
+    align-items: flex-start;
+    background-color: #ffffff;
+    /* 기본 배경색 */
+    border: none;
+    cursor: pointer;
+}
+
+.search-result-button.clicked {
+    background-color: #F5F4EE;
+    /* 클릭 시 배경색 */
+}
+
+.cafe-name {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    /* 텍스트 크기 조정 */
+    color: #422919;
+    margin-bottom: 4px;
+    /* 카페명과 주소 사이 간격을 줄여서 맞춤 */
+}
+
+.address {
+    font-family: 'Inter';
+    font-weight: 500;
+    font-size: 10px;
+    /* 텍스트 크기 조정 */
+    color: #A69180;
+}

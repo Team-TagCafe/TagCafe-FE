@@ -1,0 +1,104 @@
+.cafe-information-detail {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px;
+    gap: 10px;
+    width: 266px;
+    position: relative; 
+  }
+  
+  .cafe-information-detail__group {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    gap: 15px; 
+    padding: 6px 0;
+    justify-content: flex-start; 
+  }
+
+  .cafe-information-detail__header {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 15px; 
+  }
+
+  
+  .cafe-information-detail__icon {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .cafe-information-detail__label {
+    flex: 1;
+    font-family: "Inter", sans-serif;
+    font-weight: 600;
+    font-size: 11px;
+    line-height: 16px;
+    color: #2b2b2b;
+    text-align: left;
+  }
+  
+  .cafe-information-detail__value {
+    flex: 2;
+    font-family: "Inter", sans-serif;
+    font-weight: 400;
+    font-size: 11px;
+    line-height: 16px;
+    color: #2b2b2b;
+    text-align: left; 
+    white-space: nowrap; 
+  }
+
+  .cafe-information-detail__value .operating {
+    font-weight: bold;
+    margin-left: 12px;
+    margin-right: 5px;;
+  }
+  
+  /* 토글 버튼 (이미지) */
+  .cafe-information-detail__toggle {
+    width: 20px;
+    height: 20px;
+    margin-left: 5px;
+    cursor: pointer; 
+  }
+  
+  /* 드롭다운 (운영시간 상세) */
+  .cafe-information-detail__dropdown {
+    margin-left: 95px;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding-left: 30px; 
+    align-items: flex-start; 
+
+  }
+  
+  /* 드롭다운 아이템 */
+  .cafe-information-detail__dropdown-item {
+    font-family: "Inter", sans-serif;
+    font-size: 11px;
+    line-height: 16px;
+    color: #2b2b2b;
+    width: 100%;
+  }
+  
+  /* 업데이트 시간 */
+  .cafe-information-detail__updated {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    font-family: "Inter", sans-serif;
+    font-weight: bold;
+    font-size: 8px;
+    color: #A9A9A9;
+  }
+
+  .cafe-information-detail__dropdown-item .day {
+    font-weight: bold; /* 요일만 Bold */
+    margin-right: 5px; /* 요일과 시간 간 간격 */
+  }

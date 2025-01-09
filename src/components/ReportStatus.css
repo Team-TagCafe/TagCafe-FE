@@ -1,0 +1,26 @@
+.report-status {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.status-icon {
+  width: 22.5px;
+  height: 22.5px;
+  object-fit: cover;
+  /* 이미지가 컨테이너에 맞게 채워짐 */
+}
+
+.buttons button {
+  padding: 10px 15px;
+  margin: 0 5px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.buttons button:hover {
+  background-color: #f0f0f0;
+}
