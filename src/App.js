@@ -1,20 +1,22 @@
 import './App.css';
-import LocationReset from "./components1/LocationReset";
-import VisitStatus from "./components1/VisitStatus";
-import Bookmark from './components1/Bookmark';
-import SideMenuButton from './components1/SideMenuButton';
-import LongButton from './components1/LongButton';
-import ShortButton from './components1/ShortButton';
-import ReviewStar from './components1/ReviewStar';
-import DetailButton from './components1/DetailButton';
-import SearchResult from './components1/SearchResult';
-import TextInput from './components1/TextInput';
+import {
+  Bookmark,
+  BottomBar,
+  DetailButton,
+  LocationReset,
+  LongButton,
+  MapCafe,
+  ReportStatus,
+  ReviewStar,
+  ReviewTag,
+  SearchResult,
+  ShortButton,
+  SideMenuButton,
+  TextInput,
+  TopBar,
+  VisitStatus
+} from './components1'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import BottomBar from './components1/BottomBar';
-import ReviewTag from './components1/ReviewTag';
-import MapCafe from './components1/MapCafe';
-import TopBar from './components1/TopBar';
-import ReportStatus from './components1/ReportStatus';
 import Tag from "./components2/Tag";
 import Popup from "./components2/Popup";
 import CafeInformation from "./components2/CafeInformation";
@@ -142,15 +144,6 @@ function App() {
 
   return (
     <div className="App">
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
 
       {/* LocationReset 버튼 */}
       <LocationReset onClick={handleLocationReset} />
