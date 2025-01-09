@@ -8,7 +8,6 @@ import {
   MapCafe,
   ReportStatus,
   ReviewStar,
-  ReviewTag,
   SearchResult,
   ShortButton,
   SideMenuButton,
@@ -184,9 +183,6 @@ function App() {
         onChange={handleInputChange}
         onKeyDown={handleKeyDown}
       />
-
-      {/* ReviewTag */}
-      <ReviewTag tagText="와이파이 빠름" iconSrc="../../img/wifi.png" />
 
       {/* MapCafe */}
       <MapCafe cafeName="스테이 어도러블" />

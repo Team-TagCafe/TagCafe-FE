@@ -6,7 +6,6 @@ export { default as LongButton } from './LongButton';
 export { default as MapCafe } from './MapCafe';
 export { default as ReportStatus } from './ReportStatus';
 export { default as ReviewStar } from './ReviewStar';
-export { default as ReviewTag } from './ReviewTag';
 export { default as SearchResult } from './SearchResult';
 export { default as ShortButton } from './ShortButton';
 export { default as SideMenuButton } from './SideMenuButton';
