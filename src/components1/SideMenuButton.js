@@ -28,11 +28,11 @@ function SideMenuButton({ buttonType, optionText }) {
 
   return (
     <div>
+      {/* 버튼1이 선택된 경우 */}
       {buttonType === "button1" && (
         <div
-          className={`button1 ${isPressed ? "button1-pressed" : ""} ${
-            button1Active ? "button1-option2" : "button1-option1"
-          }`}
+          className={`button1 ${isPressed ? "button1-pressed" : ""} ${button1Active ? "button1-option2" : "button1-option1"
+            }`}
         >
           <button
             onMouseDown={handleButton1MouseDown}
@@ -42,17 +42,17 @@ function SideMenuButton({ buttonType, optionText }) {
             <span
               className={`button1-text ${button1Active ? "button1-text-option2" : "button1-text-option1"}`}
             >
-              {optionText}
+              {optionText} {/* 버튼에 표시될 텍스트 */}
             </span>
           </button>
         </div>
       )}
 
+      {/* 버튼2가 선택된 경우 */}
       {buttonType === "button2" && (
         <div
-          className={`button2 ${isPressed ? "button2-pressed" : ""} ${
-            button2Active ? "button2-option2" : "button2-option1"
-          }`}
+          className={`button2 ${isPressed ? "button2-pressed" : ""} ${button2Active ? "button2-option2" : "button2-option1"
+            }`}
         >
           <button
             onMouseDown={handleButton2MouseDown}
@@ -62,7 +62,7 @@ function SideMenuButton({ buttonType, optionText }) {
             <span
               className={`button2-text ${button2Active ? "button2-text-option2" : "button2-text-option1"}`}
             >
-              {optionText}
+              {optionText} {/* 버튼에 표시될 텍스트 */}
             </span>
           </button>
         </div>

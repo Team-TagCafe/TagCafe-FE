@@ -41,5 +41,6 @@
 
 /* placeholder 색상 변경 */
 .text-input::placeholder {
-  color: #E1E1E1; /* placeholder 텍스트 색상 */
+  color: #E1E1E1;
+  /* placeholder 텍스트 색상 */
 }
