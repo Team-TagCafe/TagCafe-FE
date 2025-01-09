@@ -1,11 +1,5 @@
-body.with-filter {
-  padding-bottom: 185px;
-  /* with-filter 상태일 때 */
-}
-
-body.no-filter {
-  padding-bottom: 141px;
-  /* no-filter 상태일 때 */
+body {
+  padding-top: 185px;
 }
 
 /* 기본 상단바 스타일 */
