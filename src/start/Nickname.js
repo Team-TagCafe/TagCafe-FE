@@ -3,26 +3,38 @@ import { useNavigate } from "react-router-dom";
 import "./Nickname.css";
 import TextInput from "../components/TextInput"; 
 import LongButton from "../components/LongButton"; 
+import Popup from "../components/Popup";
 
 function NicknameChangePage({ onClose }) {
+  const [isPopupOpen, setIsPopupOpen] = useState(false); 
   const [nickname, setNickname] = useState("");
+  const navigate = useNavigate();
 
   const handleInputChange = (value) => {
     setNickname(value);
   };
 
   const handleConfirm = () => {
+    setIsPopupOpen(false);
     if (nickname.length < 2 || nickname.length > 15) {
       alert("닉네임은 2~15자 이내로 입력해주세요.");
-      return;
+    } else {
+      console.log(`닉네임 변경 완료: ${nickname}`);
+      navigate(-1);
     }
-    console.log(`닉네임 변경: ${nickname}`);
   };
 
-  const navigate = useNavigate(); // React Router의 useNavigate 훅 사용
+  const handleCancel = () => {
+    setIsPopupOpen(false);
+  }
+
+  const openPopup = () => {
+    setIsPopupOpen(true); 
+  };
+
 
   const handleBack = () => {
-    navigate(-1); // 뒤로 가기
+    navigate(-1); 
   };
 
   return (
@@ -55,8 +67,16 @@ function NicknameChangePage({ onClose }) {
 
       {/* 확인 버튼 컴포넌트 */}
       <div className="confirm-button-container">
-        <LongButton optionText="확인" onClick={handleConfirm} />
+        <LongButton optionText="확인" onClick={openPopup} />
       </div>
+
+      {isPopupOpen && (
+        <Popup
+          message="닉네임 변경을 완료하시겠습니까?"
+          onConfirm={handleConfirm}
+          onCancel={handleCancel}
+        />
+      )}
     </div>
   );
 }
