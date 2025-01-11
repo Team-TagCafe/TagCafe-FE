@@ -27,6 +27,14 @@ import Login from "./start/Login";
 const Home = () => <div>Home Page</div>;
 const Saved = () => <div>Saved Page</div>;
 const MyPage = () => <div>My Page</div>;
+const TopBarPreview=()=> (
+  <div>
+  <TopBar showSearchAndFilter={true} />
+  <div style={{ padding: "20px" }}>This is a preview of the TopBar.</div>
+  </div>
+
+);
+ 
 
 const ComponentPreview = () => {
   const [selectedOption, setSelectedOption] = useState(""); // 콘센트 선택 상태
@@ -145,6 +153,8 @@ function App() {
           <Route path="/saved" element={<Saved />} />
           <Route path="/my" element={<MyPage />} />
           <Route path="/components" element={<ComponentPreview />} />
+          <Route path="/topbar-preview" element={<TopBarPreview />} />
+
         </Routes>
       </div>
     </Router>

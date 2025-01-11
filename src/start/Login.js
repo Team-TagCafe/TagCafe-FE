@@ -1,6 +1,5 @@
 import React from "react";
 import "./Login.css";
-import LongButton from "../components/LongButton";
 
 function LoginPage() {
   const handleLogin = () => {

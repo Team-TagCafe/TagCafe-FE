@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
 import './TopBar.css';
+import SideMenu from "../start/SideMenu";
 
 const TopBar = ({ showSearchAndFilter }) => {
     // 메뉴 열기/닫기 상태 관리
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-    // 메뉴 열기/닫기 토글 함수
     const toggleMenu = () => {
-        setIsMenuOpen(!isMenuOpen); // 현재 상태를 반전시켜 메뉴 열기/닫기
+        setIsMenuOpen(!isMenuOpen);
+    };
+    
+    const closeMenu = () => {
+        setIsMenuOpen(false);
     };
 
-    // 메뉴 닫기 함수
-    const closeMenu = () => {
-        setIsMenuOpen(false); // 메뉴를 닫음
-    };
 
     return (
         <>
@@ -39,22 +39,9 @@ const TopBar = ({ showSearchAndFilter }) => {
                 )}
             </div>
 
-            {/* 메뉴가 열렸을 때 오버레이 및 사이드 메뉴 */}
-            {isMenuOpen && (
-                <>
-                    {/* 메뉴 외부 클릭 시 메뉴 닫기 */}
-                    <div className="overlay" onClick={closeMenu}></div>
-                    {/* 사이드 메뉴 */}
-                    <div className="side-menu">
-                        <ul>
-                            <li>Home</li>
-                            <li>Saved Cafes</li>
-                            <li>Settings</li>
-                            <li>Logout</li>
-                        </ul>
-                    </div>
-                </>
-            )}
+            {/* 사이드 메뉴 */}
+            {isMenuOpen && <SideMenu onClose={() => setIsMenuOpen(false)} />}
+
         </>
     );
 };
