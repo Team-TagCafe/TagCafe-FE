@@ -23,6 +23,8 @@ import CafeInformationDetail from "./components/CafeInformationDetail";
 import TagGroup from "./components/TagGroup";
 import React, { useState } from "react";
 import Login from "./start/Login";
+import NicknameChange from "./start/Nickname";
+
 
 const Home = () => <div>Home Page</div>;
 const Saved = () => <div>Saved Page</div>;
@@ -154,7 +156,7 @@ function App() {
           <Route path="/my" element={<MyPage />} />
           <Route path="/components" element={<ComponentPreview />} />
           <Route path="/topbar-preview" element={<TopBarPreview />} />
-
+          <Route path="/nickname-change" element={<NicknameChange />} />
         </Routes>
       </div>
     </Router>

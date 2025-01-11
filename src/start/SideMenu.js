@@ -1,9 +1,16 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import "./SideMenu.css";
 import SideMenuButton from "../components/SideMenuButton"
 
 const SideMenu = ({ onClose }) => {
-  return (
+    const navigate = useNavigate(); 
+  
+    const handleNicknameChange = () => {
+      navigate("/nickname-change"); 
+    };
+
+    return (
     <>
       {/* 오버레이 클릭 시 메뉴 닫기 */}
       <div className="overlay" onClick={onClose}></div>
@@ -17,8 +24,11 @@ const SideMenu = ({ onClose }) => {
           </div>
           <div className="profile-info">
             <div className="profile-name">태카</div>
-            <div className="profile-edit">닉네임 변경하기</div>
-          </div>
+            <div
+              className="profile-edit"
+              onClick={handleNicknameChange}> 닉네임 변경하기
+            </div>          
+         </div>
         </div>
         <div className="side-menu-body">
           <SideMenuButton buttonType="button1" optionText="개인정보처리방침" />

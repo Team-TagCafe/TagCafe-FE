@@ -10,12 +10,14 @@
   font-style: normal;
   font-weight: 450;
   font-size: 15px;
-  line-height: 18px;
   display: flex;
   align-items: center;
   color: #2B2B2B;
 
-  padding: 12px;
+  padding: 3px 12px;
+  line-height: 21px;
+  vertical-align: middle;
+  text-align: left;
   outline: none;
   box-sizing: border-box;
   margin: 10px
@@ -37,10 +39,11 @@
   display: flex;
   align-items: center;
   color: #2B2B2B;
+  padding: 0 12px; 
 }
 
 /* placeholder 색상 변경 */
 .text-input::placeholder {
   color: #E1E1E1;
-  /* placeholder 텍스트 색상 */
+  line-height: normal; 
 }
