@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import './TopBar.css';
-import SideMenu from "../start/SideMenu";
+import SideMenu from "../start/SideMenu"; //로그인시
+import SideMenu_un from "../start/SideMenu_un"; //비로그인시
+
 
 const TopBar = ({ showSearchAndFilter }) => {
     // 메뉴 열기/닫기 상태 관리
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(true); 
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
@@ -39,9 +42,17 @@ const TopBar = ({ showSearchAndFilter }) => {
                 )}
             </div>
 
-            {/* 사이드 메뉴 */}
-            {isMenuOpen && <SideMenu onClose={() => setIsMenuOpen(false)} />}
 
+            {isMenuOpen && (
+                <>
+                <div className="overlay" onClick={closeMenu}></div>
+                {isLoggedIn ? (
+                    <SideMenu closeMenu={closeMenu} />
+                ) : (
+                    <SideMenu_un closeMenu={closeMenu} />
+                )}
+                </>
+            )}
         </>
     );
 };
