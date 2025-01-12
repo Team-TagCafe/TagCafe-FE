@@ -25,13 +25,13 @@
     font-weight: bold;
     color: #422919;
     margin-top: 30px;
-    margin-bottom: 30px;
+    margin-bottom: 10px;
   }
   
   .popup-buttons {
     display: flex;
     justify-content: space-around;
-    margin-top: 10px;
+    margin-top: 0px;
     margin-bottom: 0px;
     align-items: center;
   }
