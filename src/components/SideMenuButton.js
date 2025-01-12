@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./SideMenuButton.css"; // CSS 파일을 import
 
-function SideMenuButton({ buttonType, optionText }) {
+function SideMenuButton({ buttonType, optionText, onClick }) {
   const [button1Active, setButton1Active] = useState(false); // 버튼1 상태 (true: 옵션2, false: 옵션1)
   const [button2Active, setButton2Active] = useState(false); // 버튼2 상태 (true: 옵션2, false: 옵션1)
   const [isPressed, setIsPressed] = useState(false); // 버튼 눌렸는지 확인하는 상태
@@ -38,6 +38,7 @@ function SideMenuButton({ buttonType, optionText }) {
             onMouseDown={handleButton1MouseDown}
             onMouseUp={handleButton1MouseUp}
             className="side-menu-button"
+            onClick={onClick}
           >
             <span
               className={`button1-text ${button1Active ? "button1-text-option2" : "button1-text-option1"}`}
@@ -58,6 +59,7 @@ function SideMenuButton({ buttonType, optionText }) {
             onMouseDown={handleButton2MouseDown}
             onMouseUp={handleButton2MouseUp}
             className="side-menu-button"
+            onClick={onClick}
           >
             <span
               className={`button2-text ${button2Active ? "button2-text-option2" : "button2-text-option1"}`}

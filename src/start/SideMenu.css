@@ -5,11 +5,13 @@
     width: 100vw;
     height: 100vh;
     background-color: rgba(0, 0, 0, 0.3); 
-    z-index: 999;
+    z-index: 900;
+    display: flex;
+    justify-content: flex-start;
   }
   
 .side-menu {
-    position: fixed;
+    position: relative;
     width: 210px;
     height: 100vh; 
     background: #ffffff;
@@ -17,12 +19,12 @@
     flex-direction: column;
     padding: 0;
     overflow-y: auto;
-    z-index: 1000;
+    z-index: 950;
     left: 50%;
   }
   
   .side-menu-header {
-    margin-top:90px;
+    margin-top:0px;
     display: flex;
     align-items: center;
     padding: 10px 0px;
