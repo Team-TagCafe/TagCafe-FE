@@ -30,6 +30,11 @@ const SideMenu = ({  }) => {
     navigate("/delete")
   }
 
+  const handlePrivacyPolicy = () => {
+    navigate("/privacy-policy"); 
+  };
+
+
   const handleOverlayClick = (event) => {
     // 클릭한 대상이 오버레이 자신인지 확인
     if (event.target === event.currentTarget) {
@@ -62,11 +67,11 @@ const SideMenu = ({  }) => {
             </div>
           </div>
           <div className="side-menu-body">
-            <SideMenuButton buttonType="button1" optionText="개인정보처리방침" />
+            <SideMenuButton buttonType="button1" optionText="개인정보처리방침" onClick={handlePrivacyPolicy} />
             <SideMenuButton buttonType="button1" optionText="서비스 이용약관" />
             <SideMenuButton buttonType="button1" optionText="위치서비스 약관" />
             <SideMenuButton buttonType="button1" optionText="FAQ" />
-            <SideMenuButton buttonType="button2"optionText="로그아웃"onClick={handleLogoutClick}/>
+            <SideMenuButton buttonType="button2"optionText="로그아웃" onClick={handleLogoutClick}/>
             <SideMenuButton buttonType="button2" optionText="회원탈퇴" onClick={handleDelete}/>
             <SideMenuButton buttonType="button2" optionText="관리자페이지" />
           </div>

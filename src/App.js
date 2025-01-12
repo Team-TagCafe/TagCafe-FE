@@ -25,6 +25,7 @@ import React, { useState } from "react";
 import Login from "./start/Login";
 import NicknameChange from "./start/Nickname";
 import Delete from './start/Delete';
+import PrivacyPolicy from './start/PrivacyPolicy';
 
 
 const Home = () => <div>Home Page</div>;
@@ -159,6 +160,7 @@ function App() {
           <Route path="/topbar-preview" element={<TopBarPreview />} />
           <Route path="/nickname-change" element={<NicknameChange />} />
           <Route path="/delete" element={<Delete />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         </Routes>
       </div>
     </Router>
