@@ -11,7 +11,8 @@
 }
 
 .location-reset-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  position: absolute;
+  bottom: 30px;
+  left: 20px;
+  z-index: 10;
 }
