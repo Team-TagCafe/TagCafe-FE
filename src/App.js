@@ -27,6 +27,7 @@ import NicknameChange from "./start/Nickname";
 import Delete from './start/Delete';
 import PrivacyPolicy from './start/PrivacyPolicy';
 import ServicePolicy from './start/ServicePolicy';
+import LocationPolicy from './start/LocationPolicy';
 
 
 const Home = () => <div>Home Page</div>;
@@ -163,6 +164,7 @@ function App() {
           <Route path="/delete" element={<Delete />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/service-policy" element={<ServicePolicy />} />
+          <Route path="/location-policy" element={<LocationPolicy />} />
         </Routes>
       </div>
     </Router>

@@ -38,6 +38,10 @@ const SideMenu = ({  }) => {
     navigate("/service-policy"); 
   };
 
+  const handleLocationPolicy = () => {
+    navigate("/location-policy"); 
+  };
+
 
 
   const handleOverlayClick = (event) => {
@@ -74,7 +78,7 @@ const SideMenu = ({  }) => {
           <div className="side-menu-body">
             <SideMenuButton buttonType="button1" optionText="개인정보처리방침" onClick={handlePrivacyPolicy} />
             <SideMenuButton buttonType="button1" optionText="서비스 이용약관" onClick={handleServicePolicy}/>
-            <SideMenuButton buttonType="button1" optionText="위치서비스 약관" />
+            <SideMenuButton buttonType="button1" optionText="위치서비스 약관" onClick={handleLocationPolicy}/>
             <SideMenuButton buttonType="button1" optionText="FAQ" />
             <SideMenuButton buttonType="button2"optionText="로그아웃" onClick={handleLogoutClick}/>
             <SideMenuButton buttonType="button2" optionText="회원탈퇴" onClick={handleDelete}/>
