@@ -1,51 +1,48 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // 페이지 전환을 위한 useNavigate 훅
 import './TopBar.css';
 
 const TopBar = ({ showSearchAndFilter, onSearchPlaceChange }) => {
-    // 메뉴 열기/닫기 상태 관리
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    // 검색 입력 값 상태 관리
     const [inputValue, setInputValue] = useState('');
+    const navigate = useNavigate(); // useNavigate 훅 사용
 
-    // 메뉴 열기/닫기 토글 함수
     const toggleMenu = () => {
-        setIsMenuOpen(!isMenuOpen); // 현재 상태를 반전시켜 메뉴 열기/닫기
+        setIsMenuOpen(!isMenuOpen);
     };
 
-    // 메뉴 닫기 함수
     const closeMenu = () => {
-        setIsMenuOpen(false); // 메뉴를 닫음
+        setIsMenuOpen(false);
     };
 
-    // 검색 입력 값 변경 처리
     const handleInputChange = (event) => {
         setInputValue(event.target.value);
-        onSearchPlaceChange(event.target.value); // 입력 값이 변경될 때마다 부모로 전달
+        onSearchPlaceChange(event.target.value);
+    };
+
+    // 검색 필드에 포커스 시 Search 페이지로 이동
+    const handleInputFocus = () => {
+        navigate('/search'); // Search 페이지로 이동
     };
 
     return (
         <>
-            {/* TopBar (상단 바) */}
             <div className={`top-bar ${showSearchAndFilter ? 'with-filter' : 'no-filter'}`}>
-                {/* 탭 타이틀 */}
                 <div className="title">#TagCafe</div>
-                {/* 햄버거 메뉴 버튼 */}
                 <button className="hamburger-button" onClick={toggleMenu}>
                     <img className="hamburger-menu" src="../img/hamburger_menu.png" alt="Menu" />
                 </button>
 
-                {/* 검색 및 필터 표시 여부 확인 */}
                 {showSearchAndFilter && (
                     <div className="search-filter">
-                        {/* 검색 필드 */}
                         <input
                             type="text"
                             value={inputValue}
                             onChange={handleInputChange}
+                            onFocus={handleInputFocus} // 포커스 시 페이지 이동
                             className="search-input"
                             placeholder="지역, 카페 이름으로 검색"
                         />
-                        {/* 검색 버튼 */}
                         <button className="search-button">
                             <img src="../img/search.png" alt="Search" />
                         </button>
@@ -53,12 +50,9 @@ const TopBar = ({ showSearchAndFilter, onSearchPlaceChange }) => {
                 )}
             </div>
 
-            {/* 메뉴가 열렸을 때 오버레이 및 사이드 메뉴 */}
             {isMenuOpen && (
                 <>
-                    {/* 메뉴 외부 클릭 시 메뉴 닫기 */}
                     <div className="overlay" onClick={closeMenu}></div>
-                    {/* 사이드 메뉴 */}
                     <div className="side-menu">
                         <ul>
                             <li>Home</li>
