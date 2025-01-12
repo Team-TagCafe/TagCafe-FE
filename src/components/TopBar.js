@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import './TopBar.css';
 
-const TopBar = ({ showSearchAndFilter }) => {
+const TopBar = ({ showSearchAndFilter, onSearchPlaceChange }) => {
     // 메뉴 열기/닫기 상태 관리
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    // 검색 입력 값 상태 관리
+    const [inputValue, setInputValue] = useState('');
 
     // 메뉴 열기/닫기 토글 함수
     const toggleMenu = () => {
@@ -13,6 +15,12 @@ const TopBar = ({ showSearchAndFilter }) => {
     // 메뉴 닫기 함수
     const closeMenu = () => {
         setIsMenuOpen(false); // 메뉴를 닫음
+    };
+
+    // 검색 입력 값 변경 처리
+    const handleInputChange = (event) => {
+        setInputValue(event.target.value);
+        onSearchPlaceChange(event.target.value); // 입력 값이 변경될 때마다 부모로 전달
     };
 
     return (
@@ -30,7 +38,13 @@ const TopBar = ({ showSearchAndFilter }) => {
                 {showSearchAndFilter && (
                     <div className="search-filter">
                         {/* 검색 필드 */}
-                        <input type="text" className="search-input" placeholder="지역, 카페 이름으로 검색" />
+                        <input
+                            type="text"
+                            value={inputValue}
+                            onChange={handleInputChange}
+                            className="search-input"
+                            placeholder="지역, 카페 이름으로 검색"
+                        />
                         {/* 검색 버튼 */}
                         <button className="search-button">
                             <img src="../img/search.png" alt="Search" />

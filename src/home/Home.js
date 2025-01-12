@@ -1,30 +1,61 @@
 /*global kakao*/
 
 import React, { useEffect, useState } from 'react';
-import { BottomBar, TopBar } from '../components';
-import { LocationReset } from '../components';
+import { BottomBar, TopBar, LocationReset } from '../components';
+
+let infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
 
 const Home = () => {
   const [map, setMap] = useState(null); // map 상태를 관리
+  const [searchPlace, setSearchPlace] = useState(''); // searchPlace 상태를 관리
+
+  // 사용자가 장소 검색 시, searchPlace 값을 업데이트하는 함수
+  const handleSearchPlaceChange = (place) => {
+    setSearchPlace(place); // TopBar에서 받은 입력값을 상태에 저장
+  };
 
   useEffect(() => {
+    if (!searchPlace) return; // searchPlace가 없을 때는 실행하지 않음
+
     const container = document.getElementById('map');
-    // 지도 초기 설정 값
     const options = {
-      center: new kakao.maps.LatLng(37.365264512305174, 127.10676860117488), // 지도의 중심 좌표
-      level: 3 // 지도의 확대 레벨 -> 숫자 클수록 더 넓은 범위임
+      center: new kakao.maps.LatLng(37.365264512305174, 127.10676860117488),
+      level: 3
     };
 
-    const kakaoMap = new kakao.maps.Map(container, options); // 지도 초기화
-    setMap(kakaoMap); // 상태로 map을 저장
+    const kakaoMap = new kakao.maps.Map(container, options);
+    setMap(kakaoMap);
 
-    // 마커 생성
-    const markerPosition = new kakao.maps.LatLng(37.365264512305174, 127.10676860117488);
-    const marker = new kakao.maps.Marker({
-      position: markerPosition
-    });
-    marker.setMap(kakaoMap);
-  }, []);
+    const ps = new kakao.maps.services.Places();
+    ps.keywordSearch(searchPlace + ' 카페', placesSearchCB); // '카페'를 추가하여 카페만 검색
+
+    function placesSearchCB(data, status, pagination) {
+      if (status === kakao.maps.services.Status.OK) {
+        let bounds = new kakao.maps.LatLngBounds();
+
+        for (let i = 0; i < data.length; i++) {
+          displayMarker(data[i]);
+          bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x));
+        }
+
+        kakaoMap.setBounds(bounds); // 검색된 결과에 맞게 지도 범위 설정
+      }
+    }
+
+    function displayMarker(place) {
+      let marker = new kakao.maps.Marker({
+        map: kakaoMap,
+        position: new kakao.maps.LatLng(place.y, place.x)
+      });
+
+      kakao.maps.event.addListener(marker, 'click', function () {
+        infowindow.setContent(
+          '<div style="padding:5px;font-size:12px;">' + place.place_name + '</div>'
+        );
+        infowindow.open(kakaoMap, marker);
+      });
+    }
+  }, [searchPlace]); // searchPlace가 변경될 때마다 useEffect 실행
 
   // 현재 위치로 지도 중심 이동하는 함수
   const moveToUserLocation = () => {
@@ -43,7 +74,7 @@ const Home = () => {
             position: userLocation
           });
           marker.setMap(map);
-          
+
           // 경도와 위도 출력
           console.log("현재 위치 경도:", userLng);
           console.log("현재 위치 위도:", userLat);
@@ -59,9 +90,10 @@ const Home = () => {
 
   return (
     <>
-      <TopBar showSearchAndFilter={true} />
+      {/* TopBar 컴포넌트에 검색 기능을 포함하고, onSearchPlaceChange를 전달 */}
+      <TopBar showSearchAndFilter={true} onSearchPlaceChange={handleSearchPlaceChange} />
       <div>
-        <div className="map" id="map" style={{ width: "393px", height: "585px" }}></div>
+        <div className="map" id="map" style={{ width: "393px", height: "535px" }}></div>
         <LocationReset onClick={moveToUserLocation} />
       </div>
       <BottomBar />
