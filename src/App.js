@@ -24,6 +24,7 @@ import TagGroup from "./components/TagGroup";
 import React, { useState } from "react";
 import Login from "./start/Login";
 import NicknameChange from "./start/Nickname";
+import Delete from './start/Delete';
 
 
 const Home = () => <div>Home Page</div>;
@@ -157,6 +158,7 @@ function App() {
           <Route path="/components" element={<ComponentPreview />} />
           <Route path="/topbar-preview" element={<TopBarPreview />} />
           <Route path="/nickname-change" element={<NicknameChange />} />
+          <Route path="/delete" element={<Delete />} />
         </Routes>
       </div>
     </Router>

@@ -19,7 +19,6 @@ const SideMenu = ({  }) => {
 
   const handleLogoutConfirm = () => {
     setIsLogoutPopupOpen(false);
-    console.log("Logged out");
     navigate("/login");
   };
 
@@ -27,12 +26,17 @@ const SideMenu = ({  }) => {
     setIsLogoutPopupOpen(false);
   };
 
+  const handleDelete = () => {
+    navigate("/delete")
+  }
+
   const handleOverlayClick = (event) => {
     // 클릭한 대상이 오버레이 자신인지 확인
     if (event.target === event.currentTarget) {
       setIsMenuOpen(false); // 메뉴 닫기
     }
   };
+
 
   // 사이드 메뉴가 닫힌 경우 null 반환
   if (!isMenuOpen) {
@@ -63,7 +67,7 @@ const SideMenu = ({  }) => {
             <SideMenuButton buttonType="button1" optionText="위치서비스 약관" />
             <SideMenuButton buttonType="button1" optionText="FAQ" />
             <SideMenuButton buttonType="button2"optionText="로그아웃"onClick={handleLogoutClick}/>
-            <SideMenuButton buttonType="button2" optionText="회원탈퇴" />
+            <SideMenuButton buttonType="button2" optionText="회원탈퇴" onClick={handleDelete}/>
             <SideMenuButton buttonType="button2" optionText="관리자페이지" />
           </div>
         </div>
