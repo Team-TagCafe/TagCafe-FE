@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import "./PrivacyPolicy.css";
+import "./Policy.css";
 
 function PrivacyPolicy() {
   const navigate = useNavigate();
@@ -10,12 +10,12 @@ function PrivacyPolicy() {
   };
 
   return (
-    <div className="privacy-policy-page">
+    <div className="policy-page">
       {/* 상단 바 */}
-      <div className="privacy-policy-header">
+      <div className="policy-header">
         <div className="title-container">
-          <h1 className="privacy-policy-title"># TagCafe</h1>
-          <span className="privacy-policy-subtitle">개인정보처리방침</span>
+          <h1 className="policy-title"># TagCafe</h1>
+          <span className="policy-subtitle">개인정보처리방침</span>
        </div>
         <button className="close-button" onClick={handleBack}>
           ×
@@ -23,7 +23,7 @@ function PrivacyPolicy() {
       </div>
 
       {/* 개인정보처리방침 내용 */}
-      <div className="privacy-policy-content">
+      <div className="policy-content">
         <p>
           [앱 이름] ("본 앱")은 사용자의 개인정보 보호를 중요하게 생각합니다.
           본 앱은 「개인정보 보호법」 및 관련 법령에 따라 사용자의 개인정보를

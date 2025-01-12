@@ -1,11 +1,17 @@
-.privacy-policy-page {
-    position: relative;
+.policy-page {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
     width: 393px;
     height: 852px;
     margin: 0 auto;
     background: #ffffff;
     font-family: "Inter", sans-serif;
     overflow-y: scroll;
+    height: 852px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 
   .title-container {
@@ -15,7 +21,7 @@
   }
 
   /* 상단 바 */
-  .privacy-policy-header {
+  .policy-header {
     position: sticky;
     top:0;
     z-index: 1000;
@@ -27,7 +33,7 @@
     align-items: center;
   }
   
-  .privacy-policy-title {
+  .policy-title {
     margin-left: 20px;
     margin-top: 60px;
     margin-bottom: 10px;
@@ -36,7 +42,7 @@
     color: #422919;
   }
   
-  .privacy-policy-subtitle {
+  .policy-subtitle {
     margin-left: 30px;
     font-size: 15px;
     font-weight: 800;
@@ -58,7 +64,7 @@
 
   
   /* 개인정보처리방침 내용 */
-  .privacy-policy-content {
+  .policy-content {
     margin-top:40px;
     font-size: 12px;
     line-height: 1.3;
@@ -67,10 +73,10 @@
     text-align: left;
   }
   
-  .privacy-policy-content ul {
+  .policy-content ul {
     margin-left: 3px;
   }
   
-  .privacy-policy-content p {
+  .policy-content p {
     margin: 5px 0;
   }
