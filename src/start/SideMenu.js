@@ -42,6 +42,10 @@ const SideMenu = ({  }) => {
     navigate("/location-policy"); 
   };
 
+  const handleFAQQA = () => {
+    navigate("/faq-qa"); 
+  };
+
 
 
   const handleOverlayClick = (event) => {
@@ -79,7 +83,7 @@ const SideMenu = ({  }) => {
             <SideMenuButton buttonType="button1" optionText="개인정보처리방침" onClick={handlePrivacyPolicy} />
             <SideMenuButton buttonType="button1" optionText="서비스 이용약관" onClick={handleServicePolicy}/>
             <SideMenuButton buttonType="button1" optionText="위치서비스 약관" onClick={handleLocationPolicy}/>
-            <SideMenuButton buttonType="button1" optionText="FAQ" />
+            <SideMenuButton buttonType="button1" optionText="FAQ" onClick={handleFAQQA}/>
             <SideMenuButton buttonType="button2"optionText="로그아웃" onClick={handleLogoutClick}/>
             <SideMenuButton buttonType="button2" optionText="회원탈퇴" onClick={handleDelete}/>
             <SideMenuButton buttonType="button2" optionText="관리자페이지" />

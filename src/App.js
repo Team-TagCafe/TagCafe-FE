@@ -28,6 +28,7 @@ import Delete from './start/Delete';
 import PrivacyPolicy from './start/PrivacyPolicy';
 import ServicePolicy from './start/ServicePolicy';
 import LocationPolicy from './start/LocationPolicy';
+import FAQQA from './start/FAQ_QA';
 
 
 const Home = () => <div>Home Page</div>;
@@ -165,6 +166,7 @@ function App() {
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/service-policy" element={<ServicePolicy />} />
           <Route path="/location-policy" element={<LocationPolicy />} />
+          <Route path="/faq-qa" element={<FAQQA />} />
         </Routes>
       </div>
     </Router>
