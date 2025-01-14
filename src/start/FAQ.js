@@ -6,6 +6,7 @@ import LongButton from "../components/LongButton";
 const FAQ = () => {
   const [openIndexes, setOpenIndexes] = useState([]); // 열려 있는 질문의 인덱스를 관리
   const [activeTab, setActiveTab] = useState("faq"); // 기본 탭: FAQ
+  const [feedbackText, setFeedbackText] = useState("")
 
   const toggleAnswer = (index) => {
     if (openIndexes.includes(index)) {
@@ -17,6 +18,10 @@ const FAQ = () => {
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
+  };
+
+  const handleFeedbackChange = (event) => {
+    setFeedbackText(event.target.value); // 입력값 상태 업데이트
   };
 
   const faqs = [
@@ -96,8 +101,12 @@ const FAQ = () => {
             className="feedback-textarea"
             placeholder="좋은 의견이 있거나 서비스에 오류가 있다면 편하게 알려주세요!"
             maxLength={200}
+            value={feedbackText}
+            onChange={handleFeedbackChange}
           />
-          <div className="feedback-char-counter">0/200</div>
+          <div className="feedback-char-counter">
+            {feedbackText.length}/200 {/* 현재 글자 수와 최대 글자 수 표시 */}
+          </div>          
           <LongButton optionText="제출하기" onClick={() => alert("제출되었습니다!")} />
         </div>
       )}
