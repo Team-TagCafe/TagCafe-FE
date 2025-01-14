@@ -7,16 +7,19 @@
   height: 100vh;
   margin: 0 auto;
   background-color: #ffffff;
-  overflow-y: auto; 
+  overflow: hidden;
 }
 
   .policy-content {
     font-size: 12px;
-    line-height: 1.;
+    line-height: 1.5;
     color: #2b2b2b;
-    padding: 0 20px;
+    padding: 20px;
     text-align: left;
-    margin-top: 0px;
+    overflow-y: auto; /* content 내부 스크롤 */
+    width: 100%; /* 전체 너비 사용 */
+    box-sizing: border-box; /* 패딩 포함한 크기 계산 */
+    height: calc(100vh - 123px);
   }
   
   .policy-content ul {
