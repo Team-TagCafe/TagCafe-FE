@@ -1,40 +1,32 @@
 .faq-page {
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    width: 393px;
-    height: 852px;
-    margin: 0 auto;
-    background: #ffffff;
-    font-family: "Inter", sans-serif;
-    overflow-y: scroll;
-    height: 852px;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  width: 100%; 
+  max-width: 393px; 
+  height: 100vh;
+  margin: 0 auto;
+  background-color: #ffffff;
+  overflow-y: auto;
   }
 
-  /* 스크롤바 디자인 */
+  /* 스크롤바 디자인
   .faq-page::-webkit-scrollbar {
-    width: 6px; /* 스크롤바의 너비 조정 */
+    width: 6px; 
   }
   
-  /* 스크롤바 트랙 (배경) */
   .faq-page::-webkit-scrollbar-track {
-    background: #f5f5f5; /* 스크롤바 배경 색상 */
-    border-radius: 10px; /* 둥근 모서리 */
+    background: #f5f5f5;
+    border-radius: 10px; 
   }
   
-  /* 스크롤바 핸들 (움직이는 부분) */
   .faq-page::-webkit-scrollbar-thumb {
-    background: #cec2b2; /* 스크롤바 핸들의 색상 */
-    border-radius: 10px; /* 둥근 모서리 */
+    background: #cec2b2; 
+    border-radius: 10px; 
   }
   
-  /* 스크롤바 핸들에 호버 효과 */
   .faq-page::-webkit-scrollbar-thumb:hover {
-    background: #b8a897; /* 호버 시 색상 */
-  }
+    background: #b8a897; 
+  }  */
 
   .faq-tabs {
     display: flex;

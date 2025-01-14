@@ -19,7 +19,7 @@ const SideMenu = ({  }) => {
 
   const handleLogoutConfirm = () => {
     setIsLogoutPopupOpen(false);
-    navigate("/login");
+    navigate("/");
   };
 
   const handleLogoutCancel = () => {

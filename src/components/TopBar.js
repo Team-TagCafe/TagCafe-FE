@@ -15,15 +15,18 @@ const TopBar = ({ showSearchAndFilter }) => {
     setIsMenuOpen(false);
   };
 
-  // 동적 body 스타일링
   useEffect(() => {
-    document.body.classList.toggle("with-filter-body", showSearchAndFilter);
-    document.body.classList.toggle("no-filter-body", !showSearchAndFilter);
+    // TopBar가 렌더링된 경우만 padding-top 적용
+    if (showSearchAndFilter !== undefined) {
+      document.body.style.paddingTop = showSearchAndFilter ? "185px" : "141px";
+    }
 
     return () => {
-      document.body.classList.remove("with-filter-body", "no-filter-body");
+      // TopBar가 언마운트되면 초기화
+      document.body.style.paddingTop = "0";
     };
   }, [showSearchAndFilter]);
+
 
   return (
     <>
