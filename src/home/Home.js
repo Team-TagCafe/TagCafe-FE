@@ -158,7 +158,7 @@ const Home = () => {
       <TopBar showSearchAndFilter={true} onSearchPlaceChange={handleSearchPlaceChange} />
       <div>
         <div className="map" id="map" 
-        style={{ width: innerWidth, height: innerHeight - 70 }}
+        style={{ width: '393px', height: `${innerHeight - 265}px` }}
         ></div>
         <LocationReset onClick={moveToUserLocation} />
 
