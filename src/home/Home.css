@@ -18,3 +18,10 @@
     z-index: 2;
   }
   
+  .label {
+    font-weight: bold;
+    background-color: rgba(255, 255, 255, 0.7); /* 반투명한 하얀색 배경 */
+    padding: 5px 10px;
+    border-radius: 30px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); /* 그림자 효과 */
+  }

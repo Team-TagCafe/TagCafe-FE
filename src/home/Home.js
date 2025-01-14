@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { BottomBar, TopBar, LocationReset, CafePopup } from '../components';
+import './Home.css'
 
 const Home = () => {
   const [map, setMap] = useState(null);
@@ -35,7 +36,7 @@ const Home = () => {
     const customOverlay = new kakao.maps.CustomOverlay({
       position: markerPosition,
       content: content,
-      yAnchor: -1, // 마커 아래에 위치하도록 조정
+      yAnchor: -0.5, // 마커 아래에 위치하도록 조정
     });
 
     customOverlay.setMap(map);
@@ -135,7 +136,7 @@ const Home = () => {
             image: markerImage
           });
 
-          createCustomOverlay(map, userLocation, '현재 위치');
+          // createCustomOverlay(map, userLocation, '현재 위치');
         },
         (error) => {
           console.error('사용자 위치를 가져오는 중 오류 발생:', error.message);
