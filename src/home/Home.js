@@ -75,7 +75,7 @@ const Home = () => {
   useEffect(() => {
     const container = document.getElementById('map');
     const options = {
-      center: new kakao.maps.LatLng(37.365264512305174, 127.10676860117488),
+      center: new kakao.maps.LatLng(37.498095, 127.027610), // 강남역
       level: 3
     };
 
