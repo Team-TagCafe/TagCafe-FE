@@ -84,7 +84,7 @@ const TopBar = ({
       {/* 사이드 메뉴 */}
       {isMenuOpen && (
         <>
-          <div className="overlay" onClick={closeMenu}></div>
+          <div className="topbar-overlay" onClick={closeMenu}></div>
           {isLoggedIn ? <SideMenu closeMenu={closeMenu} /> : <SideMenu_un closeMenu={closeMenu} />}
         </>
       )}

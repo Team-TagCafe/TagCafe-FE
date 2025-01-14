@@ -9,6 +9,13 @@ const SideMenu = ({  }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(true); 
   const [isLogoutPopupOpen, setIsLogoutPopupOpen] = useState(false);
 
+
+  const closeMenu = () => {
+    setIsMenuOpen(false);
+  };
+  
+
+
   const handleNicknameChange = () => {
     navigate("/nickname-change");
   };
@@ -64,7 +71,7 @@ const SideMenu = ({  }) => {
   return (
     <>
       {/* 오버레이 클릭 시 메뉴 닫기 */}
-      <div className="overlay" onClick={handleOverlayClick}>
+      <div className="side-menu-overlay" onClick={handleOverlayClick}>
         {/* 사이드 메뉴 */}
         <div className="side-menu">
           <div className="side-menu-header">

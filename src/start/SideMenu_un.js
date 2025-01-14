@@ -39,7 +39,7 @@ const SideMenu_un = ({  }) => {
   return (
     <>
       {/* 오버레이 클릭 시 메뉴 닫기 */}
-      <div className="overlay" onClick={handleOverlayClick}></div>
+      <div className="side-menu-un-overlay" onClick={handleOverlayClick}></div>
 
       {/* 사이드 메뉴 */}
       <div className="side-menu">

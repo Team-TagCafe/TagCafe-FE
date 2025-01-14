@@ -11,10 +11,10 @@
   box-sizing: border-box;
   background-color: #ffffff;
   border-bottom: 1px solid #ddd;
-  z-index: 950;
+  z-index: 900;
 }
 
-.overlay {
+.top-bar-overlay {
   position: fixed;
   top: 0;
   left: 0;
