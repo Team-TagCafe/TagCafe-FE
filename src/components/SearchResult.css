@@ -1,7 +1,7 @@
 .search-result-button {
     width: 393px;
-    height: 58px;
-    padding: 8px 16px;
+    height: 38px;
+    padding: 0px 16px;
     /* 적절한 내부 여백을 설정 (위아래 8px, 좌우 16px) */
     display: flex;
     flex-direction: column;

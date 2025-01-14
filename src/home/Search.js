@@ -40,7 +40,7 @@ const Search = ({ onPlaceSelect }) => {
         <ul>
           {results.map((place) => (
             <li key={place.id} onClick={() => handleResultClick(place)}
-              style={{ listStyleType: 'none', padding: '4px 0', cursor: 'pointer' }}>
+              style={{ listStyleType: 'none', padding: '10px 0', cursor: 'pointer' }}>
               <SearchResult
                 cafeName={place.place_name}
                 address={place.address_name}
