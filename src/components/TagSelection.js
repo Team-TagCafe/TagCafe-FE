@@ -5,6 +5,7 @@ import "./TagSelection.css";
 
 function TagSelection({ tagText, options, onClose }) {
   const [selectedOption, setSelectedOption] = useState(null);
+  const [isOpen, setIsOpen] = useState(true); 
 
   // 단일 선택 처리
   const handleOptionSelect = (option) => {
@@ -16,14 +17,20 @@ function TagSelection({ tagText, options, onClose }) {
     setSelectedOption(null);
   };
 
+  const handleClose = () => {
+    setIsOpen(false); // 컴포넌트를 닫음
+  };
+
+  if (!isOpen) return null; 
+
   return (
     <>
-      <div className="tag-selection__background" onClick={onClose}></div>
+      <div className="tag-selection__background" onClick={handleClose}></div>
 
       <div className="tag-selection">
         <div className="tag-selection__header">
           <span className="tag-selection__title">#{tagText}</span>
-          <button className="tag-selection__close-button" onClick={onClose}>
+          <button className="tag-selection__close-button" onClick={handleClose}>
             ×
           </button>
         </div>

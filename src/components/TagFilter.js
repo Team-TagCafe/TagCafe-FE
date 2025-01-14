@@ -5,6 +5,7 @@ import "./TagFilter.css";
 
 function TagFilter({ onClose }) {
   const [selectedTags, setSelectedTags] = useState({});
+  const [isOpen, setIsOpen] = useState(true); 
 
   const tagGroups = [
     { title: "운영시간", options: ["영업중", "24시간"] },
@@ -25,13 +26,21 @@ function TagFilter({ onClose }) {
   const handleReset = () => {
     setSelectedTags({});
   };
+
+  const handleClose = () => {
+    setIsOpen(false); // 컴포넌트를 닫음
+  };
+
+  if (!isOpen) return null; 
+
+
   return (
     <>
-      <div className="blur-background" onClick={onClose}></div>
+      <div className="blur-background" onClick={handleClose}></div>
       <div className="tag-filter">
         <div className="tag-filter-header">
           <span className="tag-filter-title">태그 선택</span>
-          <button className="close-button" onClick={onClose}>
+          <button className="close-button" onClick={handleClose}>
             ×
           </button>
         </div>
