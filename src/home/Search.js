@@ -33,7 +33,8 @@ const Search = ({ onPlaceSelect }) => {
   return (
     <>
       <TopBar
-        showSearchAndFilter={true}
+        showSearch showClose={true}
+        showHamburger={false}
         onSearchPlaceChange={handleInputChange} // 실시간으로 입력값을 부모로 전달
       />
       <div>

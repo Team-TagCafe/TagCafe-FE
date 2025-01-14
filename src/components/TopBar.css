@@ -1,18 +1,9 @@
-body {
-  padding-top: 185px;
-}
-
-/* 기본 상단바 스타일 */
 .top-bar {
   position: fixed;
   top: 0;
-  /* 화면의 하단에 고정 */
   left: 50%;
-  /* 화면의 가로 중앙 기준으로 배치 */
   transform: translateX(-50%);
-  /* 정확히 가운데 정렬 */
   width: 393px;
-  /* 고정된 너비 */
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -23,12 +14,23 @@ body {
   z-index: 1000;
 }
 
-.with-filter {
-  height: 185px;
+.top-bar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 1050;
 }
 
-.no-filter {
-  height: 141px;
+.subtitle{
+  position: absolute;
+  top: 85px;
+  left: 30px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #422919;
 }
 
 .title {
@@ -150,15 +152,4 @@ body {
   to {
     transform: translateX(0);
   }
-}
-
-/* 오버레이 스타일 (배경 클릭 시 닫기) */
-.overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 1050;
 }

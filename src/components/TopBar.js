@@ -1,14 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom'; // 페이지 전환을 위한 useNavigate 훅
-import './TopBar.css';
+import "./TopBar.css";
+// import SideMenu from "../start/SideMenu"; // 로그인 시
+// import SideMenu_un from "../start/SideMenu_un"; // 비로그인 시
 
-const TopBar = ({ showSearchAndFilter, onSearchPlaceChange }) => {
+const TopBar = ({
+    title = "# TagCafe",
+    subtitle = "",
+    showSearch = false,
+    showTags = false,
+    showHamburger = true,
+    showClose = false,
+    isLoggedIn = true,
+    onSearchPlaceChange
+}) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [inputValue, setInputValue] = useState('');
     const navigate = useNavigate(); // useNavigate 훅 사용
 
     const toggleMenu = () => {
-        setIsMenuOpen(!isMenuOpen);
+        setIsMenuOpen((prev) => !prev);
     };
 
     const closeMenu = () => {
@@ -25,15 +36,31 @@ const TopBar = ({ showSearchAndFilter, onSearchPlaceChange }) => {
         navigate('/search'); // Search 페이지로 이동
     };
 
+    useEffect(() => {
+        // 조건에 따라 body 패딩 설정
+        if (showSearch || showTags) {
+            document.body.style.paddingTop = "185px";
+        } else {
+            document.body.style.paddingTop = "141px";
+        }
+
+        return () => {
+            document.body.style.paddingTop = "0"; // 초기화
+        };
+    }, [showSearch, showTags]);
+
     return (
         <>
-            <div className={`top-bar ${showSearchAndFilter ? 'with-filter' : 'no-filter'}`}>
-                <div className="title">#TagCafe</div>
-                <button className="hamburger-button" onClick={toggleMenu}>
-                    <img className="hamburger-menu" src="../img/hamburger_menu.png" alt="Menu" />
-                </button>
+            {/* TopBar */}
+            <div className="top-bar">
+                {/* 제목 */}
+                <div className="title">{title}</div>
 
-                {showSearchAndFilter && (
+                {/* 부제목 */}
+                {subtitle && <div className="subtitle">{subtitle}</div>}
+
+                {/* 검색창 */}
+                {showSearch && (
                     <div className="search-filter">
                         <input
                             type="text"
@@ -48,19 +75,38 @@ const TopBar = ({ showSearchAndFilter, onSearchPlaceChange }) => {
                         </button>
                     </div>
                 )}
+
+                {/* 태그 선택 */}
+                {showTags && (
+                    <div className="tag-selection">
+                        <button>운영시간</button>
+                        <button>와이파이</button>
+                        <button>콘센트</button>
+                        <button>책상</button>
+                        <button>화장실</button>
+                    </div>
+                )}
+
+                {/* 햄버거 메뉴 버튼 */}
+                {showHamburger && (
+                    <button className="hamburger-button" onClick={toggleMenu}>
+                        <img className="hamburger-menu" src="../img/hamburger_menu.png" alt="Menu" />
+                    </button>
+                )}
+
+                {/* 닫기 버튼 */}
+                {showClose && (
+                    <button className="close-button" onClick={() => window.history.back()}>
+                        ×
+                    </button>
+                )}
             </div>
 
+            {/* 사이드 메뉴 */}
             {isMenuOpen && (
                 <>
-                    <div className="overlay" onClick={closeMenu}></div>
-                    <div className="side-menu">
-                        <ul>
-                            <li>Home</li>
-                            <li>Saved Cafes</li>
-                            <li>Settings</li>
-                            <li>Logout</li>
-                        </ul>
-                    </div>
+                    <div className="topbar-overlay" onClick={closeMenu}></div>
+                    {/* {isLoggedIn ? <SideMenu closeMenu={closeMenu} /> : <SideMenu_un closeMenu={closeMenu} />} */}
                 </>
             )}
         </>

@@ -155,10 +155,12 @@ const Home = () => {
 
   return (
     <>
-      <TopBar showSearchAndFilter={true} onSearchPlaceChange={handleSearchPlaceChange} />
+      <TopBar
+        showSearch showTags showHamburger={true}
+        onSearchPlaceChange={handleSearchPlaceChange} />
       <div>
-        <div className="map" id="map" 
-        style={{ width: '393px', height: `${innerHeight - 265}px` }}
+        <div className="map" id="map"
+          style={{ width: '393px', height: `${innerHeight - 265}px` }}
         ></div>
         <LocationReset onClick={moveToUserLocation} />
 
