@@ -4,7 +4,6 @@ export { default as CafePopup } from './CafePopup';
 export { default as DetailButton } from './DetailButton';
 export { default as LocationReset } from './LocationReset';
 export { default as LongButton } from './LongButton';
-export { default as MapCafe } from './MapCafe';
 export { default as ReportStatus } from './ReportStatus';
 export { default as ReviewStar } from './ReviewStar';
 export { default as SearchResult } from './SearchResult';
