@@ -37,7 +37,7 @@ const Saved = () => <div>Saved Page</div>;
 const MyPage = () => <div>My Page</div>;
 const TopBarPreview=()=> (
   <div>
-    <TopBar title="# TagCafe"  showSearch showHamburger={true} isLoggedIn={false}/>
+    <TopBar title="# TagCafe"  showSearch showHamburger={true} />
 
   </div>
 
