@@ -1,18 +1,18 @@
 body {
+  padding-top: 145px;
+}
+
+.with-filter-body {
   padding-top: 185px;
 }
 
-/* 기본 상단바 스타일 */
+
 .top-bar {
   position: fixed;
   top: 0;
-  /* 화면의 하단에 고정 */
   left: 50%;
-  /* 화면의 가로 중앙 기준으로 배치 */
   transform: translateX(-50%);
-  /* 정확히 가운데 정렬 */
   width: 393px;
-  /* 고정된 너비 */
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -37,7 +37,7 @@ body {
   top: 49px;
   font-size: 21px;
   font-weight: bold;
-  color: #333;
+  color: #422919;
 }
 
 .hamburger-button {
