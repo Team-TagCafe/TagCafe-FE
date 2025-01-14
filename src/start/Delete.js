@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./Delete.css";
+import "./Hamburger.css"
 import TextInput from "../components/TextInput"; 
 import LongButton from "../components/LongButton"; 
 import Popup from "../components/Popup";
@@ -33,22 +33,22 @@ function Delete({ onClose }) {
   };
 
   return (
-    <div className="delete-page">
+    <div className="hamburger-page">
       {/* 닫기 버튼 */}
       <button className="close-button" onClick={handleBack}>
         ×
       </button>
 
       {/* 로고 및 제목 */}
-      <div className="delete-header">
-        <h1 className="delete-title">
+      <div className="hamburger-header">
+        <h1 className="hamburger-title">
           TagCafe
-          <span className="delete-icon">
+          <span className="hamburger-icon">
             <img src="/img/coffee.png" alt="coffee icon" />
           </span>
         </h1>
-        <p className="delete-subtitle">탈퇴하기</p>
-        <p className="delete-description">탈퇴시 모든 정보가 삭제됩니다</p>
+        <p className="hamburger-subtitle">탈퇴하기</p>
+        <p className="hamburger-description">탈퇴시 모든 정보가 삭제됩니다</p>
       </div>
 
 

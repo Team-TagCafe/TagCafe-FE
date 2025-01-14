@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./Nickname.css";
+import "./Hamburger.css"
 import TextInput from "../components/TextInput"; 
 import LongButton from "../components/LongButton"; 
 import Popup from "../components/Popup";
@@ -38,22 +38,22 @@ function NicknameChangePage({ onClose }) {
   };
 
   return (
-    <div className="nickname-change-page">
+    <div className="hamburger-page">
       {/* 닫기 버튼 */}
       <button className="close-button" onClick={handleBack}>
         ×
       </button>
 
       {/* 로고 및 제목 */}
-      <div className="nickname-header">
-        <h1 className="nickname-title">
+      <div className="hamburger-header">
+        <h1 className="hamburger-title">
           TagCafe
-          <span className="nickname-icon">
+          <span className="hamburger-icon">
             <img src="/img/coffee.png" alt="coffee icon" />
           </span>
         </h1>
-        <p className="nickname-subtitle">닉네임 변경하기</p>
-        <p className="nickname-description">2~15자 이내로 입력 가능합니다</p>
+        <p className="hamburger-subtitle">닉네임 변경하기</p>
+        <p className="hamburger-description">2~15자 이내로 입력 가능합니다</p>
       </div>
 
       {/* 입력창 컴포넌트 */}

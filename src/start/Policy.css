@@ -1,17 +1,12 @@
 .policy-page {
-    position: absolute;
     display: flex;
+    max-width: 393px;
     flex-direction: column;
-    width: 393px;
-    height: 852px;
+    align-items: flex-start; 
     margin: 0 auto;
     background: #ffffff;
     font-family: "Inter", sans-serif;
     overflow-y: scroll;
-    height: 852px;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
   }
 
   .title-container {
