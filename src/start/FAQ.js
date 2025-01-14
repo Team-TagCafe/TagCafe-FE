@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./FAQ.css";
 import "./Policy.css";
+import { TopBar } from "../components";
 import LongButton from "../components/LongButton";
 
 const FAQ = () => {
@@ -44,18 +45,8 @@ const FAQ = () => {
 
   return (
     <div className="faq-page">
-      {/* 헤더 */}
-      <div className="policy-header">
-        <div className="title-container">
-          <h1 className="policy-title"># TagCafe</h1>
-          <span className="policy-subtitle">FAQ</span>
-        </div>
-        <button className="close-button" onClick={() => window.history.back()}>
-          ×
-        </button>
-      </div>
+      <TopBar title="# TagCafe" subtitle="FAQ" showClose showHamburger={false} />
 
-      {/* 탭 메뉴 */}
       <div className="faq-tabs">
         <button
           className={`faq-tab ${activeTab === "faq" ? "active" : ""}`}

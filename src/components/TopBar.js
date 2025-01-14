@@ -3,9 +3,16 @@ import "./TopBar.css";
 import SideMenu from "../start/SideMenu"; // 로그인 시
 import SideMenu_un from "../start/SideMenu_un"; // 비로그인 시
 
-const TopBar = ({ showSearchAndFilter }) => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false); // 메뉴 상태
-  const [isLoggedIn, setIsLoggedIn] = useState(true); // 로그인 여부
+const TopBar = ({
+  title = "# TagCafe",
+  subtitle = "",
+  showSearch = false,
+  showTags = false,
+  showHamburger = true,
+  showClose = false,
+  isLoggedIn = true,
+}) => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => {
     setIsMenuOpen((prev) => !prev);
@@ -16,37 +23,61 @@ const TopBar = ({ showSearchAndFilter }) => {
   };
 
   useEffect(() => {
-    // TopBar가 렌더링된 경우만 padding-top 적용
-    if (showSearchAndFilter !== undefined) {
-      document.body.style.paddingTop = showSearchAndFilter ? "185px" : "141px";
+    // 조건에 따라 body 패딩 설정
+    if (showSearch || showTags) {
+      document.body.style.paddingTop = "185px";
+    } else {
+      document.body.style.paddingTop = "141px";
     }
 
     return () => {
-      // TopBar가 언마운트되면 초기화
-      document.body.style.paddingTop = "0";
+      document.body.style.paddingTop = "0"; // 초기화
     };
-  }, [showSearchAndFilter]);
-
+  }, [showSearch, showTags]);
 
   return (
     <>
-      {/* TopBar (상단 바) */}
-      <div className={`top-bar ${showSearchAndFilter ? "with-filter" : "no-filter"}`}>
-        {/* 탭 타이틀 */}
-        <div className="title"># TagCafe</div>
-        {/* 햄버거 메뉴 버튼 */}
-        <button className="hamburger-button" onClick={toggleMenu}>
-          <img className="hamburger-menu" src="../img/hamburger_menu.png" alt="Menu" />
-        </button>
+      {/* TopBar */}
+      <div className="top-bar">
+        {/* 제목 */}
+        <div className="title">{title}</div>
 
-        {/* 검색 및 필터 */}
-        {showSearchAndFilter && (
+        {/* 부제목 */}
+        {subtitle && <div className="subtitle">{subtitle}</div>}
+
+        {/* 검색창 */}
+        {showSearch && (
           <div className="search-filter">
             <input type="text" className="search-input" placeholder="지역, 카페 이름으로 검색" />
             <button className="search-button">
               <img src="../img/search.png" alt="Search" />
             </button>
           </div>
+        )}
+
+        {/* 태그 선택 */}
+        {showTags && (
+          <div className="tag-selection">
+            <button>운영시간</button>
+            <button>와이파이</button>
+            <button>콘센트</button>
+            <button>책상</button>
+            <button>화장실</button>
+          </div>
+        )}
+
+        {/* 햄버거 메뉴 버튼 */}
+        {showHamburger && (
+          <button className="hamburger-button" onClick={toggleMenu}>
+            <img className="hamburger-menu" src="../img/hamburger_menu.png" alt="Menu" />
+          </button>
+        )}
+
+        {/* 닫기 버튼 */}
+        {showClose && (
+          <button className="close-button" onClick={() => window.history.back()}>
+            ×
+          </button>
         )}
       </div>
 

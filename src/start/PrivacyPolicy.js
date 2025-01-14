@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./Policy.css";
+import { TopBar } from "../components";
 
 function PrivacyPolicy() {
   const navigate = useNavigate();
@@ -11,16 +12,7 @@ function PrivacyPolicy() {
 
   return (
     <div className="policy-page">
-      {/* 상단 바 */}
-      <div className="policy-header">
-        <div className="title-container">
-          <h1 className="policy-title"># TagCafe</h1>
-          <span className="policy-subtitle">개인정보처리방침</span>
-       </div>
-        <button className="close-button" onClick={handleBack}>
-          ×
-        </button>
-      </div>
+      <TopBar title="# TagCafe" subtitle="개인정보처리방침" showClose showHamburger={false} />
 
       {/* 개인정보처리방침 내용 */}
       <div className="policy-content">

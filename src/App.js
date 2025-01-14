@@ -36,8 +36,8 @@ const Saved = () => <div>Saved Page</div>;
 const MyPage = () => <div>My Page</div>;
 const TopBarPreview=()=> (
   <div>
-  <TopBar showSearchAndFilter={true} />
-  <div style={{ padding: "20px" }}>This is a preview of the TopBar.</div>
+    <TopBar title="# TagCafe"  showSearch showHamburger={true} />
+
   </div>
 
 );
