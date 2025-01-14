@@ -1,7 +1,13 @@
 .App {
-  position: relative;
-  margin: auto;
-  max-width: 393px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%; 
+  max-width: 393px; 
+  height: 100vh;
+  margin: 0 auto;
+  background-color: #ffffff;
+  overflow-y: auto; 
 }
 
 ul {
