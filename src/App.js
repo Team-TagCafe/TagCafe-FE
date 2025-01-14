@@ -29,6 +29,7 @@ import PrivacyPolicy from './start/PrivacyPolicy';
 import ServicePolicy from './start/ServicePolicy';
 import LocationPolicy from './start/LocationPolicy';
 import FAQ from './start/FAQ';
+import TagSelection from './components/TagSelection';
 
 
 const Home = () => <div>Home Page</div>;
@@ -139,6 +140,12 @@ const ComponentPreview = () => {
         onOptionSelect={setSelectedOption}
         isPopupOpen={false}
       />
+
+<TagSelection
+  tagText="책상"
+  options={["넓음", "적당함", "좁음"]}
+  onClose={() => console.log("닫기")}
+/>
 
       {/* TagGroup */}
       <TagGroup tags={tags} />
