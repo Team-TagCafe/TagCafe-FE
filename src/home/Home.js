@@ -14,6 +14,10 @@ const Home = () => {
   const location = useLocation();
   const selectedPlace = location.state?.selectedPlace;
 
+  // 지도 사이즈
+  const [innerWidth, setInnerWidth] = useState(window.innerWidth);
+  const [innerHeight, setInnerHeight] = useState(window.innerHeight);
+
   // 마커 이미지 설정
   const imageSrc = '/img/map-cafe.png';
   const imageSize = new kakao.maps.Size(17, 17);
@@ -73,6 +77,12 @@ const Home = () => {
 
   // 지도 초기화 및 설정
   useEffect(() => {
+    const resizeListener = () => {
+      setInnerWidth(window.innerWidth);
+      setInnerHeight(window.innerHeight);
+    };
+    window.addEventListener("resize", resizeListener); //화면 사이즈 변경 감지
+
     const container = document.getElementById('map');
     const options = {
       center: new kakao.maps.LatLng(37.498095, 127.027610), // 강남역
@@ -147,7 +157,9 @@ const Home = () => {
     <>
       <TopBar showSearchAndFilter={true} onSearchPlaceChange={handleSearchPlaceChange} />
       <div>
-        <div className="map" id="map" style={{ width: '393px', height: '535px' }}></div>
+        <div className="map" id="map" 
+        style={{ width: innerWidth, height: innerHeight - 70 }}
+        ></div>
         <LocationReset onClick={moveToUserLocation} />
 
         {/* 마커 클릭 시 팝업을 조건부로 표시 */}
