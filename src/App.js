@@ -155,7 +155,7 @@ function App() {
       <div className="App">
         <Routes>
           {/* 각 경로 설정 */}
-          <Route path="/login" element={<Login />} />
+          <Route path="/" element={<Login />} />
           <Route path="/home" element={<Home />} />
           <Route path="/saved" element={<Saved />} />
           <Route path="/my" element={<MyPage />} />

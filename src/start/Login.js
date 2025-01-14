@@ -1,7 +1,10 @@
 import React from "react";
 import "./Login.css";
+import { useNavigate } from "react-router-dom";
 
 function LoginPage() {
+  const navigate = useNavigate();
+
   const handleLogin = () => {
     console.log("카카오톡으로 로그인 버튼 클릭됨");
     // 카카오톡 로그인 동작 추가
@@ -9,7 +12,7 @@ function LoginPage() {
 
   const handleGuestAccess = () => {
     console.log("로그인 없이 사용하기 클릭됨");
-    // 비로그인 접근 로직 추가
+    navigate("/home")
   };
 
   return (
