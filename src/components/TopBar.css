@@ -100,9 +100,9 @@
 /* 검색 버튼 스타일 */
 .search-button {
   position: absolute;
-  top: 0px;
+  top:auto;
   /* y 좌표 */
-  right: 0px;
+  right: 4px;
   /* x 좌표 */
   background: transparent;
   border: none;
