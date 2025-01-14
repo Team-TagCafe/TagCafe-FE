@@ -130,13 +130,9 @@ const Home = () => {
 
           map.setCenter(userLocation);
 
-          const marker = new kakao.maps.Marker({
-            position: userLocation,
-            map: map,
-            image: markerImage
-          });
-
-          // createCustomOverlay(map, userLocation, '현재 위치');
+          // 경도와 위도 출력
+          console.log("현재 위치 경도:", userLng);
+          console.log("현재 위치 위도:", userLat);
         },
         (error) => {
           console.error('사용자 위치를 가져오는 중 오류 발생:', error.message);
