@@ -13,16 +13,16 @@
 .cafe-popup-container {
     background-color: white;
     border-radius: 25px;
-    padding: 20px 20px 10px;
-    width: 320px;
-    height: 150px;
-    text-align: left; /* Align the content to the left */
+    padding: 25px 20px 20px 25px;
+    width: 310px;
+    height: 140px;
+    text-align: center;
     border: 1px solid #A69180;
 }
 
 .cafe-popup-box {
-    display: flex; /* Use flexbox to arrange the image and content side by side */
-    align-items: center; /* Vertically align the items */
+    display: flex;
+    align-items: center;
 }
 
 
@@ -39,10 +39,11 @@
     padding-inline: 20px;
 }
 .search-result {
-    margin-top: 5px;
-        display: flex;
+    /* margin-top: 6px; */
+    display: flex;
     flex-direction: column;  /* 세로 방향으로 정렬 */
-    gap: 5px;  /* 항목 간의 간격 */
+    /* gap: 5px;  항목 간의 간격 */
+    padding-bottom: 6px;
 }
 
 .search-result .cafe-name {
@@ -58,7 +59,7 @@
 
 .view-details {
     font-size: 11px;
-    color: #A69180;
+    color: #745D4C;
     margin-top: 5px;
-    cursor: pointer; /* Optional: to indicate it's clickable */
+    cursor: pointer;
 }

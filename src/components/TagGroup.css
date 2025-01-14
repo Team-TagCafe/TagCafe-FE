@@ -3,7 +3,7 @@
     display: flex;
     flex-direction: column;
     gap: 8px; /* 행 간 간격 */
-    padding: 10px;
+    padding-top: 15px;
   }
   
   .tag-group-row {
