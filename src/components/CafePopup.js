@@ -11,9 +11,17 @@ const tags = [
 ];
 
 const CafePopup = ({ cafeName, cafeAddress, onClose }) => {
+    const handleOverlayClick = (e) => {
+        onClose(); // 외부 클릭 시 팝업 닫기
+    };
+
+    const handlePopupClick = (e) => {
+        e.stopPropagation(); // 내부 클릭 시 이벤트 전파 방지
+    };
+
     return (
-        <div className="cafe-popup-overlay">
-            <div className="cafe-popup-container">
+        <div className="cafe-popup-overlay" onClick={handleOverlayClick}>
+            <div className="cafe-popup-container" onClick={handlePopupClick}>
                 {/* 닫기 버튼 */}
                 <button className="cafe-popup-close-btn" onClick={onClose}>✕</button>
                 <div className="cafe-popup-box">
