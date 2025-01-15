@@ -10,10 +10,12 @@ const tags = [
     { icon: "/img/park.png", text: "주차 가능(무료)" },
 ];
 
-const CafePopup = ({ cafeName, cafeAddress }) => {
+const CafePopup = ({ cafeName, cafeAddress, onClose }) => {
     return (
         <div className="cafe-popup-overlay">
             <div className="cafe-popup-container">
+                {/* 닫기 버튼 */}
+                <button className="cafe-popup-close-btn" onClick={onClose}>✕</button>
                 <div className="cafe-popup-box">
                     <div className="cafe-popup-image">
                         <img src='/img/map-cafe.png'></img>

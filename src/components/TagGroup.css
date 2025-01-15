@@ -4,6 +4,7 @@
     flex-direction: column;
     gap: 8px; /* 행 간 간격 */
     padding-top: 15px;
+    width: 100%;
   }
   
   .tag-group-row {

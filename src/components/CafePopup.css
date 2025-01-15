@@ -12,6 +12,7 @@
 }
 
 .cafe-popup-container {
+    position: relative;
     background-color: white;
     border-radius: 25px;
     padding: 25px 20px 20px 25px;
@@ -19,6 +20,18 @@
     height: 140px;
     text-align: center;
     border: 1px solid #A69180;
+}
+
+.cafe-popup-close-btn {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: 18px;
+    color: #422919;
+    cursor: pointer;
 }
 
 .cafe-popup-box {
