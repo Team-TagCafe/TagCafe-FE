@@ -36,19 +36,36 @@ const TopBar = ({
     const handleInputFocus = () => {
         navigate('/search'); // Search 페이지로 이동
     };
+
+    const [activePopup, setActivePopup] = useState(null); // "tagSelection" | "tagFilter" | null
+    const [selectedOption, setSelectedOption] = useState(""); // 콘센트 선택 상태
+    const [selectedFilters, setSelectedFilters] = useState({}); // 태그 필터 선택 상태
+
+    const handleFilterSelect = (filterGroup, option) => {
+        setSelectedFilters((prev) => ({
+          ...prev,
+          [filterGroup]: prev[filterGroup] === option ? null : option, // 필터 선택/해제
+        }));
+      };
     
+      const handleReset = () => {
+        setSelectedOption(""); // 콘센트 초기화
+        setSelectedFilters({}); // 필터 초기화
+      };
+    
+
     useEffect(() => {
         const topBarHeight = showSearch && showTags ? "185px" : "141px";
-        
+
         // body padding-top 설정
         document.body.style.paddingTop = topBarHeight;
-    
+
         // .top-bar height 동적으로 설정
         const topBarElement = document.querySelector('.top-bar');
         if (topBarElement) {
             topBarElement.style.height = topBarHeight;
         }
-    
+
         return () => {
             document.body.style.paddingTop = "0"; // 초기화
             if (topBarElement) {
@@ -56,7 +73,7 @@ const TopBar = ({
             }
         };
     }, [showSearch, showTags]);
-    
+
 
     return (
         <>
@@ -88,14 +105,31 @@ const TopBar = ({
                 {/* 태그 선택 */}
                 {showTags && (
                     <div className="tag-select-group">
-                        <Tag tagText="방문여부"/>
-                        <Tag tagText="운영시간"/>
-                        <Tag tagText="와이파이"/>
-                        <Tag tagText="콘센트"/>
-                        <Tag tagText="책상"/>
-                        <Tag tagText="화장실"/>
-                        <Tag tagText="주차"/>
-                        <Tag tagText="평점"/>
+                        <Tag
+                            iconSrc="/img/filter.png"
+                            popupType="filter"
+                            options={[
+                                { group: "운영시간", options: ["영업중", "24시간"] },
+                                { group: "와이파이", options: ["빠름", "보통", "없음"] },
+                                { group: "콘센트", options: ["자리에마다", "일부", "없음"] },
+                            ]}
+                            selectedFilters={selectedFilters}
+                            onFilterSelect={handleFilterSelect}
+                            onReset={handleReset}
+                            isPopupOpen={activePopup === "tagFilter"}
+                            togglePopup={() =>
+                                setActivePopup((prev) => (prev === "tagFilter" ? null : "tagFilter"))
+                            }
+
+                        />
+                        <Tag tagText="방문여부" />
+                        <Tag tagText="운영시간" />
+                        <Tag tagText="와이파이" />
+                        <Tag tagText="콘센트" />
+                        <Tag tagText="책상" />
+                        <Tag tagText="화장실" />
+                        <Tag tagText="주차" />
+                        <Tag tagText="평점" />
                     </div>
                 )}
 
