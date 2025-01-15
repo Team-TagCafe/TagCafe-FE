@@ -7,7 +7,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 19px;
+  padding: 0;
   box-sizing: border-box;
   background-color: #ffffff;
   border-bottom: 1px solid #ddd;
@@ -163,4 +163,20 @@
   to {
     transform: translateX(0);
   }
+}
+
+.tag-select-group {
+  position: relative;
+  display: flex;
+  top: 65px;
+  overflow-x: auto; /* 가로 스크롤 */
+  gap: 7px;
+  white-space: nowrap; /* 태그가 줄바꿈되지 않도록 설정 */
+  scrollbar-width: none; /* Firefox에서 스크롤바 숨기기 */
+  -ms-overflow-style: none; /* IE 및 Edge에서 스크롤바 숨기기 */
+  padding: 20px;
+}
+
+.tag-select-group::-webkit-scrollbar {
+  display: none; /* Chrome, Safari에서 스크롤바 숨기기 */
 }

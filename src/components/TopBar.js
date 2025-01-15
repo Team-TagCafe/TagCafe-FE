@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom'; // 페이지 전환을 위한 useNavigate 훅
 import "./TopBar.css";
+import Tag from './Tag'
 // import SideMenu from "../start/SideMenu"; // 로그인 시
 // import SideMenu_un from "../start/SideMenu_un"; // 비로그인 시
 
@@ -35,19 +36,27 @@ const TopBar = ({
     const handleInputFocus = () => {
         navigate('/search'); // Search 페이지로 이동
     };
-
+    
     useEffect(() => {
-        // 조건에 따라 body 패딩 설정
-        if (showSearch || showTags) {
-            document.body.style.paddingTop = "185px";
-        } else {
-            document.body.style.paddingTop = "141px";
+        const topBarHeight = showSearch && showTags ? "185px" : "141px";
+        
+        // body padding-top 설정
+        document.body.style.paddingTop = topBarHeight;
+    
+        // .top-bar height 동적으로 설정
+        const topBarElement = document.querySelector('.top-bar');
+        if (topBarElement) {
+            topBarElement.style.height = topBarHeight;
         }
-
+    
         return () => {
             document.body.style.paddingTop = "0"; // 초기화
+            if (topBarElement) {
+                topBarElement.style.height = "0"; // 초기화
+            }
         };
     }, [showSearch, showTags]);
+    
 
     return (
         <>
@@ -78,12 +87,15 @@ const TopBar = ({
 
                 {/* 태그 선택 */}
                 {showTags && (
-                    <div className="tag-selection">
-                        <button>운영시간</button>
-                        <button>와이파이</button>
-                        <button>콘센트</button>
-                        <button>책상</button>
-                        <button>화장실</button>
+                    <div className="tag-select-group">
+                        <Tag tagText="방문여부"/>
+                        <Tag tagText="운영시간"/>
+                        <Tag tagText="와이파이"/>
+                        <Tag tagText="콘센트"/>
+                        <Tag tagText="책상"/>
+                        <Tag tagText="화장실"/>
+                        <Tag tagText="주차"/>
+                        <Tag tagText="평점"/>
                     </div>
                 )}
 
