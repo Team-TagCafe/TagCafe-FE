@@ -4,17 +4,13 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin: auto;
+  margin: 0 auto;
   position: absolute;
-  width:393px;
-  height: 852px;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%); 
+  width: 100%; 
+  max-width: 393px;  
+  height: 100vh;
   background-color: #cec2b2;
-  font-family: "Inter", sans-serif;
 }
-
 /* 로고 및 제목 */
 .login-header {
   text-align: center;
