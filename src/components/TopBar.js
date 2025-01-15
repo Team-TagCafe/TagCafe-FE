@@ -17,6 +17,7 @@ const TopBar = ({
 }) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [inputValue, setInputValue] = useState('');
+    const [isPopupOpen, setIsPopupOpen] = useState(false);
     const navigate = useNavigate(); // useNavigate 훅 사용
 
     const toggleMenu = () => {
@@ -41,18 +42,32 @@ const TopBar = ({
     const [selectedOption, setSelectedOption] = useState(""); // 콘센트 선택 상태
     const [selectedFilters, setSelectedFilters] = useState({}); // 태그 필터 선택 상태
 
+    const handleOptionSelect = (option) => {
+        setSelectedOption(option); // 콘센트 옵션 업데이트
+        setActivePopup(null); // 팝업 닫기
+    };
+
     const handleFilterSelect = (filterGroup, option) => {
         setSelectedFilters((prev) => ({
-          ...prev,
-          [filterGroup]: prev[filterGroup] === option ? null : option, // 필터 선택/해제
+            ...prev,
+            [filterGroup]: prev[filterGroup] === option ? null : option, // 필터 선택/해제
         }));
-      };
-    
-      const handleReset = () => {
+    };
+
+    const handleReset = () => {
         setSelectedOption(""); // 콘센트 초기화
         setSelectedFilters({}); // 필터 초기화
-      };
-    
+    };
+
+    const handleConfirm = () => {
+        alert("확인 버튼이 눌렸습니다!");
+        setIsPopupOpen(false);
+    };
+
+    const handleCancel = () => {
+        setIsPopupOpen(false);
+    };
+
 
     useEffect(() => {
         const topBarHeight = showSearch && showTags ? "185px" : "141px";
@@ -108,11 +123,6 @@ const TopBar = ({
                         <Tag
                             iconSrc="/img/filter.png"
                             popupType="filter"
-                            options={[
-                                { group: "운영시간", options: ["영업중", "24시간"] },
-                                { group: "와이파이", options: ["빠름", "보통", "없음"] },
-                                { group: "콘센트", options: ["자리에마다", "일부", "없음"] },
-                            ]}
                             selectedFilters={selectedFilters}
                             onFilterSelect={handleFilterSelect}
                             onReset={handleReset}
@@ -120,16 +130,100 @@ const TopBar = ({
                             togglePopup={() =>
                                 setActivePopup((prev) => (prev === "tagFilter" ? null : "tagFilter"))
                             }
-
                         />
-                        <Tag tagText="방문여부" />
-                        <Tag tagText="운영시간" />
-                        <Tag tagText="와이파이" />
-                        <Tag tagText="콘센트" />
-                        <Tag tagText="책상" />
-                        <Tag tagText="화장실" />
-                        <Tag tagText="주차" />
-                        <Tag tagText="평점" />
+                        <Tag
+                            tagText="운영시간"
+                            popupType="selection"
+                            options={["영업중", "24시간"]}
+                            selectedOption={selectedOption}
+                            onOptionSelect={handleOptionSelect}
+                            onReset={handleReset}
+                            isPopupOpen={activePopup === "tagSelection"}
+                            togglePopup={() =>
+                                setActivePopup((prev) =>
+                                    prev === "tagSelection" ? null : "tagSelection"
+                                )
+                            }
+                        />
+                        <Tag tagText="와이파이"
+                            popupType="selection"
+                            options={["빠름", "보통", "없음"]}
+                            selectedOption={selectedOption}
+                            onOptionSelect={handleOptionSelect}
+                            onReset={handleReset}
+                            isPopupOpen={activePopup === "tagSelection"}
+                            togglePopup={() =>
+                                setActivePopup((prev) =>
+                                    prev === "tagSelection" ? null : "tagSelection"
+                                )
+                            }
+                        />
+                        <Tag tagText="콘센트"
+                            popupType="selection"
+                            options={["자리마다", "일부", "없음"]}
+                            selectedOption={selectedOption}
+                            onOptionSelect={handleOptionSelect}
+                            onReset={handleReset}
+                            isPopupOpen={activePopup === "tagSelection"}
+                            togglePopup={() =>
+                                setActivePopup((prev) =>
+                                    prev === "tagSelection" ? null : "tagSelection"
+                                )
+                            }
+                        />
+                        <Tag tagText="책상"
+                            popupType="selection"
+                            options={["넓음", "적당함", "좁음"]}
+                            selectedOption={selectedOption}
+                            onOptionSelect={handleOptionSelect}
+                            onReset={handleReset}
+                            isPopupOpen={activePopup === "tagSelection"}
+                            togglePopup={() =>
+                                setActivePopup((prev) =>
+                                    prev === "tagSelection" ? null : "tagSelection"
+                                )
+                            }
+                        />
+                        <Tag tagText="화장실"
+                            popupType="selection"
+                            options={["실내", "외부"]}
+                            selectedOption={selectedOption}
+                            onOptionSelect={handleOptionSelect}
+                            onReset={handleReset}
+                            isPopupOpen={activePopup === "tagSelection"}
+                            togglePopup={() =>
+                                setActivePopup((prev) =>
+                                    prev === "tagSelection" ? null : "tagSelection"
+                                )
+                            }
+                        />
+                        <Tag tagText="주차"
+                            popupType="selection"
+                            options={["가능(무료)", "가능(유료)", "가능(일부)", "불가능"]}
+                            selectedOption={selectedOption}
+                            onOptionSelect={handleOptionSelect}
+                            onReset={handleReset}
+                            isPopupOpen={activePopup === "tagSelection"}
+                            togglePopup={() =>
+                                setActivePopup((prev) =>
+                                    prev === "tagSelection" ? null : "tagSelection"
+                                )
+                            }
+                        />
+                        <Tag tagText="평점"
+                            popupType="selection"
+                            options={["5.0", "4.0 이상", "3.0 이상"]}
+                            selectedOption={selectedOption}
+                            onOptionSelect={handleOptionSelect}
+                            onReset={handleReset}
+                            isPopupOpen={activePopup === "tagSelection"}
+                            togglePopup={() =>
+                                setActivePopup((prev) =>
+                                    prev === "tagSelection" ? null : "tagSelection"
+                                )
+                            }
+                        />
+
                     </div>
                 )}
 
