@@ -6,17 +6,19 @@ import { BottomBar, TopBar, LocationReset, CafePopup } from '../components';
 import './Home.css'
 
 const Home = () => {
-  const [map, setMap] = useState(null);
-  const [searchPlace, setSearchPlace] = useState('');
-  const [searchResults, setSearchResults] = useState([]);
+  /* ---------- 상태 관리 ---------- */
+  const [map, setMap] = useState(null); // Kakao 지도
+  const [searchPlace, setSearchPlace] = useState(''); // 검색어 상태
   const [showPopup, setShowPopup] = useState(false);  // 팝업 표시 여부 상태
-  const [popupContent, setPopupContent] = useState({ name: '', address: '' });  // 팝업에 표시할 카페 이름과 주소  
+  const [popupContent, setPopupContent] = useState({ name: '', address: '' });  // 팝업 내용 (카페 이름, 주소)  
   const location = useLocation();
-  const selectedPlace = location.state?.selectedPlace;
+  const selectedPlace = location.state?.selectedPlace; // 외부에서 선택된 장소 정보
 
-  // 지도 사이즈
-  const [innerWidth, setInnerWidth] = useState(window.innerWidth);
-  const [innerHeight, setInnerHeight] = useState(window.innerHeight);
+  const [searchResults, setSearchResults] = useState([]);
+
+  // 지도 사이즈 설정용
+  const [innerWidth, setInnerWidth] = useState(window.innerWidth); // 화면 너비
+  const [innerHeight, setInnerHeight] = useState(window.innerHeight); // 화면 높이
 
   // 마커 이미지 설정
   const imageSrc = '/img/map-cafe.png';
@@ -24,18 +26,75 @@ const Home = () => {
   const imageOption = { offset: new kakao.maps.Point(5, 5) };
   const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
 
-  // 사용자가 장소 검색 시, searchPlace 값을 업데이트하는 함수
+
+  /* ---------- 초기 Kakao 지도 설정 ---------- */
+  useEffect(() => {
+    const resizeListener = () => {
+      setInnerWidth(window.innerWidth);
+      setInnerHeight(window.innerHeight);
+    };
+    window.addEventListener("resize", resizeListener); //화면 사이즈 변경 감지
+
+    // 지도 초기화
+    const container = document.getElementById('map');
+    const options = {
+      center: new kakao.maps.LatLng(37.498095, 127.027610), // 초기 지도 중심 (강남역)
+      level: 3 // 지도 확대 레벨
+    };
+
+    const kakaoMap = new kakao.maps.Map(container, options);
+    setMap(kakaoMap);
+
+    return () => window.removeEventListener('resize', resizeListener);
+  }, []);
+
+
+  /* ---------- 장소,카페명 입력 시 검색어 표시 (searchPlace 값 업데이트) ---------- */
   const handleSearchPlaceChange = (place) => {
     setSearchPlace(place);
   };
 
-  // 장소명 표시용 CustomOverlay 생성 함수
-  const createCustomOverlay = (map, markerPosition, placeName) => {
-    const content = `
-      <div class="label">
-        ${placeName}
-      </div>
-    `;
+
+  /* ---------- 검색창에서 특정 카페 선택 시 마커 1개 표시 (selectedPlace 값 변경 시) ---------- */
+  useEffect(() => {
+    if (map && selectedPlace) {
+      const markerPosition = new kakao.maps.LatLng(selectedPlace.y, selectedPlace.x);
+      const marker = new kakao.maps.Marker({
+        map: map,
+        position: markerPosition,
+        image: markerImage
+      });
+
+      createCustomOverlay(map, markerPosition, selectedPlace.place_name, selectedPlace.address_name);
+
+      // 마커 클릭 이벤트 - CafePopup 뜸
+      kakao.maps.event.addListener(marker, 'click', () => {
+        setPopupContent({ name: selectedPlace.place_name, address: selectedPlace.address_name });
+        setShowPopup(true);
+      });
+
+      map.setCenter(markerPosition);
+    }
+  }, [map, selectedPlace]);
+
+
+  /* ---------- 검색창에서 장소 검색 시 마커 여러 개 표시 (구현 필요) ---------- */
+
+
+
+  /* ---------- 지도 카페명 표시 CustomOverlay 생성  ---------- */
+  const createCustomOverlay = (map, markerPosition, placeName, placeAdress) => {
+
+    const content = document.createElement('div');
+    content.className = 'label';
+    content.innerText = placeName;
+    content.style.cursor = 'pointer';
+
+    // 라벨 클릭 이벤트 -  CafePopup 뜸
+    content.addEventListener('click', () => {
+      setPopupContent({ name: placeName, address: placeAdress });
+      setShowPopup(true);
+    });
 
     const customOverlay = new kakao.maps.CustomOverlay({
       position: markerPosition,
@@ -46,90 +105,8 @@ const Home = () => {
     customOverlay.setMap(map);
   };
 
-  // 카페 검색 결과를 받아오고, 지도에 마커 추가
-  const handleSearchResults = (places) => {
-    setSearchResults(places);
 
-    if (map) {
-      let bounds = new kakao.maps.LatLngBounds();
-      places.forEach((place) => {
-        const markerPosition = new kakao.maps.LatLng(place.y, place.x);
-        const marker = new kakao.maps.Marker({
-          map: map,
-          position: markerPosition,
-          image: markerImage
-        });
-
-        // CustomOverlay로 장소명 표시
-        createCustomOverlay(map, markerPosition, place.place_name);
-
-        // 마커 클릭 이벤트 추가
-        kakao.maps.event.addListener(marker, 'click', () => {
-          setPopupContent({ name: place.place_name, address: place.address_name });
-          setShowPopup(true);  // 팝업 표시
-        });
-
-        bounds.extend(markerPosition);
-      });
-      map.setBounds(bounds);
-    }
-  };
-
-  // 지도 초기화 및 설정
-  useEffect(() => {
-    const resizeListener = () => {
-      setInnerWidth(window.innerWidth);
-      setInnerHeight(window.innerHeight);
-    };
-    window.addEventListener("resize", resizeListener); //화면 사이즈 변경 감지
-
-    const container = document.getElementById('map');
-    const options = {
-      center: new kakao.maps.LatLng(37.498095, 127.027610), // 강남역
-      level: 3
-    };
-
-    const kakaoMap = new kakao.maps.Map(container, options);
-    setMap(kakaoMap);
-  }, []);
-
-  // selectedPlace가 변경될 때 지도에 마커 표시
-  useEffect(() => {
-    if (map && selectedPlace) {
-      const markerPosition = new kakao.maps.LatLng(selectedPlace.y, selectedPlace.x);
-      const marker = new kakao.maps.Marker({
-        map: map,
-        position: markerPosition,
-        image: markerImage
-      });
-
-      createCustomOverlay(map, markerPosition, selectedPlace.place_name);
-
-      // 마커 클릭 이벤트 추가
-      kakao.maps.event.addListener(marker, 'click', () => {
-        setPopupContent({ name: selectedPlace.place_name, address: selectedPlace.address_name });
-        setShowPopup(true);
-      });
-
-      map.setCenter(markerPosition);
-    }
-  }, [map, selectedPlace]);
-
-  // searchPlace가 변경될 때 카페 검색
-  useEffect(() => {
-    if (map && searchPlace) {
-      const ps = new kakao.maps.services.Places();
-      ps.keywordSearch(searchPlace + ' 카페', placesSearchCB);
-
-      function placesSearchCB(data, status) {
-        if (status === kakao.maps.services.Status.OK) {
-          handleSearchResults(data);
-        }
-      }
-    }
-  }, [map, searchPlace]);
-
-  // 현재 위치로 지도 중심 이동하는 함수
+  /* ---------- 현재 위치로 지도 중심 이동 ---------- */
   const moveToUserLocation = () => {
     if (navigator.geolocation && map) {
       navigator.geolocation.getCurrentPosition(
