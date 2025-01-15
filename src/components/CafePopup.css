@@ -1,7 +1,8 @@
 .cafe-popup-overlay {
-    position: fixed;
+    position: absolute;
     left: 0;
-    top: 200px;
+    /* top: 300px; */
+    bottom: -25%;
     width: 100vw;
     height: 100vh;
     display: flex;
