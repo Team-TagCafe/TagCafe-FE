@@ -10,14 +10,14 @@
     border: 1px solid #422919;
     border-radius: 20px;
     text-align: center;
-    padding: 10px 15px;
+    /* padding: 10px 15px; */
     font-size: 13px;
     cursor: pointer;
     color: #422919;
     display: flex;     
     justify-content: center; 
     align-items: center;  
-    min-width: 80px;
+    /* min-width: 80px; */
     width: fit-content;
     height: 28px;
   }
@@ -35,5 +35,4 @@
   .dropdown-icon {
     width: 18px; 
     height: 18px; 
-  }
-  
+  }  

@@ -1,10 +1,9 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom'; // Link: 페이지 간 이동을 위한 컴포넌트, useLocation: 현재 경로 정보를 가져오는 Hook
+import { Link, useLocation } from 'react-router-dom';
 import './BottomBar.css';
 
 const BottomBar = () => {
-  // useLocation 훅을 사용하여 현재 경로 정보를 가져옴
-  const location = useLocation();
+  const location = useLocation(); // 현재 경로 정보 가져오기
 
   // 현재 경로가 path와 일치하는지 확인하는 함수
   const isActive = (path) => location.pathname === path;

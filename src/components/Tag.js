@@ -1,6 +1,7 @@
 import React from "react";
 import TagSelection from "./TagSelection";
 import TagFilter from "./TagFilter";
+import PopupWrapper from "./PopupWrapper";
 import "./Tag.css";
 
 function Tag({
@@ -14,12 +15,13 @@ function Tag({
   onReset,
   isPopupOpen,
   togglePopup,
+  iconSrc = "/img/dropdown.png"
 }) {
   const buttonClassName = isPopupOpen
     ? "tag-button popup-open"
     : selectedOption || Object.keys(selectedFilters || {}).length > 0
-    ? "tag-button option-selected"
-    : "tag-button";
+      ? "tag-button option-selected"
+      : "tag-button";
 
   return (
     <div className="tag-container">
@@ -27,33 +29,35 @@ function Tag({
       <button className={buttonClassName} onClick={togglePopup}>
         <span>{selectedOption || tagText}</span>
         <img
-          src="/img/dropdown.png"
+          src={iconSrc}
           alt="dropdown icon"
           className="dropdown-icon"
         />
       </button>
 
       {/* 팝업 렌더링 */}
-      {isPopupOpen && popupType === "selection" && (
-        <TagSelection
-          tagText={tagText}
-          options={options}
-          selectedOption={selectedOption}
-          onOptionSelect={onOptionSelect}
-          onReset={onReset}
-          onClose={togglePopup}
-        />
-      )}
-
-      {isPopupOpen && popupType === "filter" && (
-        <TagFilter
-          tagText={tagText}
-          options={options}
-          selectedFilters={selectedFilters}
-          onFilterSelect={onFilterSelect}
-          onReset={onReset}
-          onClose={togglePopup}
-        />
+      {isPopupOpen && (
+        <PopupWrapper onClose={togglePopup}>
+          {popupType === "selection" ? (
+            <TagSelection
+              tagText={tagText}
+              options={options}
+              selectedOption={selectedOption}
+              onOptionSelect={onOptionSelect}
+              onReset={onReset}
+              onClose={togglePopup}
+            />
+          ) : (
+            <TagFilter
+              tagText={tagText}
+              options={options}
+              selectedFilters={selectedFilters}
+              onFilterSelect={onFilterSelect}
+              onReset={onReset}
+              onClose={togglePopup}
+            />
+          )}
+        </PopupWrapper>
       )}
     </div>
   );

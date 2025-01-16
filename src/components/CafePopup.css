@@ -1,0 +1,79 @@
+.cafe-popup-overlay {
+    position: absolute;
+    left: 0;
+    /* top: 300px; */
+    bottom: -25%;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+}
+
+.cafe-popup-container {
+    position: relative;
+    background-color: white;
+    border-radius: 25px;
+    padding: 25px 20px 20px 25px;
+    width: 310px;
+    height: 140px;
+    text-align: center;
+    border: 1px solid #A69180;
+}
+
+.cafe-popup-close-btn {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: 18px;
+    color: #422919;
+    cursor: pointer;
+}
+
+.cafe-popup-box {
+    display: flex;
+    align-items: center;
+}
+
+
+.cafe-popup-image img {
+    width: 75px;
+    height: 75px;
+}
+
+.cafe-popup-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: left; /* Left-align the text content */
+    padding-inline: 20px;
+}
+.search-result {
+    /* margin-top: 6px; */
+    display: flex;
+    flex-direction: column;  /* 세로 방향으로 정렬 */
+    /* gap: 5px;  항목 간의 간격 */
+    padding-bottom: 6px;
+}
+
+.search-result .cafe-name {
+    font-size: 13px;
+    font-weight: bold;
+    color: #422919;
+}
+
+.search-result .cafe-address {
+    font-size: 10px;
+    color: #A69180;
+}
+
+.view-details {
+    font-size: 11px;
+    color: #745D4C;
+    margin-top: 5px;
+    cursor: pointer;
+}

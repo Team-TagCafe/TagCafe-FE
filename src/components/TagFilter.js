@@ -9,9 +9,11 @@ function TagFilter({ onClose }) {
   const tagGroups = [
     { title: "운영시간", options: ["영업중", "24시간"] },
     { title: "와이파이", options: ["빠름", "보통", "없음"] },
-    { title: "콘센트", options: ["자리에마다", "일부", "없음"] },
+    { title: "콘센트", options: ["자리마다", "일부", "없음"] },
     { title: "책상", options: ["넓음", "적당함", "좁음"] },
-    { title: "화장실", options: ["있음", "없음"] },
+    { title: "화장실", options: ["실내", "외부"] },
+    { title: "주차", options: ["가능(무료)", "가능(유료)", "가능(일부)", "불가능"] },
+    { title: "평점", options: ["5.0", "4.0 이상", "3.0 이상"] },
   ];
 
   // 특정 그룹에서 단일 옵션만 선택 가능하도록 업데이트
