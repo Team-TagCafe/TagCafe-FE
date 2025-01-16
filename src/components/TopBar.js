@@ -5,6 +5,7 @@ import Tag from './Tag';
 import SideMenu from "../start/SideMenu";
 import SideMenu_un from "../start/SideMenu_un"; 
 
+
 const TopBar = ({
     title = "# TagCafe",
     subtitle = "",
@@ -30,7 +31,6 @@ const TopBar = ({
     const closeMenu = () => {
         setIsMenuOpen(false);
     };
-  }, [showSearch, showTags]);
 
 
 
@@ -253,8 +253,6 @@ const TopBar = ({
                 </>
             )}
         </>
-      )}
-    </>
   );
 };
 

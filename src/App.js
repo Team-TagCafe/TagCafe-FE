@@ -33,8 +33,6 @@ function App() {
           <Route path="/my" element={<My />} />
           {/* Search 컴포넌트에 onPlaceSelect 전달 */}
           <Route path="/search" element={<Search onPlaceSelect={handlePlaceSelect} />} />
-          <Route path="/components" element={<ComponentPreview />} />
-          <Route path="/topbar-preview" element={<TopBarPreview />} />
           <Route path="/nickname-change" element={<NicknameChange />} />
           <Route path="/delete" element={<Delete />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
