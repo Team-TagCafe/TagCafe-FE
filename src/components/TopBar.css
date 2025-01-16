@@ -11,7 +11,7 @@
   box-sizing: border-box;
   background-color: #ffffff;
   border-bottom: 1px solid #ddd;
-  z-index: 1000;
+  z-index: 900;
 }
 
 .top-bar-overlay {
@@ -32,6 +32,7 @@
   font-weight: 700;
   color: #422919;
 }
+
 
 .title {
   position: absolute;

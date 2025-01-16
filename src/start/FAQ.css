@@ -1,0 +1,153 @@
+.faq-page {
+  display: flex;
+  flex-direction: column;
+  width: 100%; 
+  max-width: 393px; 
+  height: 100vh;
+  margin: 0 auto;
+  background-color: #ffffff;
+  overflow-y: auto;
+  }
+
+  /* 스크롤바 디자인
+  .faq-page::-webkit-scrollbar {
+    width: 6px; 
+  }
+  
+  .faq-page::-webkit-scrollbar-track {
+    background: #f5f5f5;
+    border-radius: 10px; 
+  }
+  
+  .faq-page::-webkit-scrollbar-thumb {
+    background: #cec2b2; 
+    border-radius: 10px; 
+  }
+  
+  .faq-page::-webkit-scrollbar-thumb:hover {
+    background: #b8a897; 
+  }  */
+
+  .faq-tabs {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    margin-top: 10px;
+    border-bottom: 1px solid #ffffff;
+  }
+  
+  .faq-tab {
+    font-size: 12px;
+    font-weight: 700;
+    color: #422919;
+    border: none;
+    border-radius: 0;
+    background: #ffffff;
+    cursor: pointer;
+    position: relative;
+  }
+  
+  .faq-tab.active::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 2px; 
+    background: #422919;  
+  }
+  
+  /* FAQ 리스트 */
+  .faq-list {
+    margin-top: 40px;
+    padding: 0 25px;
+  }
+  
+  .faq-item {
+    border-bottom: 1px solid #e3e3e3;
+    padding: 15px 0;
+    margin-bottom: 10px;
+  }
+  
+  .faq-question {
+    display: flex;
+    justify-content: space-between;
+    align-items: left;
+    cursor: pointer;
+    text-align: left;
+  }
+  
+  .faq-category {
+    margin-left: 5px;
+    margin-right: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #422919;
+    width: 70px;
+    flex-shrink: 0;
+  }
+  
+  .faq-q {
+    flex-grow: 1;
+    font-size: 11px;
+    font-weight: 500;
+    color: #2b2b2b;
+    padding-left: 5px;
+  }
+  
+  .faq-toggle-icon {
+    width: 20px;
+    height: 20px;
+    margin-bottom: 5px;
+    margin-right: 5px;
+  }
+  
+  .faq-answer {
+    font-size: 11px;
+    font-weight: 400;
+    color: #2b2b2b;
+    margin-top: 10px;
+    padding-left: 100px;
+    text-align: left;
+  }
+
+  .feedback-form {
+    margin: 60px 32px;
+    text-align: center;
+  }
+  
+  .feedback-textarea {
+    width: 300px;
+    height: 243px;
+    padding: 10px;
+    border: 0.5px solid #a9a9a9;
+    border-radius: 10px;
+    font-size: 10px;
+    font-family: "Inter", sans-serif;
+    line-height: 2;
+    color: #422919;
+    resize: none;
+  }
+  
+  .feedback-textarea::placeholder {
+    color: #a9a9a9;
+    font-weight: 500;
+  }
+
+  .feedback-textarea:focus {
+    border-color: #422919; /* 테두리 색상 변경 */
+    outline: none; /* 기본 아웃라인 제거 */
+  }
+  
+  .feedback-char-counter {
+    text-align: right;
+    margin-right: 10px;;
+    margin-top: 5px;
+    font-size: 10px;
+    color: #a9a9a9;
+  }
+  
+  /* LongButton 위치 */
+  .long-button-container {
+    margin-top: 20px;
+  }

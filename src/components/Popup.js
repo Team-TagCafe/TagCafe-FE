@@ -1,9 +1,10 @@
 import React from "react";
+import ReactDOM from "react-dom";
 import LongButton from "./LongButton";
 import "./Popup.css";
 
 function Popup({ message, onConfirm, onCancel }) {
-  return (
+  return ReactDOM.createPortal(
     <div className="popup-overlay">
       <div className="popup-container">
         <p className="popup-message">{message}</p>
@@ -12,7 +13,8 @@ function Popup({ message, onConfirm, onCancel }) {
           <LongButton optionText="확인" onClick={onConfirm} />
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
 

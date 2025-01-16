@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from 'react-router-dom'; // 페이지 전환을 위한 useNavigate 훅
+import { useNavigate } from 'react-router-dom'; 
 import "./TopBar.css";
-import Tag from './Tag'
-// import SideMenu from "../start/SideMenu"; // 로그인 시
-// import SideMenu_un from "../start/SideMenu_un"; // 비로그인 시
+import Tag from './Tag';
+import SideMenu from "../start/SideMenu";
+import SideMenu_un from "../start/SideMenu_un"; 
 
 const TopBar = ({
     title = "# TagCafe",
@@ -19,7 +19,10 @@ const TopBar = ({
     const [inputValue, setInputValue] = useState('');
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const navigate = useNavigate(); // useNavigate 훅 사용
-
+    const [activePopup, setActivePopup] = useState(null); // "tagSelection" | "tagFilter" | null
+    const [selectedOption, setSelectedOption] = useState(""); // 콘센트 선택 상태
+    const [selectedFilters, setSelectedFilters] = useState({}); // 태그 필터 선택 상태
+   
     const toggleMenu = () => {
         setIsMenuOpen((prev) => !prev);
     };
@@ -27,6 +30,9 @@ const TopBar = ({
     const closeMenu = () => {
         setIsMenuOpen(false);
     };
+  }, [showSearch, showTags]);
+
+
 
     const handleInputChange = (event) => {
         setInputValue(event.target.value);
@@ -38,9 +44,6 @@ const TopBar = ({
         navigate('/search'); // Search 페이지로 이동
     };
 
-    const [activePopup, setActivePopup] = useState(null); // "tagSelection" | "tagFilter" | null
-    const [selectedOption, setSelectedOption] = useState(""); // 콘센트 선택 상태
-    const [selectedFilters, setSelectedFilters] = useState({}); // 태그 필터 선택 상태
 
     const handleOptionSelect = (option) => {
         setSelectedOption(option); // 콘센트 옵션 업데이트
@@ -246,11 +249,13 @@ const TopBar = ({
             {isMenuOpen && (
                 <>
                     <div className="topbar-overlay" onClick={closeMenu}></div>
-                    {/* {isLoggedIn ? <SideMenu closeMenu={closeMenu} /> : <SideMenu_un closeMenu={closeMenu} />} */}
+                    {isLoggedIn ? <SideMenu closeMenu={closeMenu} /> : <SideMenu_un closeMenu={closeMenu} />}
                 </>
             )}
         </>
-    );
+      )}
+    </>
+  );
 };
 
 export default TopBar;
