@@ -22,10 +22,13 @@ function Tag({
   };
 
   const buttonClassName = isPopupOpen
-    ? "tag-button popup-open"
-    : selectedOption || Object.keys(selectedFilters || {}).length > 0
-      ? "tag-button option-selected"
-      : "tag-button";
+  ? "tag-button popup-open"
+  : selectedOption || 
+    (selectedFilters && 
+     Object.values(selectedFilters).some((value) => value !== null))
+    ? "tag-button option-selected"
+    : "tag-button";
+
 
   return (
     <div className="tag-container">
@@ -57,8 +60,6 @@ function Tag({
             />
           ) : (
             <TagFilter
-              tagText={tagText}
-              options={options}
               selectedFilters={selectedFilters}
               onFilterSelect={(filterGroup, option) => {
                 console.log('Selected filter in popup:', filterGroup, option);  // Debugging line

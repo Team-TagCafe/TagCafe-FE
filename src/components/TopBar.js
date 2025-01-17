@@ -50,10 +50,14 @@ const TopBar = ({
 
     const handleFilterSelect = (filterGroup, option) => {
         console.log('Filter selected:', filterGroup, option);  // Debugging line
-        setSelectedFilters((prev) => ({
-            ...prev,
-            [filterGroup]: prev[filterGroup] === option ? null : option, // 필터 선택/해제
-        }));
+        setSelectedFilters((prevFilters) => {
+            const updatedFilters = {
+                ...prevFilters,
+                [filterGroup]: prevFilters[filterGroup] === option ? null : option, // 필터 선택/해제
+            };
+            console.log('Updated selectedFilters:', updatedFilters); // selectedFilters 값 출력
+            return updatedFilters;
+        });
     };
 
     const handleOptionSelect = (tagText, option) => {
