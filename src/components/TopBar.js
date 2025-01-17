@@ -18,12 +18,10 @@ const TopBar = ({
 }) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [inputValue, setInputValue] = useState('');
-    const [isPopupOpen, setIsPopupOpen] = useState(false);
-    const navigate = useNavigate(); // useNavigate 훅 사용
-    const [activePopup, setActivePopup] = useState(null); // "tagSelection" | "tagFilter" | null
-    const [selectedOption, setSelectedOption] = useState(""); // 콘센트 선택 상태
-    const [selectedFilters, setSelectedFilters] = useState({}); // 태그 필터 선택 상태
-   
+    const navigate = useNavigate();
+    const [selectedOption, setSelectedOption] = useState("");
+    const [selectedFilters, setSelectedFilters] = useState({});
+
     const toggleMenu = () => {
         setIsMenuOpen((prev) => !prev);
     };
@@ -44,12 +42,6 @@ const TopBar = ({
         navigate('/search'); // Search 페이지로 이동
     };
 
-
-    const handleOptionSelect = (option) => {
-        setSelectedOption(option); // 콘센트 옵션 업데이트
-        setActivePopup(null); // 팝업 닫기
-    };
-
     const handleFilterSelect = (filterGroup, option) => {
         setSelectedFilters((prev) => ({
             ...prev,
@@ -57,18 +49,13 @@ const TopBar = ({
         }));
     };
 
+    const handleOptionSelect = (option) => {
+        setSelectedOption(option);
+    };
+
     const handleReset = () => {
-        setSelectedOption(""); // 콘센트 초기화
+        setSelectedOption(""); // 옵션 초기화
         setSelectedFilters({}); // 필터 초기화
-    };
-
-    const handleConfirm = () => {
-        alert("확인 버튼이 눌렸습니다!");
-        setIsPopupOpen(false);
-    };
-
-    const handleCancel = () => {
-        setIsPopupOpen(false);
     };
 
 
@@ -129,10 +116,6 @@ const TopBar = ({
                             selectedFilters={selectedFilters}
                             onFilterSelect={handleFilterSelect}
                             onReset={handleReset}
-                            isPopupOpen={activePopup === "tagFilter"}
-                            togglePopup={() =>
-                                setActivePopup((prev) => (prev === "tagFilter" ? null : "tagFilter"))
-                            }
                         />
                         <Tag
                             tagText="운영시간"
@@ -141,12 +124,6 @@ const TopBar = ({
                             selectedOption={selectedOption}
                             onOptionSelect={handleOptionSelect}
                             onReset={handleReset}
-                            isPopupOpen={activePopup === "tagSelection"}
-                            togglePopup={() =>
-                                setActivePopup((prev) =>
-                                    prev === "tagSelection" ? null : "tagSelection"
-                                )
-                            }
                         />
                         <Tag tagText="와이파이"
                             popupType="selection"
@@ -154,12 +131,6 @@ const TopBar = ({
                             selectedOption={selectedOption}
                             onOptionSelect={handleOptionSelect}
                             onReset={handleReset}
-                            isPopupOpen={activePopup === "tagSelection"}
-                            togglePopup={() =>
-                                setActivePopup((prev) =>
-                                    prev === "tagSelection" ? null : "tagSelection"
-                                )
-                            }
                         />
                         <Tag tagText="콘센트"
                             popupType="selection"
@@ -167,12 +138,6 @@ const TopBar = ({
                             selectedOption={selectedOption}
                             onOptionSelect={handleOptionSelect}
                             onReset={handleReset}
-                            isPopupOpen={activePopup === "tagSelection"}
-                            togglePopup={() =>
-                                setActivePopup((prev) =>
-                                    prev === "tagSelection" ? null : "tagSelection"
-                                )
-                            }
                         />
                         <Tag tagText="책상"
                             popupType="selection"
@@ -180,12 +145,6 @@ const TopBar = ({
                             selectedOption={selectedOption}
                             onOptionSelect={handleOptionSelect}
                             onReset={handleReset}
-                            isPopupOpen={activePopup === "tagSelection"}
-                            togglePopup={() =>
-                                setActivePopup((prev) =>
-                                    prev === "tagSelection" ? null : "tagSelection"
-                                )
-                            }
                         />
                         <Tag tagText="화장실"
                             popupType="selection"
@@ -193,12 +152,6 @@ const TopBar = ({
                             selectedOption={selectedOption}
                             onOptionSelect={handleOptionSelect}
                             onReset={handleReset}
-                            isPopupOpen={activePopup === "tagSelection"}
-                            togglePopup={() =>
-                                setActivePopup((prev) =>
-                                    prev === "tagSelection" ? null : "tagSelection"
-                                )
-                            }
                         />
                         <Tag tagText="주차"
                             popupType="selection"
@@ -206,12 +159,6 @@ const TopBar = ({
                             selectedOption={selectedOption}
                             onOptionSelect={handleOptionSelect}
                             onReset={handleReset}
-                            isPopupOpen={activePopup === "tagSelection"}
-                            togglePopup={() =>
-                                setActivePopup((prev) =>
-                                    prev === "tagSelection" ? null : "tagSelection"
-                                )
-                            }
                         />
                         <Tag tagText="평점"
                             popupType="selection"
@@ -219,14 +166,7 @@ const TopBar = ({
                             selectedOption={selectedOption}
                             onOptionSelect={handleOptionSelect}
                             onReset={handleReset}
-                            isPopupOpen={activePopup === "tagSelection"}
-                            togglePopup={() =>
-                                setActivePopup((prev) =>
-                                    prev === "tagSelection" ? null : "tagSelection"
-                                )
-                            }
                         />
-
                     </div>
                 )}
 
