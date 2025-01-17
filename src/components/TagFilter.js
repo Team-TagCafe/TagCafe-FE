@@ -42,7 +42,7 @@ function TagFilter({ onClose }) {
       <div className="tag-filter">
         <div className="tag-filter-header">
           <span className="tag-filter-title">태그 선택</span>
-          <button className="close-button" onClick={handleClose}>
+          <button className="tag-filter-close-button" onClick={handleClose}>
             ×
           </button>
         </div>

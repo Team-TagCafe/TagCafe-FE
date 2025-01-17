@@ -46,6 +46,7 @@ function TagSelection({ tagText, options, onClose }) {
         </div>
         <div className="tag-selection-footer">
           <LongButton optionText="초기화" onClick={handleReset} /> {/* 초기화 버튼 */}
+          <LongButton optionText="저장" onClick={onClose}/>
         </div>
       </div>
     </>

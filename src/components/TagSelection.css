@@ -3,7 +3,7 @@
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 393px;
+  width: 333px;
   height: 180px;
   background-color: #fff;
   border-top-left-radius: 30px;
@@ -48,7 +48,6 @@
   flex-wrap: wrap;
   gap: 10px;
   justify-content: left;
-  margin-bottom: 40px;
 }
 
 .tag-selection__background {
@@ -59,4 +58,10 @@
   height: 100%;
   background-color: rgba(0, 0, 0, 0.3); 
   z-index: 1000; /* 팝업 뒤 배경 흐림 처리 */
+}
+
+.tag-selection-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: auto;
 }
