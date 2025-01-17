@@ -25,16 +25,17 @@ function TagFilter({ onClose }) {
     }));
   };
 
+  // 초기화 처리
   const handleReset = () => {
-    setSelectedTags({});
+    setSelectedTags({}); // 선택된 태그들을 초기화
   };
 
   const handleClose = () => {
     setIsOpen(false); // 컴포넌트를 닫음
+    onClose(); // 부모에게도 닫기 알림을 보냄
   };
 
   if (!isOpen) return null; 
-
 
   return (
     <>
@@ -64,8 +65,8 @@ function TagFilter({ onClose }) {
           ))}
         </div>
         <div className="tag-filter-footer">
-          <LongButton optionText="초기화" onClick={handleReset}/>
-          <LongButton optionText="저장" onClick={onClose}/>
+          <LongButton optionText="초기화" onClick={handleReset}/> {/* 초기화 버튼 */}
+          <LongButton optionText="저장" onClick={handleClose}/> {/* 저장 버튼 */}
         </div>
       </div>
     </>

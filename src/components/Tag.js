@@ -48,6 +48,7 @@ function Tag({
               options={options}
               selectedOption={selectedOption}
               onOptionSelect={(option) => {
+                console.log('Selected option from popup:', option);  // Debugging line
                 onOptionSelect(option);
                 setPopupState(false); // 팝업 닫기
               }}
@@ -60,6 +61,7 @@ function Tag({
               options={options}
               selectedFilters={selectedFilters}
               onFilterSelect={(filterGroup, option) => {
+                console.log('Selected filter in popup:', filterGroup, option);  // Debugging line
                 onFilterSelect(filterGroup, option);
               }}
               onReset={onReset}

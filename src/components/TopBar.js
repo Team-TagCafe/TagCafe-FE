@@ -19,8 +19,16 @@ const TopBar = ({
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [inputValue, setInputValue] = useState('');
     const navigate = useNavigate();
-    const [selectedOption, setSelectedOption] = useState("");
     const [selectedFilters, setSelectedFilters] = useState({});
+    const [selectedOptions, setSelectedOptions] = useState({
+        "운영시간": "",
+        "와이파이": "",
+        "콘센트": "",
+        "책상": "",
+        "화장실": "",
+        "주차": "",
+        "평점": ""
+    });
 
     const toggleMenu = () => {
         setIsMenuOpen((prev) => !prev);
@@ -29,8 +37,6 @@ const TopBar = ({
     const closeMenu = () => {
         setIsMenuOpen(false);
     };
-
-
 
     const handleInputChange = (event) => {
         setInputValue(event.target.value);
@@ -43,21 +49,34 @@ const TopBar = ({
     };
 
     const handleFilterSelect = (filterGroup, option) => {
+        console.log('Filter selected:', filterGroup, option);  // Debugging line
         setSelectedFilters((prev) => ({
             ...prev,
             [filterGroup]: prev[filterGroup] === option ? null : option, // 필터 선택/해제
         }));
     };
 
-    const handleOptionSelect = (option) => {
-        setSelectedOption(option);
+    const handleOptionSelect = (tagText, option) => {
+        setSelectedOptions((prevOptions) => ({
+            ...prevOptions,
+            [tagText]: prevOptions[tagText] === option ? "" : option,
+        }));
+        console.log('Option selected:', option);  // Debugging line
     };
 
     const handleReset = () => {
-        setSelectedOption(""); // 옵션 초기화
-        setSelectedFilters({}); // 필터 초기화
+        setSelectedOptions({
+            "운영시간": "",
+            "와이파이": "",
+            "콘센트": "",
+            "책상": "",
+            "화장실": "",
+            "주차": "",
+            "평점": ""
+        });
+        setSelectedFilters({});
+        console.log('Resetting selections');  // Debugging line
     };
-
 
     useEffect(() => {
         const topBarHeight = showSearch && showTags ? "185px" : "141px";
@@ -121,50 +140,50 @@ const TopBar = ({
                             tagText="운영시간"
                             popupType="selection"
                             options={["영업중", "24시간"]}
-                            selectedOption={selectedOption}
-                            onOptionSelect={handleOptionSelect}
+                            selectedOption={selectedOptions["운영시간"]}
+                            onOptionSelect={(option) => handleOptionSelect("운영시간", option)}
                             onReset={handleReset}
                         />
                         <Tag tagText="와이파이"
                             popupType="selection"
                             options={["빠름", "보통", "없음"]}
-                            selectedOption={selectedOption}
-                            onOptionSelect={handleOptionSelect}
+                            selectedOption={selectedOptions["와이파이"]}
+                            onOptionSelect={(option) => handleOptionSelect("와이파이", option)}
                             onReset={handleReset}
                         />
                         <Tag tagText="콘센트"
                             popupType="selection"
                             options={["자리마다", "일부", "없음"]}
-                            selectedOption={selectedOption}
-                            onOptionSelect={handleOptionSelect}
+                            selectedOption={selectedOptions["콘센트"]}
+                            onOptionSelect={(option) => handleOptionSelect("콘센트", option)}
                             onReset={handleReset}
                         />
                         <Tag tagText="책상"
                             popupType="selection"
                             options={["넓음", "적당함", "좁음"]}
-                            selectedOption={selectedOption}
-                            onOptionSelect={handleOptionSelect}
+                            selectedOption={selectedOptions["책상"]}
+                            onOptionSelect={(option) => handleOptionSelect("책상", option)}
                             onReset={handleReset}
                         />
                         <Tag tagText="화장실"
                             popupType="selection"
                             options={["실내", "외부"]}
-                            selectedOption={selectedOption}
-                            onOptionSelect={handleOptionSelect}
+                            selectedOption={selectedOptions["화장실"]}
+                            onOptionSelect={(option) => handleOptionSelect("화장실", option)}
                             onReset={handleReset}
                         />
                         <Tag tagText="주차"
                             popupType="selection"
                             options={["가능(무료)", "가능(유료)", "가능(일부)", "불가능"]}
-                            selectedOption={selectedOption}
-                            onOptionSelect={handleOptionSelect}
+                            selectedOption={selectedOptions["주차"]}
+                            onOptionSelect={(option) => handleOptionSelect("주차", option)}
                             onReset={handleReset}
                         />
                         <Tag tagText="평점"
                             popupType="selection"
                             options={["5.0", "4.0 이상", "3.0 이상"]}
-                            selectedOption={selectedOption}
-                            onOptionSelect={handleOptionSelect}
+                            selectedOption={selectedOptions["평점"]}
+                            onOptionSelect={(option) => handleOptionSelect("평점", option)}
                             onReset={handleReset}
                         />
                     </div>
