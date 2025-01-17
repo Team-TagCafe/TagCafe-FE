@@ -1,9 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import SelectTag from "./selectTag"; 
 import LongButton from "./LongButton";
 import "./TagFilter.css";
 
-function TagFilter({ onClose }) {
+function TagFilter({
+  selectedFilters = {},
+  onFilterSelect,
+  onClose
+}) {
   const [selectedTags, setSelectedTags] = useState({});
   const [isOpen, setIsOpen] = useState(true); 
 
@@ -17,17 +21,42 @@ function TagFilter({ onClose }) {
     { title: "평점", options: ["5.0", "4.0 이상", "3.0 이상"] },
   ];
 
-  // 특정 그룹에서 단일 옵션만 선택 가능하도록 업데이트
+  // 초기 selectedFilters 값으로 selectedTags 설정
+  useEffect(() => {
+    setSelectedTags(selectedFilters);
+    console.log('Initial selectedFilters applied:', selectedFilters);
+  }, [selectedFilters]);
+
+  useEffect(() => {
+    console.log('TagFilter mounted');
+    console.log('Initial selectedFilters:', selectedFilters);
+  }, []);
+
+  useEffect(() => {
+    console.log('Updated selectedTags:', selectedTags);
+  }, [selectedTags]);
+
   const handleTagClick = (group, option) => {
+    console.log('Tag clicked:', group, option);
     setSelectedTags((prev) => ({
       ...prev,
       [group]: prev[group] === option ? null : option, // 선택된 옵션을 토글
     }));
+    if (onFilterSelect) {
+      console.log('Calling onFilterSelect with:', group, option);
+      onFilterSelect(group, option);
+    }
   };
 
-  // 초기화 처리
   const handleReset = () => {
-    setSelectedTags({}); // 선택된 태그들을 초기화
+    console.log('Resetting tags');
+    setSelectedTags({}); // 로컬 상태 초기화
+    if (onFilterSelect) {
+      // 부모 컴포넌트의 selectedFilters도 초기화
+      console.log('Resetting selectedFilters in parent component');
+      Object.keys(selectedTags).forEach((group) => onFilterSelect(group, null));
+    }
+    onClose();
   };
 
   const handleClose = () => {
