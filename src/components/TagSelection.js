@@ -1,25 +1,39 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import SelectTag from "./selectTag";
 import LongButton from "./LongButton";
 import "./TagSelection.css";
 
-function TagSelection({ tagText, options, onClose }) {
-  const [selectedOption, setSelectedOption] = useState(null);
+function TagSelection({ 
+  tagText, 
+  options, 
+  onClose, 
+  onOptionSelect,
+  selectedOption
+}) { 
   const [isOpen, setIsOpen] = useState(true); 
 
   // 단일 선택 처리
   const handleOptionSelect = (option) => {
-    setSelectedOption(option === selectedOption ? null : option); // 선택된 옵션 토글
+    const newSelectedOption = option === selectedOption ? null : option; // 선택된 옵션 토글
+    onOptionSelect(newSelectedOption); // 전달된 onOptionSelect로 부모에게 옵션 전달
   };
 
   // 초기화 처리
   const handleReset = () => {
-    setSelectedOption(null);
+    onOptionSelect(null); // Reset the option in the parent as well
   };
 
   const handleClose = () => {
     setIsOpen(false); // 컴포넌트를 닫음
+    onClose(); // Close the popup in the parent
   };
+  
+    // TagSelection이 열릴 때마다 현재 선택된 옵션을 콘솔에 출력
+    useEffect(() => {
+      if (isOpen) {
+        console.log("현재 선택된 옵션:", selectedOption);
+      }
+    }, [isOpen, selectedOption]);
 
   if (!isOpen) return null; 
 
@@ -46,6 +60,7 @@ function TagSelection({ tagText, options, onClose }) {
         </div>
         <div className="tag-selection-footer">
           <LongButton optionText="초기화" onClick={handleReset} /> {/* 초기화 버튼 */}
+          <LongButton optionText="저장" onClick={handleClose}/>
         </div>
       </div>
     </>

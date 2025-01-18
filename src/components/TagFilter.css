@@ -13,7 +13,7 @@
     bottom: 0;
     left: 50%;
     transform: translateX(-50%);
-    width: 393px;
+    width: 333px;
     height: 500px;
     background-color: #fff;
     border-top-left-radius: 30px;
@@ -38,11 +38,12 @@
     color: #422919;
   }
   
-  .close-button {
+  .tag-filter-close-button {
     background-color: transparent;
     border: none;
     font-size: 30px;
     cursor: pointer;
+    color: #422919;
   }
   
   .tag-filter-content {

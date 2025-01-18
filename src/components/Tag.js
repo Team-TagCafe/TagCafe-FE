@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import TagSelection from "./TagSelection";
 import TagFilter from "./TagFilter";
 import PopupWrapper from "./PopupWrapper";
@@ -13,20 +13,27 @@ function Tag({
   onOptionSelect,
   onFilterSelect,
   onReset,
-  isPopupOpen,
-  togglePopup,
   iconSrc = "/img/dropdown.png"
 }) {
+  const [isPopupOpen, setPopupState] = useState(false); // togglePopup 이름 변경
+
+  const handlePopupToggle = () => {
+    setPopupState((prev) => !prev); // 이름 변경으로 충돌 방지
+  };
+
   const buttonClassName = isPopupOpen
-    ? "tag-button popup-open"
-    : selectedOption || Object.keys(selectedFilters || {}).length > 0
-      ? "tag-button option-selected"
-      : "tag-button";
+  ? "tag-button popup-open"
+  : selectedOption || 
+    (selectedFilters && 
+     Object.values(selectedFilters).some((value) => value !== null))
+    ? "tag-button option-selected"
+    : "tag-button";
+
 
   return (
     <div className="tag-container">
       {/* 태그 버튼 */}
-      <button className={buttonClassName} onClick={togglePopup}>
+      <button className={buttonClassName} onClick={handlePopupToggle}>
         <span>{selectedOption || tagText}</span>
         <img
           src={iconSrc}
@@ -37,24 +44,29 @@ function Tag({
 
       {/* 팝업 렌더링 */}
       {isPopupOpen && (
-        <PopupWrapper onClose={togglePopup}>
+        <PopupWrapper onClose={handlePopupToggle}>
           {popupType === "selection" ? (
             <TagSelection
               tagText={tagText}
               options={options}
               selectedOption={selectedOption}
-              onOptionSelect={onOptionSelect}
+              onOptionSelect={(option) => {
+                console.log('Selected option from popup:', option);  // Debugging line
+                onOptionSelect(option);
+                setPopupState(false); // 팝업 닫기
+              }}
               onReset={onReset}
-              onClose={togglePopup}
+              onClose={() => setPopupState(false)} // 팝업 닫기
             />
           ) : (
             <TagFilter
-              tagText={tagText}
-              options={options}
               selectedFilters={selectedFilters}
-              onFilterSelect={onFilterSelect}
+              onFilterSelect={(filterGroup, option) => {
+                console.log('Selected filter in popup:', filterGroup, option);  // Debugging line
+                onFilterSelect(filterGroup, option);
+              }}
               onReset={onReset}
-              onClose={togglePopup}
+              onClose={() => setPopupState(false)} // 팝업 닫기
             />
           )}
         </PopupWrapper>
