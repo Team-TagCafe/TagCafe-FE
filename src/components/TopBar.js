@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom';
 import "./TopBar.css";
 import Tag from './Tag';
 import SideMenu from "../start/SideMenu";
-import SideMenu_un from "../start/SideMenu_un"; 
+import SideMenu_un from "../start/SideMenu_un";
 
 
 const TopBar = ({
@@ -84,6 +84,7 @@ const TopBar = ({
 
     useEffect(() => {
         const topBarHeight = showSearch && showTags ? "185px" : "141px";
+        const tagSelectGroupHeight = showSearch && showTags ? "65px" : "45px";
 
         // body padding-top 설정
         document.body.style.paddingTop = topBarHeight;
@@ -92,6 +93,12 @@ const TopBar = ({
         const topBarElement = document.querySelector('.top-bar');
         if (topBarElement) {
             topBarElement.style.height = topBarHeight;
+        }
+
+        // .tag-select-group top 동적으로 설정
+        const tagSelectGroupElement = document.querySelector('.tag-select-group');
+        if (tagSelectGroupElement) {
+            tagSelectGroupElement.style.top = tagSelectGroupHeight;
         }
 
         return () => {
@@ -216,7 +223,7 @@ const TopBar = ({
                 </>
             )}
         </>
-  );
+    );
 };
 
 export default TopBar;

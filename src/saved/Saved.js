@@ -4,7 +4,9 @@ import { BottomBar, TopBar } from '../components';
 const Saved = () => {
   return (
     <>
-      <TopBar showSearchAndFilter={true} />
+      <TopBar
+        title="# Saved"
+        showTags showHamburger={true} />
 
       <BottomBar />
     </>
