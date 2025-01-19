@@ -13,7 +13,7 @@ const My = () => {
       rating: 4,
       description: "카페가 조용하고 공부하기 좋습니다!",
       tags: ["와이파이 빠름", "콘센트 일부", "책상 적당함", "화장실 외부", "주차 가능(무료)"],
-      image: "/img/cafe1.jpg",
+      image: "/img/cafe-img.png",
     },
 
     {
@@ -22,7 +22,7 @@ const My = () => {
       rating: 4,
       description: "카페가 조용하고 공부하기 좋습니다!",
       tags: ["와이파이 빠름", "콘센트 일부", "책상 적당함", "화장실 외부", "주차 가능(무료)"],
-      image: "/img/cafe1.jpg",
+      image: "/img/cafe-img.png",
     },
 
     {
@@ -31,21 +31,35 @@ const My = () => {
       rating: 4,
       description: "카페가 조용하고 공부하기 좋습니다!",
       tags: ["와이파이 빠름", "콘센트 일부", "책상 적당함", "화장실 외부", "주차 가능(무료)"],
-      image: "/img/cafe1.jpg",
+      image: "/img/cafe-img.png",
     },
-    // 추가 리뷰 데이터
+    {
+      name: "스테이 어도러블",
+      date: "12.20 금",
+      rating: 4,
+      description: "카페가 조용하고 공부하기 좋습니다!",
+      tags: ["와이파이 빠름", "콘센트 일부", "책상 적당함", "화장실 외부", "주차 가능(무료)"],
+      image: "/img/cafe-img.png",
+    },
+    {
+      name: "스테이 어도러블",
+      date: "12.20 금",
+      rating: 4,
+      description: "카페가 조용하고 공부하기 좋습니다!",
+      tags: ["와이파이 빠름", "콘센트 일부", "책상 적당함", "화장실 외부", "주차 가능(무료)"],
+      image: "/img/cafe-img.png",
+    }
   ];
 
   const reportedCafes = [
     {
       name: "카페 이름 1",
       date: "12.19 목",
-      rating: null, // 제보에는 별점 없음
+      rating: null,
       description: "테이블이 부족하고 관리가 잘 안되어 있습니다.",
       tags: ["와이파이 없음", "콘센트 없음", "책상 좁음"],
-      image: "/img/cafe2.jpg",
-    },
-    // 추가 제보 데이터
+      image: "/img/cafe-img.png",
+    }
   ];
 
 
