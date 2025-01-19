@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import "./CafeCard.css";
 import TagGroup from "../components/TagGroup";
 import ShortButton from "../components/ShortButton";
+import Popup from "../components/Popup";
 
-const CafeCard = ({ cafe }) => {
+const CafeCard = ({ cafe,onDeleteConfirmed }) => {
   const { name, date, rating, description, tags, image } = cafe;
   const [menuVisible, setMenuVisible] = useState(false);
+  const [popupVisible, setPopupVisible] = useState(false);
 
 
   const toggleMenu = () => {
@@ -18,8 +20,17 @@ const CafeCard = ({ cafe }) => {
   };
 
   const handleDelete = () => {
-    alert("삭제 기능을 실행합니다.");
-    setMenuVisible(false);
+    setPopupVisible(true); // 팝업 표시
+    setMenuVisible(false); // 메뉴 닫기
+  };
+
+  const confirmDelete = () => {
+    onDeleteConfirmed(cafe); // 부모 컴포넌트에서 삭제 처리
+    setPopupVisible(false); // 팝업 닫기
+  };
+
+  const cancelDelete = () => {
+    setPopupVisible(false); // 팝업 닫기
   };
 
   const tagIcons = {
@@ -66,6 +77,13 @@ const CafeCard = ({ cafe }) => {
         <p className="cafe-description">{description}</p>
         <TagGroup tags={formattedTags} />
       </div>
+      {popupVisible && (
+        <Popup
+          message={`"${name}" 카페를 삭제하시겠습니까?`}
+          onConfirm={confirmDelete}
+          onCancel={cancelDelete}
+        />
+      )}
     </div>
   );
 };

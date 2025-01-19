@@ -5,8 +5,7 @@ import './My.css';
 
 const My = () => {
   const [activeTab, setActiveTab] = useState("reviewedCafes"); 
-  
-  const reviewedCafes = [
+  const [reviewedCafes, setReviewedCafes] = useState([
     {
       name: "스테이 어도러블",
       date: "12.20 금",
@@ -49,9 +48,9 @@ const My = () => {
       tags: ["와이파이 빠름", "콘센트 일부", "책상 적당함", "화장실 외부", "주차 가능(무료)"],
       image: "/img/cafe-img.png",
     }
-  ];
+  ]);
 
-  const reportedCafes = [
+  const [reportedCafes, setReportedCafes] = useState([
     {
       name: "카페 이름 1",
       date: "12.19 목",
@@ -60,11 +59,19 @@ const My = () => {
       tags: ["와이파이 없음", "콘센트 없음", "책상 좁음"],
       image: "/img/cafe-img.png",
     }
-  ];
+  ]);
 
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
+  };
+
+  const handleDeleteConfirmed = (cafeId, tab) => {
+    if (tab === "reviewedCafes") {
+      setReviewedCafes((prevCafes) => prevCafes.filter((cafe) => cafe.id !== cafeId));
+    } else if (tab === "reportedCafes") {
+      setReportedCafes((prevCafes) => prevCafes.filter((cafe) => cafe.id !== cafeId));
+    }
   };
 
   return (
@@ -92,14 +99,16 @@ const My = () => {
           <div className="cafe-list">
             <p className="cafe-count">총 {reviewedCafes.length}개</p>
             {reviewedCafes.map((cafe, index) => (
-              <CafeCard key={index} cafe={cafe} />
+              <CafeCard key={index} cafe={cafe} onDeleteConfirmed={(id) => handleDeleteConfirmed(id, "reviewedCafes")}
+              />
             ))}
           </div>
         ) : (
           <div className="cafe-list">
             <p className="cafe-count">총 {reportedCafes.length}개</p>
             {reportedCafes.map((cafe, index) => (
-              <CafeCard key={index} cafe={cafe} />
+              <CafeCard key={index} cafe={cafe}onDeleteConfirmed={(id) => handleDeleteConfirmed(id, "reportedCafes")}
+              />
             ))}
           </div>
         )}
