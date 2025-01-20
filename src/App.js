@@ -13,6 +13,7 @@ import PrivacyPolicy from './start/PrivacyPolicy';
 import ServicePolicy from './start/ServicePolicy';
 import LocationPolicy from './start/LocationPolicy';
 import FAQ from './start/FAQ';
+import CafeDetail from './cafeDetail/CafeDetail';
 
 function App() {
   const [selectedPlace, setSelectedPlace] = useState(null); // 선택된 장소 상태
@@ -39,6 +40,7 @@ function App() {
           <Route path="/service-policy" element={<ServicePolicy />} />
           <Route path="/location-policy" element={<LocationPolicy />} />
           <Route path="/faq-qa" element={<FAQ />} />
+          <Route path="/cafe/:id" element={<CafeDetail />} />
         </Routes>
       </BrowserRouter>
     </div>
