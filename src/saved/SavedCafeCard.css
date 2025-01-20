@@ -5,7 +5,7 @@
     text-align: left;
     font-weight: 600;
   }
-  
+
   .saved-cafe-image-container {
     width: 100%;
     height: 140px;
@@ -35,7 +35,7 @@
   .saved-cafe-header-text {
     display: flex;
     flex-direction: column;
-    margin-right: 8px;
+    width: 120px;
   }
 
   .saved-cafe-name {
