@@ -1,0 +1,105 @@
+.report-cafe-add-page {
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch; /* 자식 요소의 가로 정렬 유지 */
+    width: 100%;
+    max-width: 393px;
+    height: 100vh;
+    margin-bottom: 220px;
+    overflow-y: scroll;
+    
+  }
+  
+  .report-cafe-add-header {
+    margin-top: 15px;
+    margin-bottom: 20px;;
+    padding: 20px 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* 버튼과 제목 사이 균등 분배 */
+    position: relative;
+    border-bottom: 1px solid #CEC2B2; 
+  }
+
+  .report-cafe-add-header h2 {
+    font-size: 15px;
+    color: #422919;
+    position: absolute; /* 부모 기준으로 배치 */
+    left: 50%; /* 가로 중앙으로 이동 */
+    transform: translateX(-50%); /* 가운데 정렬 보정 */
+    margin: 0;
+  }
+  
+  .back-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .back-button img {
+    width: 20px;
+    height: 20px;
+  }
+
+  .report-form {
+    padding: 10px;
+  }
+  
+  .report-text-form h4 {
+    font-weight: 700;
+    font-size: 12px;
+    color: #2B2B2B;
+    margin-left: 5px;
+    margin-bottom: 10px;
+    gap: 10px;
+  }
+
+  .report-text-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    text-align: center;
+    position: relative; /* char-counter를 컨테이너 내에서 자유롭게 배치 */
+
+  }  
+  .report-textarea {
+    width: 300px;
+    height: 243px;
+    padding: 10px;
+    margin-top: 15px;
+    border: 0.5px solid #a9a9a9;
+    border-radius: 10px;
+    font-size: 10px;
+    font-family: "Inter", sans-serif;
+    line-height: 2;
+    color: #422919;
+    resize: none;
+  }
+  
+  .report-textarea::placeholder {
+    color: #a9a9a9;
+    font-weight: 500;
+  }
+
+  .report-textarea:focus {
+    border-color: #422919; /* 테두리 색상 변경 */
+    outline: none; /* 기본 아웃라인 제거 */
+  }
+  
+  .report-char-counter {
+    position: absolute; /* 부모 컨테이너 기준으로 배치 */
+    bottom: -20px; /* 텍스트 상자 아래로 이동 */
+    right: 25px; /* 오른쪽 여백 */
+    text-align: right;
+    font-size: 10px;
+    color: #a9a9a9;
+  }
+  
+  .long-button-container {
+    margin-top: auto; /* 상단 여백을 자동으로 설정해 아래로 밀어냄 */
+    display: flex;
+    justify-content: center; /* 버튼을 가로로 중앙 정렬 */
+    padding: 20px 0;  
+}
+

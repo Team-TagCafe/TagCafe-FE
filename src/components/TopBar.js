@@ -125,7 +125,7 @@ const TopBar = ({
                             placeholder="지역, 카페 이름으로 검색"
                         />
                         <button className="search-button">
-                            <img src="../img/search.png" alt="Search" />
+                            <img src="/img/search.png" alt="Search" />
                         </button>
                     </div>
                 )}

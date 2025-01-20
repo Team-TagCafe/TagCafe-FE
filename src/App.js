@@ -14,6 +14,7 @@ import ServicePolicy from './start/ServicePolicy';
 import LocationPolicy from './start/LocationPolicy';
 import FAQ from './start/FAQ';
 import ReviewEdit from './my/ReviewEdit';
+import ReporCafeAdd from './my/ReportCafeAdd';
 
 function App() {
   const [selectedPlace, setSelectedPlace] = useState(null); // 선택된 장소 상태
@@ -33,6 +34,7 @@ function App() {
           <Route path="/saved" element={<Saved />} />
           <Route path="/my" element={<My />} />
           <Route path="/my/review/edit/:cafeId" element={<ReviewEdit />} />
+          <Route path="/my/report/add" element={<ReporCafeAdd />} />
           {/* Search 컴포넌트에 onPlaceSelect 전달 */}
           <Route path="/search" element={<Search onPlaceSelect={handlePlaceSelect} />} />
           <Route path="/nickname-change" element={<NicknameChange />} />

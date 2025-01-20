@@ -99,46 +99,58 @@ const My = () => {
   };
 
   return (
-    <div className="my-page">
-      <TopBar title="# My" showSearch showTags onSearchPlaceChange/>
-      
-      <div className="my-tabs">
-        <button
-          className={`my-tab ${activeTab === "reviewedCafes" ? "active" : ""}`}
-          onClick={() => handleTabClick("reviewedCafes")}
-        >
-          리뷰한 카페
-        </button>
-        <button
-          className={`my-tab ${activeTab === "reportedCafes" ? "active" : ""}`}
-          onClick={() => handleTabClick("reportedCafes")}
-        >
-          제보한 카페
-        </button>
-      </div>
+  <div className="my-page">
+    <TopBar title="# My" showSearch showTags onSearchPlaceChange />
 
-      {/* 탭 내용 */}
-      <div className="my-content">
-        {activeTab === "reviewedCafes" ? (
-          <div className="review-cafe-list">
-            <p className="cafe-count">총 {reviewedCafes.length}개</p>
-            {reviewedCafes.map((cafe, index) => (
-              <ReviewCafeCard key={index} cafe={cafe} onDeleteConfirmed={(id) => handleDeleteConfirmed(id, "reviewedCafes")}
-                onEdit={handleEdit}/>
-            ))}
-          </div>
-        ) : (
-          <div className="report-cafe-list">
-            <p className="cafe-count">총 {reportedCafes.length}개</p>
-            {reportedCafes.map((cafe) => (
-              <ReportCafeCard key={cafe.id} cafe={cafe} />
-            ))}
-          </div>
-        )}
-      </div>
-
-      <BottomBar />
+    <div className="my-tabs">
+      <button
+        className={`my-tab ${activeTab === "reviewedCafes" ? "active" : ""}`}
+        onClick={() => handleTabClick("reviewedCafes")}
+      >
+        리뷰한 카페
+      </button>
+      <button
+        className={`my-tab ${activeTab === "reportedCafes" ? "active" : ""}`}
+        onClick={() => handleTabClick("reportedCafes")}
+      >
+        제보한 카페
+      </button>
+      {activeTab === "reportedCafes" && (
+        <button
+          className="report-cafe-plus-button"
+          onClick={() => navigate("/my/report/add")}
+        >
+          <img src="/img/plus.png" alt="추가버튼" />
+        </button>
+      )}
     </div>
+
+    {/* 탭 내용 */}
+    <div className="my-content">
+      {activeTab === "reviewedCafes" ? (
+        <div className="review-cafe-list">
+          <p className="cafe-count">총 {reviewedCafes.length}개</p>
+          {reviewedCafes.map((cafe, index) => (
+            <ReviewCafeCard
+              key={index}
+              cafe={cafe}
+              onDeleteConfirmed={(id) => handleDeleteConfirmed(id, "reviewedCafes")}
+              onEdit={handleEdit}
+            />
+          ))}
+        </div>
+      ) : (
+        <div className="report-cafe-list">
+          <p className="cafe-count">총 {reportedCafes.length}개</p>
+          {reportedCafes.map((cafe) => (
+            <ReportCafeCard key={cafe.id} cafe={cafe} />
+          ))}
+        </div>
+      )}
+    </div>
+
+    <BottomBar />
+  </div>
 
   );
 };
