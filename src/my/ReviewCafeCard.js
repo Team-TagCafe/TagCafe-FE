@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./CafeCard.css";
+import "./ReviewCafeCard.css";
 import TagGroup from "../components/TagGroup";
 import ShortButton from "../components/ShortButton";
 import Popup from "../components/Popup";
 
-const CafeCard = ({ cafe,onEdit, onDeleteConfirmed }) => {
+const ReviewCafeCard = ({ cafe,onEdit, onDeleteConfirmed }) => {
   const { cafeId, name, date, rating=0, description, tags, image } = cafe;
   const [menuVisible, setMenuVisible] = useState(false);
   const [popupVisible, setPopupVisible] = useState(false);
@@ -90,4 +90,4 @@ const CafeCard = ({ cafe,onEdit, onDeleteConfirmed }) => {
   );
 };
 
-export default CafeCard;
+export default ReviewCafeCard;

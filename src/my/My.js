@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { BottomBar, TopBar } from '../components';
-import CafeCard from "./CafeCard"; 
+import ReviewCafeCard from "./ReviewCafeCard"; 
 import ReportCafeCard from "./ReportCafeCard";
 import './My.css';
 
@@ -123,7 +123,7 @@ const My = () => {
           <div className="review-cafe-list">
             <p className="cafe-count">총 {reviewedCafes.length}개</p>
             {reviewedCafes.map((cafe, index) => (
-              <CafeCard key={index} cafe={cafe} onDeleteConfirmed={(id) => handleDeleteConfirmed(id, "reviewedCafes")}
+              <ReviewCafeCard key={index} cafe={cafe} onDeleteConfirmed={(id) => handleDeleteConfirmed(id, "reviewedCafes")}
                 onEdit={handleEdit}/>
             ))}
           </div>
