@@ -1,12 +1,15 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { BottomBar, TopBar } from '../components';
 import CafeCard from "./CafeCard"; 
 import './My.css';
 
 const My = () => {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("reviewedCafes"); 
   const [reviewedCafes, setReviewedCafes] = useState([
-    {
+    { 
+      cafeId :1,
       name: "스테이 어도러블",
       date: "12.20 금",
       rating: 4,
@@ -16,6 +19,7 @@ const My = () => {
     },
 
     {
+      cafeId :2,
       name: "스테이 어도러블",
       date: "12.20 금",
       rating: 4,
@@ -25,6 +29,7 @@ const My = () => {
     },
 
     {
+      cafeId :3,
       name: "스테이 어도러블",
       date: "12.20 금",
       rating: 4,
@@ -33,6 +38,7 @@ const My = () => {
       image: "/img/cafe-img.png",
     },
     {
+      cafeId :4,
       name: "스테이 어도러블",
       date: "12.20 금",
       rating: 4,
@@ -41,6 +47,7 @@ const My = () => {
       image: "/img/cafe-img.png",
     },
     {
+      cafeId :5,
       name: "스테이 어도러블",
       date: "12.20 금",
       rating: 4,
@@ -74,6 +81,10 @@ const My = () => {
     }
   };
 
+  const handleEdit=(cafeId)=>{
+    navigate(`/my/review/edit/${cafeId}`);
+  };
+
   return (
     <div className="my-page">
       <TopBar title="# My" showSearch showTags onSearchPlaceChange/>
@@ -96,20 +107,17 @@ const My = () => {
       {/* 탭 내용 */}
       <div className="my-content">
         {activeTab === "reviewedCafes" ? (
-          <div className="cafe-list">
+          <div className="review-cafe-list">
             <p className="cafe-count">총 {reviewedCafes.length}개</p>
             {reviewedCafes.map((cafe, index) => (
               <CafeCard key={index} cafe={cafe} onDeleteConfirmed={(id) => handleDeleteConfirmed(id, "reviewedCafes")}
-              />
+                onEdit={handleEdit}/>
             ))}
           </div>
         ) : (
-          <div className="cafe-list">
+          <div className="report-cafe-list">
             <p className="cafe-count">총 {reportedCafes.length}개</p>
-            {reportedCafes.map((cafe, index) => (
-              <CafeCard key={index} cafe={cafe}onDeleteConfirmed={(id) => handleDeleteConfirmed(id, "reportedCafes")}
-              />
-            ))}
+
           </div>
         )}
       </div>

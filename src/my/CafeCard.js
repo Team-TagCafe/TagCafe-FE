@@ -1,21 +1,23 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./CafeCard.css";
 import TagGroup from "../components/TagGroup";
 import ShortButton from "../components/ShortButton";
 import Popup from "../components/Popup";
 
-const CafeCard = ({ cafe,onDeleteConfirmed }) => {
-  const { name, date, rating, description, tags, image } = cafe;
+const CafeCard = ({ cafe,onEdit, onDeleteConfirmed }) => {
+  const { cafeId, name, date, rating=0, description, tags, image } = cafe;
   const [menuVisible, setMenuVisible] = useState(false);
   const [popupVisible, setPopupVisible] = useState(false);
 
+  const navigate = useNavigate();
 
   const toggleMenu = () => {
     setMenuVisible((prev) => !prev);
   };
 
   const handleEdit = () => {
-    alert("수정 기능을 실행합니다.");
+    onEdit(cafeId);
     setMenuVisible(false);
   };
 
@@ -50,31 +52,31 @@ const CafeCard = ({ cafe,onDeleteConfirmed }) => {
 
 
   return (
-    <div className="cafe-card">
-      <div className="cafe-image-container">
-        <img className="cafe-image" src={image || "/img/cafe-img.png"} alt={name} />
-        <button className="view-details">카페 상세보기 &gt;</button>
+    <div className="review-cafe-card">
+      <div className="review-cafe-image-container">
+        <img className="review-cafe-image" src={image || "/img/cafe-img.png"} alt={name} />
+        <button className="review-view-details">카페 상세보기 &gt;</button>
       </div>      
 
 
       {/* 카페 정보와 더보기 메뉴 */}
-      <div className="cafe-info">
-        <div className="cafe-header">
-          <h3 className="cafe-name">
-            {name} {rating && <span className="cafe-rating">★ {rating}</span>}
+      <div className="review-cafe-info">
+        <div className="review-cafe-header">
+          <h3 className="review-cafe-name">
+            {name} {rating && <span className="review-cafe-rating">★ {rating}</span>}
           </h3>
-          <button className="more-button" onClick={toggleMenu}>
+          <button className="review-more-button" onClick={toggleMenu}>
             <img src="/img/kebab_menu.png" alt="더보기" />
           </button>
           {menuVisible && (
-            <div className="more-menu">
+            <div className="review-more-menu">
               <ShortButton optionText="수정" onClick={handleEdit} />
               <ShortButton optionText="삭제" onClick={handleDelete} />
             </div>
           )}
         </div>
-        <p className="cafe-date">{date}</p>
-        <p className="cafe-description">{description}</p>
+        <p className="review-cafe-date">{date}</p>
+        <p className="review-cafe-description">{description}</p>
         <TagGroup tags={formattedTags} />
       </div>
       {popupVisible && (

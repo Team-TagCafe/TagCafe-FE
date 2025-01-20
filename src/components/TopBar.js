@@ -196,7 +196,7 @@ const TopBar = ({
                 {/* 햄버거 메뉴 버튼 */}
                 {showHamburger && (
                     <button className="hamburger-button" onClick={toggleMenu}>
-                        <img className="hamburger-menu" src="../img/hamburger_menu.png" alt="Menu" />
+                        <img className="hamburger-menu" src="/img/hamburger_menu.png" alt="Menu" />
                     </button>
                 )}
 
