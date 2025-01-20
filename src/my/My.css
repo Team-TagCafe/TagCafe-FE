@@ -33,11 +33,7 @@
     border-bottom: 2px solid #422919;
     color: #422919;
   }
-  
-  .my-content {
-    width: 33px;
-  }
-  
+    
   .review-cafe-list {
     display: flex;
     flex-direction: column;
@@ -53,4 +49,3 @@
     margin-left : 10px;
   }
 
-  
