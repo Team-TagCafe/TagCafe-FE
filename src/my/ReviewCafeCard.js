@@ -63,7 +63,12 @@ const ReviewCafeCard = ({ cafe,onEdit, onDeleteConfirmed }) => {
       <div className="review-cafe-info">
         <div className="review-cafe-header">
           <h3 className="review-cafe-name">
-            {name} {rating && <span className="review-cafe-rating">★ {rating}</span>}
+            {name} {rating && (
+              <span className="review-cafe-rating">
+                <img src="/img/star_full.png" alt="Rating Star" className="review-rating-star-icon" />
+                {rating}
+              </span>
+            )}          
           </h3>
           <button className="review-more-button" onClick={toggleMenu}>
             <img src="/img/kebab_menu.png" alt="더보기" />

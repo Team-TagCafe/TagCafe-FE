@@ -40,11 +40,31 @@
     position: relative;
   }
   
+  .review-cafe-header {
+    display: flex;
+    align-items: center; 
+    justify-content: space-between; 
+  }
   .review-cafe-name {
+    display: flex; 
+    align-items: center; 
     font-size: 12px;
     font-weight: bold;
     color: #2b2b2b;
     margin: 0 0 5px;
+  }
+
+  .review-cafe-rating{
+    margin-left:5px;
+    gap: 3px;
+    display: inline-flex; /* 이미지와 텍스트를 한 줄에 정렬 */
+  }
+
+  .review-rating-star-icon{
+    height: 15px;
+    width: 15px;  
+    vertical-align: middle; 
+    display: inline-block; /* 이미지 정렬 */
   }
   
   .review-cafe-date {

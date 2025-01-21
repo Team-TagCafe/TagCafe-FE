@@ -29,15 +29,15 @@ const ReportEdit = () => {
   ];
 
   const foundReport = mockReports.find((r) => r.reportId === reportId) || {
-    name: "",
-    address: "",
+    name: "스테이어도러블",
+    address: "경기 용인시 기흥구 죽전로43번길 15-3",
     wifi: "빠름",
     outlets: "없음",
     desk: "좁음",
     restroom: "외부",
     parking: "불가능",
     description: "",
-    image: "",
+    image: "/img/cafe-img.png",
   };
 
   const [cafeOptions, setCafeOptions] = useState({
