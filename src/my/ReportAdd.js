@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { TopBar, BottomBar, LongButton } from "../components";
 import CafeInformation from "../components/CafeInformation";
-import "./ReportCafeAdd.css"
+import "./ReportAdd.css"
 
 const ReportCafeAdd = () => {
   const navigate = useNavigate();

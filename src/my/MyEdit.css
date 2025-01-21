@@ -1,4 +1,4 @@
-.review-edit-page {
+.my-edit-page {
     background-color: #ffffff;
     display: flex;
     flex-direction: column;
@@ -11,14 +11,14 @@
     
   }
   
-  .review-edit-header {
+  .my-edit-header {
     display: flex;
     align-items: center;
     justify-content: space-between; /* 버튼과 제목 사이 균등 분배 */
     position: relative
   }
 
-  .review-edit-header h2 {
+  .my-edit-header h2 {
     font-size: 15px;
     color: #422919;
     position: absolute; /* 부모 기준으로 배치 */
@@ -38,14 +38,14 @@
     height: 20px;
   }
   
-  .cafe-info {
+  .my-cafe-info {
     display: flex;
     align-items: center;
     padding: 20px;
     border-bottom: 1px solid #E3E3E3;
   }
   
-  .cafe-image {
+  .my-cafe-image {
     width: 75px;
     height: 75px;
     border-radius: 10px;
@@ -53,25 +53,25 @@
     margin-right: 15px;
   }
   
-  .cafe-name {
+  .my-cafe-name {
     font-size: 13px;
     font-weight: 700;
     color: #2B2B2B;
     margin:0;
   }
   
-  .cafe-address {
+  .my-cafe-address {
     margin-top: 10px;
     font-size: 9px;
     font-weight: 600;
     color: #a9a9a9;
   }
 
-  .review-form {
+  .my-form {
     padding: 10px;
   }
   
-  .review-form h4 {
+  .my-form h4 {
     font-weight: 700;
     font-size: 12px;
     color: #2B2B2B;
@@ -80,7 +80,7 @@
     gap: 10px;
   }
 
-  .rating-container {
+  .my-rating-container {
     margin-top: 10px;
     display: flex; 
     align-items: center; 
@@ -88,20 +88,20 @@
     margin-bottom: 15px; 
   }
   
-  .rating {
+  .my-rating {
     margin-top: 5px;;
     display: flex; 
     gap: 5px; 
     align-items: center; 
   }
   
-  .rating .star {
+  .my-rating .star {
     font-size: 20px;
     cursor: pointer;
     color: #cec2b2;
   }
   
-  .rating .star.selected {
+  .my-rating .star.selected {
     color: #ffc107;
   }
   
@@ -125,7 +125,7 @@
     color: #fff;
   }
   
-  .review-edit-form {
+  .my-edit-form {
     display: flex;
     flex-direction: column;
     align-items: center; 
@@ -133,7 +133,7 @@
     position: relative; /* char-counter를 컨테이너 내에서 자유롭게 배치 */
 
   }  
-  .review-edit-textarea {
+  .my-edit-textarea {
     width: 300px;
     height: 243px;
     padding: 10px;
@@ -147,17 +147,17 @@
     resize: none;
   }
   
-  .review-edit-textarea::placeholder {
+  .my-edit-textarea::placeholder {
     color: #a9a9a9;
     font-weight: 500;
   }
 
-  .review-edit-textarea:focus {
+  .my-edit-textarea:focus {
     border-color: #422919; /* 테두리 색상 변경 */
     outline: none; /* 기본 아웃라인 제거 */
   }
   
-  .review-edit-char-counter {
+  .my-edit-char-counter {
     position: absolute; /* 부모 컨테이너 기준으로 배치 */
     bottom: -20px; /* 텍스트 상자 아래로 이동 */
     right: 25px; /* 오른쪽 여백 */
@@ -166,9 +166,10 @@
     color: #a9a9a9;
   }
   
-  .long-button-container {
+  .my-long-button-container {
     margin-top: auto; /* 상단 여백을 자동으로 설정해 아래로 밀어냄 */
     display: flex;
     justify-content: center; /* 버튼을 가로로 중앙 정렬 */
     padding: 20px 0;  
 }
+

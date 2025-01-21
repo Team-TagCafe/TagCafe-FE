@@ -1,11 +1,17 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import TagGroup from "../components/TagGroup";
 import "./ReportCafeCard.css";
 
 const ReportCafeCard = ({ cafe }) => {
-const { cafeId, name, date,  description, tags } = cafe;
+  const { cafeId, name, date,  description, tags } = cafe;
 
   const [isExpanded, setIsExpanded] = useState(false);
+  const navigate = useNavigate();
+
+  const handleNavigateToEdit = () => {
+    navigate(`/my/report/edit/${cafe.id}`);
+  };
 
   const toggleDetails = () => {
     setIsExpanded((prev) => !prev);
@@ -26,11 +32,11 @@ const { cafeId, name, date,  description, tags } = cafe;
   }));
 
   return (
-    <div className="report-cafe-card">
+    <div className="report-cafe-card" >
         <div className="report-cafe-header">
             <div className="report-cafe-info">
                 <div className="report-cafe-toggle">
-                    <h3 className="report-cafe-name">{cafe.name}</h3>
+                    <h3 className="report-cafe-name" onClick={handleNavigateToEdit}>{cafe.name}</h3>
                     <button className="report-cafe-toggle-button" onClick={toggleDetails}>
                     <img
                     src={
