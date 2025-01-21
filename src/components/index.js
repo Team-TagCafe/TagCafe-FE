@@ -1,6 +1,5 @@
 export { default as Bookmark } from './Bookmark';
 export { default as BottomBar } from './BottomBar';
-export { default as CafePopup } from './CafePopup';
 export { default as CafeInformation } from './CafeInformation';
 export { default as CafeInformationDetail } from './CafeInformationDetail';
 export { default as CafePopup } from './CafePopup';
@@ -14,7 +13,6 @@ export { default as SearchResult } from './SearchResult';
 export { default as selectTag } from './selectTag';
 export { default as ShortButton } from './ShortButton';
 export { default as SideMenuButton } from './SideMenuButton';
-export { default as TextInput } from './TextInput';
 export { default as Tag } from './Tag';
 export { default as TagFilter } from './TagFilter';
 export { default as TagGroup } from './TagGroup';
