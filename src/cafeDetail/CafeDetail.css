@@ -1,0 +1,55 @@
+.cafe-detail-page {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 393px;
+    height: 100vh;
+    margin: 0 auto;
+    background-color: #ffffff;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-bottom: 220px; 
+}
+
+
+.cafe-detail-divider {
+    border-top: 1px solid #E3E3E3;
+    max-width: 393px;
+    margin: 16px auto;
+    width: 92%;
+}
+
+.cafe-detail-header {
+    display: flex;
+    width: inherit;
+    max-width: 393px;
+    justify-content: space-between;
+    padding: 0 12px;
+    margin: 0 auto;
+    box-sizing: border-box; /* 패딩 포함 너비 계산 */
+
+}
+
+.cafe-detail-name {
+    font-weight: 700;
+    font-size: 14px;
+    color: #422919;
+    margin-bottom: 4px;
+}
+
+.cafe-detail-address {
+    font-weight: 500;
+    font-size: 10px;
+    color: #A69180;
+}
+
+.cafe-detail-header-text {
+    margin: 10px 0px;
+}
+
+.cafe-info-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: #2B2B2B;
+    padding: 0 12px;
+}

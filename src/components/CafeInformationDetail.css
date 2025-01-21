@@ -3,6 +3,7 @@
     flex-direction: column;
     align-items: flex-start;
     padding: 20px;
+    margin: 5px;
     gap: 10px;
     /* width: 266px; */
     width: auto;
@@ -72,7 +73,7 @@
     display: flex;
     flex-direction: column;
     gap: 5px;
-    padding-left: 55px; 
+    padding-left: 45px; 
     align-items: flex-start; 
 
   }
