@@ -8,7 +8,7 @@
     background-color: #ffffff;
     overflow-y: auto;
     overflow-x: hidden;
-    padding-bottom: 220px; 
+    padding-bottom: 120px;
 }
 
 
@@ -26,7 +26,8 @@
     justify-content: space-between;
     padding: 0 12px;
     margin: 0 auto;
-    box-sizing: border-box; /* 패딩 포함 너비 계산 */
+    box-sizing: border-box;
+    /* 패딩 포함 너비 계산 */
 
 }
 
@@ -52,4 +53,39 @@
     font-weight: 600;
     color: #2B2B2B;
     padding: 0 12px;
+}
+
+.cafe-detail-tab {
+    font-size: 12px;
+    font-weight: 700;
+    color: #422919;
+    border: none;
+    border-radius: 0;
+    background: #ffffff;
+    cursor: pointer;
+    position: relative;
+}
+
+.cafe-detail-tab.active {
+    border-bottom: 2px solid #422919;
+    color: #422919;
+}
+
+.cafe-detail-info-text {
+    font-size: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 10px;
+}
+
+.cafe-detail-info-text img {
+    width: 13px;
+    height: 13px;
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
+.cafe-detail-info-text a {
+    color: #2B2B2B;
 }
