@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from "react-router-dom";
 import './CafePopup.css';
 import TagGroup from '../components/TagGroup';
 
@@ -10,13 +11,19 @@ const tags = [
     { icon: "/img/park.png", text: "주차 가능(무료)" },
 ];
 
-const CafePopup = ({ cafeName, cafeAddress, onClose }) => {
+const CafePopup = ({ cafeName, cafeAddress, cafeId, onClose }) => {
+    const navigate = useNavigate(); // Hook to navigate programmatically
+
     const handleOverlayClick = (e) => {
         onClose(); // 외부 클릭 시 팝업 닫기
     };
 
     const handlePopupClick = (e) => {
         e.stopPropagation(); // 내부 클릭 시 이벤트 전파 방지
+    };
+
+    const handleViewDetailsClick = () => {
+        navigate(`/cafe/${cafeId}`); // Navigate to cafe detail page
     };
 
     return (
@@ -35,7 +42,9 @@ const CafePopup = ({ cafeName, cafeAddress, onClose }) => {
                             <span className="cafe-address">{cafeAddress}</span>
                         </div>
                         {/* 카페 상세보기 */}
-                        <div className="view-details">카페 상세보기 ＞ </div>
+                        <div className="view-details" onClick={handleViewDetailsClick}>
+                            카페 상세보기 ＞
+                        </div>
                     </div>
                 </div>
 
