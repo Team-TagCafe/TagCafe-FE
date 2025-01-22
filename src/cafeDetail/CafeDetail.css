@@ -28,8 +28,6 @@
     padding: 0 12px;
     margin: 0 auto;
     box-sizing: border-box;
-    /* 패딩 포함 너비 계산 */
-
 }
 
 .cafe-detail-back-button {
@@ -102,6 +100,55 @@
     vertical-align: middle;
 }
 
+.cafe-detail-review-header {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px;
+}
+
 .cafe-detail-info-text a {
     color: #2B2B2B;
+}
+
+.cafe-detail-review-rating {
+    display: flex;
+    align-items: flex-end;
+    gap: 5px;
+}
+
+.cafe-detail-review-star{
+    width: 16px;
+    height: 16px;
+    margin-right: 4px;
+}
+
+
+.cafe-detail-review-score{
+    font-size: 10px;
+    color: #2B2B2B;
+    font-weight: 900;
+
+}
+
+.cafe-detail-review-text{
+    font-size: 8px;
+    color: #A9A9A9;
+
+}
+
+.cafe-detail-review-write-btn {
+    background-color: #fff;
+    border: 1px solid #422919;
+    border-radius: 20px;
+    text-align: center;
+    padding: 8px 8px 8px 8px;
+    font-size: 12px;
+    cursor: pointer;
+    color: #422919;
+    display: flex;     
+    justify-content: center; 
+    align-items: center; 
+    min-width: 62px;
+    width: fit-content;
+    height: 28px;
 }

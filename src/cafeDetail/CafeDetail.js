@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { BottomBar, Bookmark, CafeInformationDetail, TopBar } from "../components";
 import "./CafeDetail.css";
 import ImageCarousel from "./ImageCarousel";
+import DetailReviewCard from "./DetailReviewCard";
 
 const CafeDetail = () => {
   const navigate = useNavigate(); // useNavigate 훅 사용
@@ -14,6 +15,37 @@ const CafeDetail = () => {
   const handleBackClick = () => {
     navigate(-1); // 이전 페이지로 이동
   };
+
+  const handleWriteReviewClick = () => {
+    navigate(`/cafe/${id}/review-write`); // Dynamically include the cafe id in the URL
+  };
+
+  const [reviews, setReviews] = useState([
+    {
+      userName: "커피스터디",
+      date: "12.20 금",
+      rating: 4,
+      content: "카페가 조용하고 공부하기 좋습니다!",
+      tags: ["와이파이 빠름", "콘센트 일부", "책상 적당함", "화장실 외부", "주차 가능(무료)"],
+    },
+    {
+      userName: "음료러버",
+      date: "12.22 일",
+      rating: 5,
+      content: "음료가 정말 맛있고 분위기가 너무 좋아요!",
+      tags: ["와이파이 빠름", "콘센트 일부", "책상 적당함", "화장실 외부", "주차 가능(무료)"],
+    },
+    {
+      userName: "공부러버",
+      date: "12.25 수",
+      rating: 4.5,
+      content: "조용하고 공부하기 좋았습니다. 추천합니다!",
+      tags: ["와이파이 빠름", "콘센트 일부", "책상 적당함", "화장실 외부", "주차 가능(무료)"],
+    },
+  ]);
+
+  const averageRating =
+    reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length;
 
   // 지도 관련 상태
   const [map, setMap] = useState(null);
@@ -31,31 +63,39 @@ const CafeDetail = () => {
     name: "스테이 어도러블",
   };
 
-  // Kakao 지도 초기화
   useEffect(() => {
-    if (activeTab === "cafe-detail-info") {
-      const container = document.getElementById("cafe-detail-map"); // 지도를 표시할 DOM
-      const options = {
-        center: new kakao.maps.LatLng(cafeLocation.lat, cafeLocation.lng), // 중심 좌표
-        level: 3, // 지도 확대 레벨
-      };
-
-      // 지도 생성
-      const kakaoMap = new kakao.maps.Map(container, options);
-      setMap(kakaoMap); // 지도 상태 업데이트
-
-      // 마커 생성
-      const markerPosition = new kakao.maps.LatLng(cafeLocation.lat, cafeLocation.lng);
-      const marker = new kakao.maps.Marker({
-        position: markerPosition,
-        image: markerImage,
-      });
-
-      marker.setMap(kakaoMap); // 마커를 지도에 추가
-
-      createCustomOverlay(kakaoMap, markerPosition, cafeLocation.name, cafeLocation.address);
+    if (activeTab !== "cafe-detail-info") {
+      return; // activeTab이 "cafe-detail-info"가 아니면 아무 작업도 하지 않음
     }
-  }, [activeTab]); // 탭이 변경될 때마다 지도 초기화
+
+    const container = document.getElementById("cafe-detail-map");
+
+    // 이미 초기화된 지도 삭제 후 새로 초기화
+    if (map) {
+      map.relayout(); // 지도 크기 재조정
+      map.setCenter(new kakao.maps.LatLng(cafeLocation.lat, cafeLocation.lng)); // 중심 좌표 재설정
+      return; // 기존 지도를 재활용하므로 새로 생성하지 않음
+    }
+
+    const options = {
+      center: new kakao.maps.LatLng(cafeLocation.lat, cafeLocation.lng),
+      level: 3,
+    };
+
+    const kakaoMap = new kakao.maps.Map(container, options);
+    setMap(kakaoMap);
+
+    const markerPosition = new kakao.maps.LatLng(cafeLocation.lat, cafeLocation.lng);
+    const marker = new kakao.maps.Marker({
+      position: markerPosition,
+      image: markerImage,
+    });
+
+    marker.setMap(kakaoMap);
+
+    createCustomOverlay(kakaoMap, markerPosition, cafeLocation.name, cafeLocation.address);
+  }, [activeTab]); // `activeTab`에 따라 업데이트  
+
 
   /* ---------- 지도 카페명 표시 CustomOverlay 생성  ---------- */
   const createCustomOverlay = (map, markerPosition, placeName) => {
@@ -82,8 +122,8 @@ const CafeDetail = () => {
     <div className="cafe-detail-page">
       {/* 뒤로가기 버튼 */}
       <div className="cafe-detail-back-button" onClick={handleBackClick}>
-          <img src="/img/back-button.png" alt="뒤로가기" />
-        </div>
+        <img src="/img/back-button.png" alt="뒤로가기" />
+      </div>
       {/* 상단 이미지 슬라이드 */}
       <div className="cafe-detail-image">
         <ImageCarousel />
@@ -125,7 +165,7 @@ const CafeDetail = () => {
 
       {/* 탭 내용 */}
       <div className="cafe-detail-tab-content">
-        {activeTab === "cafe-detail-info" ? (
+        {activeTab === "cafe-detail-info" && (
           <div>
             <div
               id="cafe-detail-map"
@@ -157,12 +197,35 @@ const CafeDetail = () => {
               </div>
             </div>
           </div>
-        ) : (
-          <div className="cafe-detail-review">
-            <p>리뷰</p>
+        )}
+        {activeTab === "cafe-detail-review" && (
+          <div className="cafe-detail-review-content">
+            <div className="cafe-detail-review-header">
+
+              <div className="cafe-detail-review-rating">
+                <img
+                  src="/img/star_full.png"
+                  alt="Star Icon"
+                  className="cafe-detail-review-star"
+                /> 
+                <div className="cafe-detail-review-score">{averageRating.toFixed(2)}</div>
+                <div className="cafe-detail-review-text">{reviews.length}개 리뷰</div>
+              </div>
+              <button className="cafe-detail-review-write-btn"
+               onClick={handleWriteReviewClick}
+               >리뷰쓰기</button>
+            </div>
+            <div className="cafe-detail-review-cards">
+              {reviews.map((review, index) => (
+                <DetailReviewCard key={index} review={review} />
+              ))}
+            </div>
           </div>
         )}
       </div>
+
+
+
 
       {/* 하단 바 */}
       <BottomBar />
