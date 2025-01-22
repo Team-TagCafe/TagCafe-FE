@@ -1,13 +1,19 @@
 /*global kakao*/
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { BottomBar, Bookmark, CafeInformationDetail, TopBar } from "../components";
 import "./CafeDetail.css";
 import ImageCarousel from "./ImageCarousel";
 
 const CafeDetail = () => {
+  const navigate = useNavigate(); // useNavigate 훅 사용
   const { id } = useParams(); // 카페 id
   const [activeTab, setActiveTab] = useState("cafe-detail-info"); // 현재 활성화된 탭 관리  
+
+  // 뒤로가기 핸들러
+  const handleBackClick = () => {
+    navigate(-1); // 이전 페이지로 이동
+  };
 
   // 지도 관련 상태
   const [map, setMap] = useState(null);
@@ -74,6 +80,10 @@ const CafeDetail = () => {
 
   return (
     <div className="cafe-detail-page">
+      {/* 뒤로가기 버튼 */}
+      <div className="cafe-detail-back-button" onClick={handleBackClick}>
+          <img src="/img/back-button.png" alt="뒤로가기" />
+        </div>
       {/* 상단 이미지 슬라이드 */}
       <div className="cafe-detail-image">
         <ImageCarousel />

@@ -9,6 +9,7 @@
     overflow-y: auto;
     overflow-x: hidden;
     padding-bottom: 120px;
+    position: relative;
 }
 
 
@@ -29,6 +30,21 @@
     box-sizing: border-box;
     /* 패딩 포함 너비 계산 */
 
+}
+
+.cafe-detail-back-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    top: 50px;
+    left: 20px;
+    z-index: 10;
+}
+
+.cafe-detail-back-button img {
+    width: 24px;
+    height: 24px;
 }
 
 .cafe-detail-name {
