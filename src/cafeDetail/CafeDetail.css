@@ -25,7 +25,7 @@
     width: inherit;
     max-width: 393px;
     justify-content: space-between;
-    padding: 2 12px;
+    padding: 0 12px;
     margin: 0 auto;
     box-sizing: border-box;
     margin-top: 14px;
@@ -70,8 +70,12 @@
     padding: 0 12px;
 }
 
+.cafe-detail-tabs {
+    margin-left: 10px;
+}
+
 .cafe-detail-tab {
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 700;
     color: #422919;
     border: none;
