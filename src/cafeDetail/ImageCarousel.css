@@ -31,3 +31,7 @@
 .slick-dots li.slick-active .custom-dot {
     background-color: white;
 }
+
+.image-carousel-dots {
+    margin: 0px;
+}

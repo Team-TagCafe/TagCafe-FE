@@ -21,8 +21,8 @@ const ImageCarousel = () => {
       <div className="custom-dot"></div>
     ),
     appendDots: (dots) => (
-      <div style={{ bottom: "10px" }}>
-        <ul> {dots} </ul>
+      <div style={{ bottom: "0px" }}>
+        <ul className="image-carousel-dots"> {dots} </ul>
       </div>
     ),
   };
