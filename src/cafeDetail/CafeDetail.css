@@ -147,13 +147,12 @@
     border-radius: 20px;
     text-align: center;
     padding: 8px 8px 8px 8px;
-    font-size: 12px;
+    font-size: 10px;
     cursor: pointer;
     color: #422919;
     display: flex;     
     justify-content: center; 
     align-items: center; 
-    min-width: 62px;
-    width: fit-content;
-    height: 28px;
+    width: 55px;
+    height: 23px;
 }
