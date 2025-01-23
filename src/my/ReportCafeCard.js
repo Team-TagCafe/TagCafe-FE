@@ -5,8 +5,8 @@ import "./ReportCafeCard.css";
 
 const ReportCafeCard = ({ cafe }) => {
   const { cafeId, name, date,  description, tags } = cafe;
-
   const [isExpanded, setIsExpanded] = useState(false);
+  const [reportCheckMessage, setReportCheckMessage] = useState(null);
   const navigate = useNavigate();
 
   const handleNavigateToEdit = () => {
@@ -16,6 +16,17 @@ const ReportCafeCard = ({ cafe }) => {
   const toggleDetails = () => {
     setIsExpanded((prev) => !prev);
   };
+
+
+  const handleCheckClick = (messageType) => {
+    setReportCheckMessage(messageType); 
+  };
+
+
+  const closeCheckClick = () => {
+    setReportCheckMessage(false);
+  };
+
 
   const tagIcons = {
     "와이파이 빠름": "/img/wifi.png",
@@ -31,12 +42,27 @@ const ReportCafeCard = ({ cafe }) => {
     text: tag,
   }));
 
+  const reportCheckMessages = {
+    wait: {
+      text: "카페 등록을 검토하고 있어요",
+      action: "카페 정보 수정하기 >",
+    },
+    denied: {
+      text: "카페 등록이 거부되었습니다",
+      action: "자세히 보기 >",
+    },
+    accepted: {
+      text: "카페 등록이 완료되었습니다",
+      action: "카페 보러가기 >",
+    },
+  };
+
   return (
     <div className="report-cafe-card" >
         <div className="report-cafe-header">
             <div className="report-cafe-info">
                 <div className="report-cafe-toggle">
-                    <h3 className="report-cafe-name" onClick={handleNavigateToEdit}>{cafe.name}</h3>
+                    <h3 className="report-cafe-name">{cafe.name}</h3>
                     <button className="report-cafe-toggle-button" onClick={toggleDetails}>
                     <img
                     src={
@@ -49,8 +75,8 @@ const ReportCafeCard = ({ cafe }) => {
                     </button>
                 </div>
                 <p className="report-cafe-address">{cafe.address}</p>
-                <div className="report-cafe-check">
-                    <img src="/img/report-wait.png" alt="Check" />
+                <div className="report-cafe-check" onClick={() => handleCheckClick("wait")}>
+                  <img src="/img/report-wait.png" alt="Check" />
                 </div>
             </div>
         </div>
@@ -61,9 +87,22 @@ const ReportCafeCard = ({ cafe }) => {
             <TagGroup tags={formattedTags} />
         </div>
         )}
-      <div className="report-cafe-check">
-        <img src="/img/report-wait.png" alt="Check" />
-      </div>
+
+        {reportCheckMessage && reportCheckMessages[reportCheckMessage] && (
+          <div className="report-check-container">
+            <div className="report-check-overlay" onClick={closeCheckClick}></div>
+            <div className="report-check-message">
+              <p>{reportCheckMessages[reportCheckMessage].text}</p>
+              <p
+                className="report-check-action"
+                onClick={handleNavigateToEdit}
+              >
+                {reportCheckMessages[reportCheckMessage].action}
+              </p>
+            </div>
+          </div>
+      )}
+
     </div>
   );
 };

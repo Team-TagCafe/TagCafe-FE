@@ -77,7 +77,7 @@ const ReviewEdit = () => {
       </header>
 
       <section className="my-cafe-info">
-        <img src={foundReview.image || "/img/default-cafe.png"} alt={foundReview.name} className="my-cafe-image" />
+        <img src={foundReview.image || "/img/cafe-img.png"} alt={foundReview.name} className="my-cafe-image" />
         <div>
           <h3 className="my-cafe-name">{foundReview.name || "카페 이름 없음"}</h3>
           <p className="my-cafe-address">{foundReview.address || "주소 없음"}</p>
