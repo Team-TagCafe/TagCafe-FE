@@ -29,7 +29,7 @@
 }
 
 .saved-cafe-info {
-    display: inline-block;
+    display: block;
     margin: 2px;
     padding-top: 4px;
 }
