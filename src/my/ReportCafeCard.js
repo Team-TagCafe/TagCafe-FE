@@ -4,9 +4,10 @@ import TagGroup from "../components/TagGroup";
 import "./ReportCafeCard.css";
 
 const ReportCafeCard = ({ cafe }) => {
-  const { cafeId, name, date,  description, tags } = cafe;
+  const { cafeId, name , address, description, tags, status } = cafe;
   const [isExpanded, setIsExpanded] = useState(false);
-  const [reportCheckMessage, setReportCheckMessage] = useState(null);
+  const [showMessage, setShowMessage] = useState(false); // 개별 메시지 상태
+  const [messageType, setMessageType] = useState(null);   
   const navigate = useNavigate();
 
   const handleNavigateToEdit = () => {
@@ -18,13 +19,13 @@ const ReportCafeCard = ({ cafe }) => {
   };
 
 
-  const handleCheckClick = (messageType) => {
-    setReportCheckMessage(messageType); 
+  const handleCheckClick = (type) => {
+    setMessageType(cafe.status); // 메시지 유형 설정
+    setShowMessage(true);
   };
 
-
-  const closeCheckClick = () => {
-    setReportCheckMessage(false);
+  const closeMessage = () => {
+    setShowMessage(false); // 메시지 닫기
   };
 
 
@@ -42,7 +43,7 @@ const ReportCafeCard = ({ cafe }) => {
     text: tag,
   }));
 
-  const reportCheckMessages = {
+  const messageContent = {
     wait: {
       text: "카페 등록을 검토하고 있어요",
       action: "카페 정보 수정하기 >",
@@ -88,19 +89,21 @@ const ReportCafeCard = ({ cafe }) => {
         </div>
         )}
 
-        {reportCheckMessage && reportCheckMessages[reportCheckMessage] && (
-          <div className="report-check-container">
-            <div className="report-check-overlay" onClick={closeCheckClick}></div>
+
+        {showMessage && (
+        <div className="report-check-overlay" onClick={closeMessage}>
+          <div className="report-check-container" style={{ top: "50px", position: "absolute" }} >
             <div className="report-check-message">
-              <p>{reportCheckMessages[reportCheckMessage].text}</p>
+              <p>{messageContent[messageType]?.text}</p>
               <p
                 className="report-check-action"
                 onClick={handleNavigateToEdit}
               >
-                {reportCheckMessages[reportCheckMessage].action}
+                {messageContent[messageType]?.action}
               </p>
             </div>
           </div>
+        </div>
       )}
 
     </div>

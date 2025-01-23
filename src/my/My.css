@@ -15,6 +15,7 @@
     justify-content: left;
     position: relative;
     align-items: center;
+    margin-left: 10px;
     margin-top: 20px;
     border-bottom: 1px solid #ffffff;
   }
