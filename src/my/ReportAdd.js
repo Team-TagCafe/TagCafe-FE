@@ -7,6 +7,16 @@ import "./ReportAdd.css"
 const ReportCafeAdd = () => {
   const navigate = useNavigate();
   const [reportText, setReportText] = useState("");
+  const [searchValue, setSearchValue] = useState("");
+
+
+  const handleSearchChange = (event) => {
+    setSearchValue(event.target.value); // 검색 값 업데이트
+  };
+
+  const handleSearchFocus = () => {
+    navigate("/report/search"); //report 카페검색 임시 페이지
+  };
 
   const handleReportTextChange = (event) => {
     setReportText(event.target.value); // Update input value state
@@ -37,10 +47,26 @@ const ReportCafeAdd = () => {
       <TopBar title="# My" />
 
       <header className="report-cafe-add-header">
+        <div className="report-header-container"> 
         <button className="back-button" onClick={() => navigate("/my")}>
           <img src="/img/back-button.png" alt="뒤로가기" />
         </button>
         <h2>카페 제보</h2>
+        </div>
+
+        <div className="report-add-search">
+          <input
+            type="text"
+            value={searchValue}
+            onChange={handleSearchChange}
+            onFocus={handleSearchFocus}
+            className="report-search-input"
+            placeholder="지역, 카페 이름으로 검색"
+          />
+          <button className="report-search-button">
+            <img src="/img/search.png" alt="Search" />
+          </button>
+        </div>
       </header>
 
       <section className="report-form">

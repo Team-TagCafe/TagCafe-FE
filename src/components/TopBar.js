@@ -87,7 +87,7 @@ const TopBar = ({
         const topBarHeight =
             showSearch && showTags ? "185px" :
             showSearch || showTags ? "141px" :
-            (!showSearch && !showTags && title && showHamburger) ? "90px" : "100px";
+            (!showSearch && !showTags && title && showHamburger) ? "110px" : "100px";
     
         // body padding-top 설정
         document.body.style.paddingTop = topBarHeight;

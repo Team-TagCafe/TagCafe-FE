@@ -10,16 +10,28 @@
     overflow-y: scroll;
     
   }
+
+
   
   .report-cafe-add-header {
-    margin-top: 15px;
     margin-bottom: 20px;;
-    padding: 20px 5px;
+    padding: 5px 5px;
     display: flex;
+    flex-direction: column; /* 검색창을 아래에 배치하기 위해 column 사용 */
+    justify-content: center; /* 중앙 정렬 */
     align-items: center;
-    justify-content: space-between; /* 버튼과 제목 사이 균등 분배 */
     position: relative;
     border-bottom: 1px solid #CEC2B2; 
+  }
+
+
+  .report-header-container {
+    display: flex;
+    position: relative;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+    margin-bottom: 50px;
   }
 
   .report-cafe-add-header h2 {
@@ -40,6 +52,48 @@
   .back-button img {
     width: 20px;
     height: 20px;
+  }
+
+  .report-add-search {
+    position: relative;
+    bottom: 20px;
+    display: flex;
+    gap: 10px;
+    width: 260px;
+    height: 40px;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .report-search-input {
+    position: relative;
+    flex: 1;
+    height: 36px;
+    padding: 0 10px;
+    border: 0.5px solid #422919;
+    border-radius: 10px;
+    font-size: 14px;
+  }
+  
+  .report-search-button {
+    position: absolute;
+    left: 220px; /* 검색창 내부 왼쪽에 위치 */
+    top: 50%; /* 수직 가운데 정렬 */
+    transform: translateY(-50%); /* 수직 가운데 정렬 보정 */
+    background: transparent;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .report-search-button img {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .report-search-input:focus {
+    outline: none;
+    border: none;
+    border: 2px solid #A69180;
   }
 
   .report-form {
@@ -102,4 +156,3 @@
     justify-content: center; /* 버튼을 가로로 중앙 정렬 */
     padding: 20px 0;  
 }
-
