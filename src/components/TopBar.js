@@ -83,24 +83,29 @@ const TopBar = ({
     };
 
     useEffect(() => {
-        const topBarHeight = showSearch && showTags ? "185px" : "141px";
-
+        // 조건별로 TopBar 높이 설정
+        const topBarHeight =
+            showSearch && showTags ? "185px" :
+            showSearch || showTags ? "141px" :
+            (!showSearch && !showTags && title && showHamburger) ? "90px" : "100px";
+    
         // body padding-top 설정
         document.body.style.paddingTop = topBarHeight;
-
+    
         // .top-bar height 동적으로 설정
         const topBarElement = document.querySelector('.top-bar');
         if (topBarElement) {
             topBarElement.style.height = topBarHeight;
         }
-
+    
         return () => {
-            document.body.style.paddingTop = "0"; // 초기화
+            // 초기화
+            document.body.style.paddingTop = "0";
             if (topBarElement) {
-                topBarElement.style.height = "0"; // 초기화
+                topBarElement.style.height = "";
             }
         };
-    }, [showSearch, showTags]);
+    }, [showSearch, showTags, title, showHamburger]);
 
 
     return (

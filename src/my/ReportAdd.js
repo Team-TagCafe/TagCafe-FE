@@ -34,7 +34,7 @@ const ReportCafeAdd = () => {
 
   return (
     <div className="report-cafe-add-page">
-      <TopBar title="# My" showSearch />
+      <TopBar title="# My" />
 
       <header className="report-cafe-add-header">
         <button className="back-button" onClick={() => navigate("/my")}>
