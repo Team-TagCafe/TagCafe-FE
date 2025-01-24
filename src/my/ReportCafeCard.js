@@ -30,18 +30,22 @@ const ReportCafeCard = ({ cafe }) => {
 
 
   const tagIcons = {
-    "와이파이 빠름": "/img/wifi.png",
-    "콘센트 일부": "/img/plug.png",
-    "책상 적당함": "/img/desk.png",
-    "화장실 외부": "/img/toilet.png",
-    "주차 가능(무료)": "/img/park.png",
+    "와이파이": "/img/wifi.png",
+    "콘센트": "/img/plug.png",
+    "책상": "/img/desk.png",
+    "화장실": "/img/toilet.png",
+    "주차": "/img/park.png",
   };
 
 
-  const formattedTags = tags.map((tag) => ({
-    icon: tagIcons[tag], // 기본 아이콘 경로
-    text: tag,
-  }));
+  const formattedTags = tags.map((tag) => {
+    // 태그 키워드 기반 아이콘 매칭
+    let iconKey = Object.keys(tagIcons).find((key) => tag.includes(key)) || "기본"; // 기본값 추가 가능
+    return {
+      icon: tagIcons[iconKey], 
+      text: tag,
+    };
+  });
 
   const messageContent = {
     wait: {
