@@ -2,13 +2,20 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./SavedCafeCard.css";
 import { Bookmark, VisitStatus } from "../components";
+import { useCafe } from "../home/CafeContext";
 
 const SavedCafeCard = ({ cafe }) => {
-  const { cafeId, name, location, tags, image } = cafe;
+  const { id, place_name, address_name, tags } = cafe;
+  const { toggleSaveCafe } = useCafe();
   const navigate = useNavigate();
 
   const handleCardClick = () => {
-    navigate(`/cafe/${cafeId}`);
+    navigate(`/cafe/${id}`);
+  };
+
+  const handleBookmarkClick = (event) => {
+    event.stopPropagation();  // 부모 이벤트 전파 방지
+    toggleSaveCafe(id);  // 북마크 해제 (saved: false로 변경)
   };
 
   const handleVisitStatusClick = (event) => {
@@ -22,11 +29,11 @@ const SavedCafeCard = ({ cafe }) => {
       <div className="saved-cafe-image-container">
         <img
           className="saved-cafe-image"
-          src={image || "/img/default-cafe.png"}
-          alt={name}
+          src="/img/cafe-img.png"
+          // alt={place_name}
         />
-        <div className="saved-cafe-bookmark-overlay" onClick={handleVisitStatusClick}>
-        <Bookmark width="14px" height="25px" />
+        <div className="saved-cafe-bookmark-overlay" onClick={handleBookmarkClick}>
+          <Bookmark width="14px" height="25px" isSaved={true} />
         </div>
       </div>
 
@@ -34,8 +41,8 @@ const SavedCafeCard = ({ cafe }) => {
       <div className="saved-cafe-info">
         <div className="saved-cafe-header">
           <div className="saved-cafe-header-text">
-            <h3 className="saved-cafe-name">{name}</h3>
-            <p className="saved-cafe-location">{location}</p>
+            <h3 className="saved-cafe-name">{place_name}</h3>
+            <p className="saved-cafe-location">{address_name}</p>
           </div>
           <div onClick={handleVisitStatusClick}>
             <VisitStatus />

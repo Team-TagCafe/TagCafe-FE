@@ -21,7 +21,7 @@
 
   .saved-cafe-list {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); /* Dynamic columns */
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); /* Dynamic columns */
     gap: 30px;
     max-width: 315px;
     margin: 0 auto;

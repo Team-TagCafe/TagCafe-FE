@@ -1,8 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Bookmark.css";
 
-function Bookmark({ onClick, width = "24px", height = "50px" }) {
-  const [isBookmarked, setIsBookmarked] = useState(false);
+function Bookmark({ onClick, width = "24px", height = "50px", isSaved = false}) {
+  const [isBookmarked, setIsBookmarked] = useState(isSaved);
+
+  useEffect(() => {
+    setIsBookmarked(isSaved);
+  }, [isSaved]);
 
   const toggleBookmarkStatus = () => {
     setIsBookmarked(!isBookmarked);

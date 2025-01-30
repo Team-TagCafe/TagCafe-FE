@@ -2,13 +2,13 @@ import React, { createContext, useContext, useState } from 'react';
 
 // 카페 리스트 (전역 데이터)
 const initialCafeList = [
-    { id: 1, place_name: '스타벅스 강남점', address_name: '서울 강남구 테헤란로 123', x: 127.027610, y: 37.498095, saved: false },
-    { id: 2, place_name: '이디야 커피 신촌점', address_name: '서울 서대문구 신촌로 45', x: 126.936843, y: 37.559768, saved: false },
-    { id: 3, place_name: '빽다방 홍대점', address_name: '서울 마포구 홍대입구역 3번 출구', x: 126.922377, y: 37.556744, saved: false },
-    { id: 4, place_name: '커피빈 서울역점', address_name: '서울 중구 서울역로 12', x: 126.970600, y: 37.554678, saved: true },
-    { id: 5, place_name: '폴바셋 광화문점', address_name: '서울 종로구 세종대로 25', x: 126.976850, y: 37.571420, saved: false },
-    { id: 6, place_name: '스테이어도러블', address_name: '경기도 용인시 기흥구 죽전로43번길 15-3 (보정동)', x: 127.112763, y: 37.321393, saved: true },
-    { id: 7, place_name: '카레클린트', address_name: '경기도 용인시 기흥구 보정동 1186-2', x: 127.109171, y: 37.321808, saved: true },  
+    { id: 1, place_name: '스타벅스 강남점', address_name: '서울 강남구 테헤란로 123', x: 127.027610, y: 37.498095, saved: true, tags: ["콘센트 일부", "와이파이 빠름"] },
+    { id: 2, place_name: '이디야 커피 신촌점', address_name: '서울 서대문구 신촌로 45', x: 126.936843, y: 37.559768, saved: false, tags: ["콘센트 일부", "와이파이 빠름"] },
+    { id: 3, place_name: '빽다방 홍대점', address_name: '서울 마포구 홍대입구역 3번 출구', x: 126.922377, y: 37.556744, saved: false, tags: ["콘센트 일부", "와이파이 빠름"] },
+    { id: 4, place_name: '커피빈 서울역점', address_name: '서울 중구 서울역로 12', x: 126.970600, y: 37.554678, saved: false, tags: ["콘센트 일부", "와이파이 빠름"] },
+    { id: 5, place_name: '폴바셋 광화문점', address_name: '서울 종로구 세종대로 25', x: 126.976850, y: 37.571420, saved: true, tags: ["콘센트 일부", "와이파이 빠름"] },
+    { id: 6, place_name: '스테이어도러블', address_name: '경기도 용인시 기흥구 죽전로43번길 15-3 (보정동)', x: 127.112763, y: 37.321393, saved: false, tags: ["콘센트 일부", "와이파이 빠름"] },
+    { id: 7, place_name: '카레클린트', address_name: '경기도 용인시 기흥구 보정동 1186-2', x: 127.109171, y: 37.321808, saved: true, tags: ["콘센트 일부", "와이파이 빠름"] },  
 ];
 
 // Context 생성
