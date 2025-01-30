@@ -43,7 +43,7 @@ const DetailReviewCard = ({ review }) => {
       </div>
       
       <p className="detail-review-content">{content}</p>
-      <TagGroup tags={formattedTags} />
+      <TagGroup className="detail-review-content__tag-group" tags={formattedTags} />
 
       {/* 구분선 */}
       <div className="detail-review-divider"></div>

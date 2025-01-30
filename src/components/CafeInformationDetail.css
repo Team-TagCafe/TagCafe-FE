@@ -2,7 +2,7 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    padding: 20px;
+    padding: 10px;
     margin: 5px;
     gap: 10px;
     /* width: 266px; */
@@ -54,7 +54,6 @@
 
   .cafe-information-detail__value .operating {
     font-weight: bold;
-    margin-left: 12px;
     margin-right: 5px;;
   }
   
@@ -62,13 +61,14 @@
   .cafe-information-detail__toggle {
     width: 20px;
     height: 20px;
-    margin-left: 5px;
+    margin-left: 15px;
     cursor: pointer; 
+    vertical-align: -7px;
   }
   
   /* 드롭다운 (운영시간 상세) */
   .cafe-information-detail__dropdown {
-    margin-left: 95px;
+    margin-left: 105px;
     text-align: left;
     display: flex;
     flex-direction: column;

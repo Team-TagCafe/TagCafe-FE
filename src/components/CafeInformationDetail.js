@@ -38,14 +38,14 @@ function CafeInformationDetail() {
         />
         <div className="cafe-information-detail__label">운영시간</div>
         <div className="cafe-information-detail__value">
-            <span className="operating">영업중 </span> 21:00 까지
+          <span className="operating">영업중 </span> 21:00 까지
+          <img
+            src={isHoursOpen ? "/img/toggle-up.png" : "/img/toggle-down.png"}
+            alt="Toggle"
+            className="cafe-information-detail__toggle"
+            onClick={() => setIsHoursOpen(!isHoursOpen)}
+          />
         </div>
-        <img
-          src={isHoursOpen ? "/img/toggle-up.png" : "/img/toggle-down.png"}
-          alt="Toggle"
-          className="cafe-information-detail__toggle"
-          onClick={() => setIsHoursOpen(!isHoursOpen)}
-        />
       </div>
       {isHoursOpen && (
         <div className="cafe-information-detail__dropdown">
