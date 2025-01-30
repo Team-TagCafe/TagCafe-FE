@@ -62,6 +62,7 @@ const CafeDetail = () => {
 
   useEffect(() => {
     if (activeTab !== "cafe-detail-info" || !selectedCafe ) {
+      setMap(null);
       return; // activeTab이 "cafe-detail-info"가 아니면 아무 작업도 하지 않음
     }
 
