@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { BottomBar, TopBar, LocationReset, CafePopup } from '../components';
+import { useCafe } from './CafeContext';
 import './Home.css'
 
 const Home = () => {
@@ -12,7 +13,7 @@ const Home = () => {
   const [showPopup, setShowPopup] = useState(false);  // 팝업 표시 여부 상태
   const [popupContent, setPopupContent] = useState({ name: '', address: '', id: null, });  // 팝업 내용 (카페 이름, 주소, id)  
   const location = useLocation();
-  const selectedPlace = location.state?.selectedPlace; // 외부에서 선택된 장소 정보
+  const { selectedPlace } = useCafe(); // 전역 상태에서 선택된 장소 가져오기
 
   const [searchResults, setSearchResults] = useState([]);
 

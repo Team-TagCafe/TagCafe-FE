@@ -15,6 +15,7 @@ import LocationPolicy from './start/LocationPolicy';
 import FAQ from './start/FAQ';
 import CafeDetail from './cafeDetail/CafeDetail';
 import ReviewWrite from './cafeDetail/ReviewWrite';
+import { CafeProvider } from './home/CafeContext';
 
 function App() {
   const [selectedPlace, setSelectedPlace] = useState(null); // 선택된 장소 상태
@@ -25,6 +26,7 @@ function App() {
   };
 
   return (
+    <CafeProvider>
     <div className="App">
       <BrowserRouter>
         <Routes>
@@ -46,6 +48,7 @@ function App() {
         </Routes>
       </BrowserRouter>
     </div>
+    </CafeProvider>
   );
 }
 

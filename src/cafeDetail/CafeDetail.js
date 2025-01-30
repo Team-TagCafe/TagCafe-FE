@@ -5,11 +5,15 @@ import { BottomBar, Bookmark, CafeInformationDetail, TopBar } from "../component
 import "./CafeDetail.css";
 import ImageCarousel from "./ImageCarousel";
 import DetailReviewCard from "./DetailReviewCard";
+import { useCafe } from "../home/CafeContext";
 
 const CafeDetail = () => {
   const navigate = useNavigate(); // useNavigate 훅 사용
   const { id } = useParams(); // 카페 id
   const [activeTab, setActiveTab] = useState("cafe-detail-info"); // 현재 활성화된 탭 관리  
+  const { cafes, toggleSaveCafe } = useCafe(); // 카페 전역 상태 가져오기
+  
+  const selectedCafe = cafes.find((cafe) => cafe.id === parseInt(id)); // 현재 선택된 카페 찾기
 
   // 뒤로가기 핸들러
   const handleBackClick = () => {
@@ -17,7 +21,7 @@ const CafeDetail = () => {
   };
 
   const handleWriteReviewClick = () => {
-    navigate(`/cafe/${id}/review-write`); // Dynamically include the cafe id in the URL
+    navigate(`/cafe/${id}/review-write`);
   };
 
   const [reviews, setReviews] = useState([
@@ -56,15 +60,8 @@ const CafeDetail = () => {
   const imageOption = { offset: new kakao.maps.Point(5, 5) };
   const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
 
-  // 카페의 위치 (예시 좌표)
-  const cafeLocation = {
-    lat: 37.321405,
-    lng: 127.112799,
-    name: "스테이 어도러블",
-  };
-
   useEffect(() => {
-    if (activeTab !== "cafe-detail-info") {
+    if (activeTab !== "cafe-detail-info" || !selectedCafe ) {
       return; // activeTab이 "cafe-detail-info"가 아니면 아무 작업도 하지 않음
     }
 
@@ -73,19 +70,19 @@ const CafeDetail = () => {
     // 이미 초기화된 지도 삭제 후 새로 초기화
     if (map) {
       map.relayout(); // 지도 크기 재조정
-      map.setCenter(new kakao.maps.LatLng(cafeLocation.lat, cafeLocation.lng)); // 중심 좌표 재설정
+      map.setCenter(new kakao.maps.LatLng(selectedCafe.y, selectedCafe.x)); // 중심 좌표 재설정
       return; // 기존 지도를 재활용하므로 새로 생성하지 않음
     }
 
     const options = {
-      center: new kakao.maps.LatLng(cafeLocation.lat, cafeLocation.lng),
+      center: new kakao.maps.LatLng(selectedCafe.y, selectedCafe.x),
       level: 3,
     };
 
     const kakaoMap = new kakao.maps.Map(container, options);
     setMap(kakaoMap);
 
-    const markerPosition = new kakao.maps.LatLng(cafeLocation.lat, cafeLocation.lng);
+    const markerPosition = new kakao.maps.LatLng(selectedCafe.y, selectedCafe.x);
     const marker = new kakao.maps.Marker({
       position: markerPosition,
       image: markerImage,
@@ -93,8 +90,8 @@ const CafeDetail = () => {
 
     marker.setMap(kakaoMap);
 
-    createCustomOverlay(kakaoMap, markerPosition, cafeLocation.name, cafeLocation.address);
-  }, [activeTab]); // `activeTab`에 따라 업데이트  
+    createCustomOverlay(kakaoMap, markerPosition, selectedCafe.place_name, selectedCafe.address_name);
+  }, [activeTab, selectedCafe]); // `activeTab`에 따라 업데이트  
 
 
   /* ---------- 지도 카페명 표시 CustomOverlay 생성  ---------- */
@@ -132,11 +129,16 @@ const CafeDetail = () => {
       {/* 카페 헤더 정보 */}
       <div className="cafe-detail-header">
         <div className="cafe-detail-header-text">
-          <div className="cafe-detail-name">스테이 어도러블</div>
-          <div className="cafe-detail-address">경기 용인시 기흥구 죽전로43번길 15-3 1층</div>
+          <div className="cafe-detail-name">{selectedCafe.place_name}</div>
+          <div className="cafe-detail-address">{selectedCafe.address_name}</div>
         </div>
-        <Bookmark width="17px" height="31px" />
-      </div>
+        <Bookmark
+          width="17px"
+          height="31px"
+          isSaved={selectedCafe.saved}
+          onClick={() => toggleSaveCafe(selectedCafe.id)}
+        />      
+        </div>
 
       {/* 구분선 */}
       <div className="cafe-detail-divider"></div>
@@ -179,7 +181,7 @@ const CafeDetail = () => {
             <div className="cafe-detail-info-text">
               <div>
                 <img src="/img/location.png" />
-                <span>경기 용인시 기흥구 죽전로43번길 15-3 1층</span>
+                <span>{selectedCafe.address_name}</span>
               </div>
               <div>
                 <img src="/img/phone.png" />
