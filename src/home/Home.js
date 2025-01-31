@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { BottomBar, TopBar, LocationReset, CafePopup } from '../components';
+import { useCafe } from './CafeContext';
 import './Home.css'
 
 const Home = () => {
@@ -10,9 +11,9 @@ const Home = () => {
   const [map, setMap] = useState(null); // Kakao 지도
   const [searchPlace, setSearchPlace] = useState(''); // 검색어 상태
   const [showPopup, setShowPopup] = useState(false);  // 팝업 표시 여부 상태
-  const [popupContent, setPopupContent] = useState({ name: '', address: '' });  // 팝업 내용 (카페 이름, 주소)  
+  const [popupContent, setPopupContent] = useState({ name: '', address: '', id: null, });  // 팝업 내용 (카페 이름, 주소, id)  
   const location = useLocation();
-  const selectedPlace = location.state?.selectedPlace; // 외부에서 선택된 장소 정보
+  const { selectedPlace } = useCafe(); // 전역 상태에서 선택된 장소 가져오기
 
   const [searchResults, setSearchResults] = useState([]);
 
@@ -92,7 +93,7 @@ const Home = () => {
 
     // 라벨 클릭 이벤트 -  CafePopup 뜸
     content.addEventListener('click', () => {
-      setPopupContent({ name: placeName, address: placeAdress });
+      setPopupContent({ name: placeName, address: placeAdress, id: selectedPlace.id || 1, });
       setShowPopup(true);
     });
 
@@ -146,6 +147,7 @@ const Home = () => {
           <CafePopup
             cafeName={popupContent.name}
             cafeAddress={popupContent.address}
+            cafeId={popupContent.id}
             onClose={() => setShowPopup(false)}
           />}
       </div>

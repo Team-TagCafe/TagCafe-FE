@@ -13,6 +13,9 @@ import PrivacyPolicy from './start/PrivacyPolicy';
 import ServicePolicy from './start/ServicePolicy';
 import LocationPolicy from './start/LocationPolicy';
 import FAQ from './start/FAQ';
+import CafeDetail from './cafeDetail/CafeDetail';
+import ReviewWrite from './cafeDetail/ReviewWrite';
+import { CafeProvider } from './home/CafeContext';
 
 function App() {
   const [selectedPlace, setSelectedPlace] = useState(null); // 선택된 장소 상태
@@ -23,6 +26,7 @@ function App() {
   };
 
   return (
+    <CafeProvider>
     <div className="App">
       <BrowserRouter>
         <Routes>
@@ -39,9 +43,12 @@ function App() {
           <Route path="/service-policy" element={<ServicePolicy />} />
           <Route path="/location-policy" element={<LocationPolicy />} />
           <Route path="/faq-qa" element={<FAQ />} />
+          <Route path="/cafe/:id" element={<CafeDetail />} />
+          <Route path="/cafe/:id/review-write" element={<ReviewWrite />} />
         </Routes>
       </BrowserRouter>
     </div>
+    </CafeProvider>
   );
 }
 

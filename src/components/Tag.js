@@ -22,12 +22,10 @@ function Tag({
   };
 
   const buttonClassName = isPopupOpen
-  ? "tag-button popup-open"
-  : selectedOption || 
-    (selectedFilters && 
-     Object.values(selectedFilters).some((value) => value !== null))
-    ? "tag-button option-selected"
-    : "tag-button";
+    ? "tag-button popup-open"
+    : selectedOption || (selectedFilters && selectedFilters[tagText])
+      ? "tag-button option-selected"
+      : "tag-button";
 
 
   return (
