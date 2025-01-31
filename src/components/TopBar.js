@@ -58,15 +58,35 @@ const TopBar = ({
             console.log('Updated selectedFilters:', updatedFilters); // selectedFilters 값 출력
             return updatedFilters;
         });
+
+        // **개별 Tag들도 업데이트하기**
+        setSelectedOptions((prevOptions) => ({
+            ...prevOptions,
+            [filterGroup]: prevOptions[filterGroup] === option ? "" : option,
+        }));
     };
 
     const handleOptionSelect = (tagText, option) => {
-        setSelectedOptions((prevOptions) => ({
-            ...prevOptions,
-            [tagText]: prevOptions[tagText] === option ? "" : option,
-        }));
-        console.log('Option selected:', option);  // Debugging line
+        setSelectedOptions((prevOptions) => {
+            const updatedOptions = {
+                ...prevOptions,
+                [tagText]: prevOptions[tagText] === option ? "" : option,
+            };
+            console.log('Option selected:', updatedOptions);
+            return updatedOptions;
+        });
+    
+        // **TagFilter랑 동기화되도록 selectedFilters도 업데이트**
+        setSelectedFilters((prevFilters) => {
+            const updatedFilters = {
+                ...prevFilters,
+                [tagText]: prevFilters[tagText] === option ? null : option,
+            };
+            console.log('Updated selectedFilters:', updatedFilters);
+            return updatedFilters;
+        });
     };
+    
 
     const handleReset = () => {
         setSelectedOptions({
