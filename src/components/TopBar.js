@@ -103,12 +103,16 @@ const TopBar = ({
     };
 
     useEffect(() => {
-        const topBarHeight = showSearch && showTags ? "185px" : "141px";
+        const topBarHeight =
+        showSearch && showTags ? "185px" :
+        showSearch || showTags ? "141px" :
+        (!showSearch && !showTags && title && showHamburger) ? "110px" : "100px";
+        
         const tagSelectGroupHeight = showSearch && showTags ? "65px" : "45px";
 
         // body padding-top 설정
         document.body.style.paddingTop = topBarHeight;
-
+    
         // .top-bar height 동적으로 설정
         const topBarElement = document.querySelector('.top-bar');
         if (topBarElement) {
@@ -120,14 +124,15 @@ const TopBar = ({
         if (tagSelectGroupElement) {
             tagSelectGroupElement.style.top = tagSelectGroupHeight;
         }
-
+    
         return () => {
-            document.body.style.paddingTop = "0"; // 초기화
+            // 초기화
+            document.body.style.paddingTop = "0";
             if (topBarElement) {
-                topBarElement.style.height = "0"; // 초기화
+                topBarElement.style.height = "";
             }
         };
-    }, [showSearch, showTags]);
+    }, [showSearch, showTags, title, showHamburger]);
 
 
     return (
@@ -152,6 +157,7 @@ const TopBar = ({
                             placeholder="지역, 카페 이름으로 검색"
                         />
                         <button className="search-button">
+                            <img src="/img/search.png" alt="Search" />
                             <img src="/img/search.png" alt="Search" />
                         </button>
                     </div>
@@ -223,6 +229,7 @@ const TopBar = ({
                 {/* 햄버거 메뉴 버튼 */}
                 {showHamburger && (
                     <button className="hamburger-button" onClick={toggleMenu}>
+                        <img className="hamburger-menu" src="/img/hamburger_menu.png" alt="Menu" />
                         <img className="hamburger-menu" src="/img/hamburger_menu.png" alt="Menu" />
                     </button>
                 )}

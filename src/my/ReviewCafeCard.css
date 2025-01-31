@@ -1,0 +1,144 @@
+.review-cafe-card {
+    width : 354px;
+    height : 131px;
+    display: flex;
+    padding: 5px;
+    background-color: #ffffff;
+  }
+  
+  .review-cafe-card:not(:last-child) {
+    border-bottom: 1px solid #CEC2B2; 
+  }
+
+  .review-cafe-image-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80px;
+  }
+  
+  .review-cafe-image {
+    width: 73px;
+    height: 73px;
+    border-radius: 10px;
+    object-fit: cover;
+    margin-bottom: 5px;;
+  }
+  
+  .review-view-details {
+    align-self: center;
+    font-size: 10px;
+    color: #745d4c;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  .review-cafe-info {
+    flex: 1;
+    padding-left: 10px;
+    position: relative;
+  }
+  
+  .review-cafe-header {
+    display: flex;
+    align-items: center; 
+    justify-content: space-between; 
+  }
+  .review-cafe-name {
+    display: flex; 
+    align-items: center; 
+    font-size: 12px;
+    font-weight: bold;
+    color: #2b2b2b;
+    margin: 0 0 5px;
+  }
+
+  .review-cafe-rating{
+    margin-left:5px;
+    gap: 3px;
+    display: inline-flex; /* 이미지와 텍스트를 한 줄에 정렬 */
+  }
+
+  .review-rating-star-icon{
+    height: 15px;
+    width: 15px;  
+    vertical-align: middle; 
+    display: inline-block; /* 이미지 정렬 */
+  }
+  
+  .review-cafe-date {
+    font-size: 8px;
+    color: #A9A9A9;
+    margin: 0 0 10px;
+  }
+  
+  .review-cafe-description {
+    font-size: 10px;
+    color: #2b2b2b;
+    margin: 0 0 0px;
+  }
+  
+  .review-cafe-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-bottom: 10px;
+  }
+  
+  .review-cafe-tag {
+    font-size: 9px;
+    padding: 5px 8px;
+    border: 1px solid #ddd;
+    border-radius: 15px;
+    color: #422919;
+  }
+  
+  .review-cafe-details {
+    font-size: 12px;
+    color: #745d4c;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+  
+
+  .review-more-button {
+    position: absolute;
+    top: 0;
+    right: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+  }
+  
+
+.review-more-button img {
+  width: 20px;
+  height: 20px;
+}
+
+.review-more-menu {
+  position: absolute;
+  top: 25px;
+  right: 0;
+  background: #fff;
+  border: 1px solid #cec2b2;
+  border-radius: 10px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+}
+
+.review-more-menu button {
+  background: none;
+  border: none;
+  text-align: center;
+  font-size: 10px;
+  font-weight: 600;
+  color: #422919;
+  cursor: pointer;
+}
