@@ -1,0 +1,72 @@
+.my-page {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 393px;
+    height: 100vh;
+    margin-top: 0 auto;
+    background-color: #ffffff;
+    padding-bottom: 100px; 
+    overflow: hidden;
+  }
+  
+  .my-tabs {
+    display: flex;
+    justify-content: left;
+    position: relative;
+    align-items: center;
+    margin-left: 10px;
+    margin-top: 20px;
+    border-bottom: 1px solid #ffffff;
+  }
+  
+  .my-tab {
+    font-size: 13px;
+    font-weight: 700;
+    color: #422919;
+    border: none;
+    border-radius: 0;
+    background: #ffffff;
+    cursor: pointer;
+    position: relative;
+  }
+  
+  .my-tab.active {
+    border-bottom: 2px solid #422919;
+    color: #422919;
+  }
+
+  .my-content {
+    flex-grow: 1; 
+    overflow-y: auto; 
+    padding-bottom: 180px;
+  }
+    
+  .review-cafe-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    overflow: hidden;
+  }
+  
+  .cafe-count {
+    width: 50px;
+    font-size: 10px;
+    font-weight: 600;
+    color: #A69180;
+    margin-bottom: 10px;
+    margin-left : 20px;
+  }
+
+  .report-cafe-plus-button{
+    background: none;
+    border : none;
+    padding: 0;
+    position: absolute;
+    right: 20px;
+  }
+  
+  .report-cafe-plus-button img{
+    width: 28px;
+    height: 28px;
+  }
