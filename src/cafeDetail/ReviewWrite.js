@@ -3,36 +3,26 @@ import { useParams, useNavigate } from "react-router-dom";
 import { TopBar, BottomBar, LongButton } from "../components";
 import CafeInformation from "../components/CafeInformation";
 import "./ReviewWrite.css";
+import { useCafe } from "../home/CafeContext";
 
 const ReviewWrite = () => {
-    const { cafeId } = useParams();
+    const { id } = useParams();
     const navigate = useNavigate();
+    const { cafes } = useCafe(); 
+
     const [reviewWriteText, setreviewWriteText] = useState("")
 
     const handleReviewWriteChange = (event) => {
         setreviewWriteText(event.target.value); // 입력값 상태 업데이트
     };
 
-    const mockReviews = [
-        {
-            cafeId: "1",
-            name: "스테이 어도러블",
-            address: "경기 용인시 기흥구 죽전로43번길 15-3",
-            rating: 4,
-            wifi: "빠름",
-            outlets: "일부",
-            desk: "적당함",
-            restroom: "외부",
-            parking: "가능(무료)",
-            description: "조용하고 공부하기 좋은 카페입니다.",
-            image: "/img/cafe-img.png",
-        },
-    ];
-
-    const foundReview = mockReviews.find((r) => r.cafeId === cafeId) || {
-        name: "",
-        address: "",
-        rating: 0,
+    const foundReview = cafes.find((cafe) => cafe.id === parseInt(id)) || {
+        place_name: "카페 이름 없음",
+        address_name: "주소 없음",
+        saved: false,
+        x: 0,
+        y: 0,
+        tags: [],
         wifi: "빠름",
         outlets: "없음",
         desk: "좁음",
@@ -67,17 +57,17 @@ const ReviewWrite = () => {
                 showHamburger={true} />
 
             <header className="cafe-detail-edit-header">
-                <button className="back-button" onClick={() => navigate("/cafe/:id")}>
+                <button className="back-button" onClick={() => navigate(-1)}>
                     <img src="/img/back-button.png" alt="뒤로가기" />
                 </button>
                 <h2>리뷰 작성</h2>
             </header>
 
             <section className="cafe-detail-cafe-info">
-                <img src={foundReview.image || "/img/cafe-img.png"} alt={foundReview.name} className="cafe-detail-cafe-image" />
+                <img src={foundReview.image || "/img/cafe-img.png"} alt={foundReview.place_name} className="cafe-detail-cafe-image" />
                 <div>
-                    <h3 className="cafe-detail-cafe-name">{foundReview.name || "카페 이름 없음"}</h3>
-                    <p className="cafe-detail-cafe-address">{foundReview.address || "주소 없음"}</p>
+                    <h3 className="cafe-detail-cafe-name">{foundReview.place_name || "카페 이름 없음"}</h3>
+                    <p className="cafe-detail-cafe-address">{foundReview.address_name || "주소 없음"}</p>
                 </div>
             </section>
 
