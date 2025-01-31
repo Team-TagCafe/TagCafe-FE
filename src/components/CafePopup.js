@@ -1,6 +1,8 @@
 import React from 'react';
+import { useNavigate } from "react-router-dom";
 import './CafePopup.css';
 import TagGroup from '../components/TagGroup';
+import { useCafe } from '../home/CafeContext';
 
 const tags = [
     { icon: "/img/wifi.png", text: "와이파이 빠름" },
@@ -11,12 +13,19 @@ const tags = [
 ];
 
 const CafePopup = ({ cafeName, cafeAddress, onClose }) => {
+    const navigate = useNavigate(); // Hook to navigate programmatically
+    const { selectedPlace } = useCafe();
+
     const handleOverlayClick = (e) => {
         onClose(); // 외부 클릭 시 팝업 닫기
     };
 
     const handlePopupClick = (e) => {
         e.stopPropagation(); // 내부 클릭 시 이벤트 전파 방지
+    };
+
+    const handleViewDetailsClick = () => {
+        navigate(`/cafe/${selectedPlace.id}}`); // 선택한 카페의 ID로 상세 페이지 이동
     };
 
     return (
@@ -35,7 +44,9 @@ const CafePopup = ({ cafeName, cafeAddress, onClose }) => {
                             <span className="cafe-address">{cafeAddress}</span>
                         </div>
                         {/* 카페 상세보기 */}
-                        <div className="view-details">카페 상세보기 ＞ </div>
+                        <div className="view-details" onClick={handleViewDetailsClick}>
+                            카페 상세보기 ＞
+                        </div>
                     </div>
                 </div>
 

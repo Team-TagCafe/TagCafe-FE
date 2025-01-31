@@ -168,7 +168,7 @@
 .tag-select-group {
   position: relative;
   display: flex;
-  top: 65px;
+  /* top: 65px; */
   overflow-x: auto; /* 가로 스크롤 */
   gap: 7px;
   white-space: nowrap; /* 태그가 줄바꿈되지 않도록 설정 */

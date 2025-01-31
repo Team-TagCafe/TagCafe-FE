@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom';
 import "./TopBar.css";
 import Tag from './Tag';
 import SideMenu from "../start/SideMenu";
-import SideMenu_un from "../start/SideMenu_un"; 
+import SideMenu_un from "../start/SideMenu_un";
 
 
 const TopBar = ({
@@ -58,15 +58,35 @@ const TopBar = ({
             console.log('Updated selectedFilters:', updatedFilters); // selectedFilters 값 출력
             return updatedFilters;
         });
+
+        // **개별 Tag들도 업데이트하기**
+        setSelectedOptions((prevOptions) => ({
+            ...prevOptions,
+            [filterGroup]: prevOptions[filterGroup] === option ? "" : option,
+        }));
     };
 
     const handleOptionSelect = (tagText, option) => {
-        setSelectedOptions((prevOptions) => ({
-            ...prevOptions,
-            [tagText]: prevOptions[tagText] === option ? "" : option,
-        }));
-        console.log('Option selected:', option);  // Debugging line
+        setSelectedOptions((prevOptions) => {
+            const updatedOptions = {
+                ...prevOptions,
+                [tagText]: prevOptions[tagText] === option ? "" : option,
+            };
+            console.log('Option selected:', updatedOptions);
+            return updatedOptions;
+        });
+    
+        // **TagFilter랑 동기화되도록 selectedFilters도 업데이트**
+        setSelectedFilters((prevFilters) => {
+            const updatedFilters = {
+                ...prevFilters,
+                [tagText]: prevFilters[tagText] === option ? null : option,
+            };
+            console.log('Updated selectedFilters:', updatedFilters);
+            return updatedFilters;
+        });
     };
+    
 
     const handleReset = () => {
         setSelectedOptions({
@@ -89,6 +109,9 @@ const TopBar = ({
             showSearch || showTags ? "141px" :
             (!showSearch && !showTags && title && showHamburger) ? "110px" : "100px";
     
+
+        const tagSelectGroupHeight = showSearch && showTags ? "65px" : "45px";
+
         // body padding-top 설정
         document.body.style.paddingTop = topBarHeight;
     
@@ -97,7 +120,14 @@ const TopBar = ({
         if (topBarElement) {
             topBarElement.style.height = topBarHeight;
         }
-    
+
+
+        // .tag-select-group top 동적으로 설정
+        const tagSelectGroupElement = document.querySelector('.tag-select-group');
+        if (tagSelectGroupElement) {
+            tagSelectGroupElement.style.top = tagSelectGroupHeight;
+        }
+
         return () => {
             // 초기화
             document.body.style.paddingTop = "0";
@@ -221,7 +251,7 @@ const TopBar = ({
                 </>
             )}
         </>
-  );
+    );
 };
 
 export default TopBar;

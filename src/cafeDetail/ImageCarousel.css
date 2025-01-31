@@ -1,0 +1,37 @@
+.carousel-image {
+    width: 100%;
+    height: 385px;
+}
+
+.slick-dots {
+    height: 30px;
+    gap: 40px;
+}
+
+.slick-dots li {
+    margin: 0px;
+}
+
+.slick-dots li button:before {
+    font-size: 5px;
+    color: gray;
+}
+
+.slick-dots li.slick-active button:before {
+    color: white;
+}
+
+.custom-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: gray;
+}
+
+.slick-dots li.slick-active .custom-dot {
+    background-color: white;
+}
+
+.image-carousel-dots {
+    margin: 0px;
+}
