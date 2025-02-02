@@ -13,12 +13,12 @@ import PrivacyPolicy from './start/PrivacyPolicy';
 import ServicePolicy from './start/ServicePolicy';
 import LocationPolicy from './start/LocationPolicy';
 import FAQ from './start/FAQ';
-import CafeDetail from './cafeDetail/CafeDetail';
-import ReviewWrite from './cafeDetail/ReviewWrite';
-import { CafeProvider } from './home/CafeContext';
 import ReviewEdit from './my/ReviewEdit';
 import ReporCafeAdd from './my/ReportAdd';
 import ReportEdit from './my/ReportEdit';
+import CafeDetail from './cafeDetail/CafeDetail';
+import ReviewWrite from './cafeDetail/ReviewWrite';
+import { CafeProvider } from './home/CafeContext';
 
 function App() {
   const [selectedPlace, setSelectedPlace] = useState(null); // 선택된 장소 상태
