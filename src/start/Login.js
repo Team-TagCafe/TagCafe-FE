@@ -7,7 +7,7 @@ function LoginPage() {
 
   const handleLogin = () => {
     console.log("카카오톡으로 로그인 버튼 클릭됨");
-    // 카카오톡 로그인 동작 추가
+    window.location.href = "http://localhost:8080/oauth/kakao/login";
   };
 
   const handleGuestAccess = () => {

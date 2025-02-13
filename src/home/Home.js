@@ -1,25 +1,25 @@
 /*global kakao*/
 
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { BottomBar, TopBar, LocationReset, CafePopup } from '../components';
 import { useCafe } from './CafeContext';
-import './Home.css'
+import './Home.css';
 
 const Home = () => {
   /* ---------- 상태 관리 ---------- */
-  const [map, setMap] = useState(null); // Kakao 지도
-  const [searchPlace, setSearchPlace] = useState(''); // 검색어 상태
-  const [showPopup, setShowPopup] = useState(false);  // 팝업 표시 여부 상태
-  const [popupContent, setPopupContent] = useState({ name: '', address: '', id: null, });  // 팝업 내용 (카페 이름, 주소, id)  
+  const navigate = useNavigate();
   const location = useLocation();
-  const { selectedPlace } = useCafe(); // 전역 상태에서 선택된 장소 가져오기
-
+  const { selectedPlace } = useCafe();
+  const [map, setMap] = useState(null);
+  const [searchPlace, setSearchPlace] = useState('');
+  const [showPopup, setShowPopup] = useState(false);
+  const [popupContent, setPopupContent] = useState({ name: '', address: '', id: null });
   const [searchResults, setSearchResults] = useState([]);
-
-  // 지도 사이즈 설정용
-  const [innerWidth, setInnerWidth] = useState(window.innerWidth); // 화면 너비
-  const [innerHeight, setInnerHeight] = useState(window.innerHeight); // 화면 높이
+  const [innerWidth, setInnerWidth] = useState(window.innerWidth);
+  const [innerHeight, setInnerHeight] = useState(window.innerHeight);
+  const [nickname, setNickname] = useState(localStorage.getItem("nickname") || ""); // 로그인된 사용자 닉네임
+  const [email, setEmail] = useState(localStorage.getItem("email") || ""); // 로그인된 사용자 이메일
 
   // 마커 이미지 설정
   const imageSrc = '/img/map-cafe.png';
@@ -27,6 +27,20 @@ const Home = () => {
   const imageOption = { offset: new kakao.maps.Point(5, 5) };
   const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
 
+  /* ---------- 카카오 로그인 후 사용자 정보 저장 ---------- */
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const nicknameFromUrl = params.get("nickname");
+    const emailFromUrl = params.get("email");
+
+    if (nicknameFromUrl && emailFromUrl) {
+      localStorage.setItem("nickname", nicknameFromUrl);
+      localStorage.setItem("email", emailFromUrl);
+      setNickname(nicknameFromUrl);
+      setEmail(emailFromUrl);
+      alert(`카카오 로그인 성공! 닉네임: ${nicknameFromUrl}`);
+    }
+  }, [location]);
 
   /* ---------- 초기 Kakao 지도 설정 ---------- */
   useEffect(() => {
@@ -34,13 +48,12 @@ const Home = () => {
       setInnerWidth(window.innerWidth);
       setInnerHeight(window.innerHeight);
     };
-    window.addEventListener("resize", resizeListener); //화면 사이즈 변경 감지
+    window.addEventListener("resize", resizeListener);
 
-    // 지도 초기화
     const container = document.getElementById('map');
     const options = {
-      center: new kakao.maps.LatLng(37.498095, 127.027610), // 초기 지도 중심 (강남역)
-      level: 3 // 지도 확대 레벨
+      center: new kakao.maps.LatLng(37.498095, 127.027610),
+      level: 3
     };
 
     const kakaoMap = new kakao.maps.Map(container, options);
@@ -49,14 +62,7 @@ const Home = () => {
     return () => window.removeEventListener('resize', resizeListener);
   }, []);
 
-
-  /* ---------- 장소,카페명 입력 시 검색어 표시 (searchPlace 값 업데이트) ---------- */
-  const handleSearchPlaceChange = (place) => {
-    setSearchPlace(place);
-  };
-
-
-  /* ---------- 검색창에서 특정 카페 선택 시 마커 1개 표시 (selectedPlace 값 변경 시) ---------- */
+  /* ---------- 검색창에서 특정 카페 선택 시 마커 표시 ---------- */
   useEffect(() => {
     if (map && selectedPlace) {
       const markerPosition = new kakao.maps.LatLng(selectedPlace.y, selectedPlace.x);
@@ -68,7 +74,6 @@ const Home = () => {
 
       createCustomOverlay(map, markerPosition, selectedPlace.place_name, selectedPlace.address_name);
 
-      // 마커 클릭 이벤트 - CafePopup 뜸
       kakao.maps.event.addListener(marker, 'click', () => {
         setPopupContent({ name: selectedPlace.place_name, address: selectedPlace.address_name });
         setShowPopup(true);
@@ -78,34 +83,26 @@ const Home = () => {
     }
   }, [map, selectedPlace]);
 
-
-  /* ---------- 검색창에서 장소 검색 시 마커 여러 개 표시 (구현 필요) ---------- */
-
-
-
-  /* ---------- 지도 카페명 표시 CustomOverlay 생성  ---------- */
-  const createCustomOverlay = (map, markerPosition, placeName, placeAdress) => {
-
+  /* ---------- 지도 카페명 표시 CustomOverlay 생성 ---------- */
+  const createCustomOverlay = (map, markerPosition, placeName, placeAddress) => {
     const content = document.createElement('div');
     content.className = 'label';
     content.innerText = placeName;
     content.style.cursor = 'pointer';
 
-    // 라벨 클릭 이벤트 -  CafePopup 뜸
     content.addEventListener('click', () => {
-      setPopupContent({ name: placeName, address: placeAdress, id: selectedPlace.id || 1, });
+      setPopupContent({ name: placeName, address: placeAddress, id: selectedPlace.id || 1 });
       setShowPopup(true);
     });
 
     const customOverlay = new kakao.maps.CustomOverlay({
       position: markerPosition,
       content: content,
-      yAnchor: -0.5, // 마커 아래에 위치하도록 조정
+      yAnchor: -0.5,
     });
 
     customOverlay.setMap(map);
   };
-
 
   /* ---------- 현재 위치로 지도 중심 이동 ---------- */
   const moveToUserLocation = () => {
@@ -115,12 +112,7 @@ const Home = () => {
           const userLat = position.coords.latitude;
           const userLng = position.coords.longitude;
           const userLocation = new kakao.maps.LatLng(userLat, userLng);
-
           map.setCenter(userLocation);
-
-          // 경도와 위도 출력
-          console.log("현재 위치 경도:", userLng);
-          console.log("현재 위치 위도:", userLat);
         },
         (error) => {
           console.error('사용자 위치를 가져오는 중 오류 발생:', error.message);
@@ -131,18 +123,25 @@ const Home = () => {
     }
   };
 
+  /* ---------- 로그아웃 기능 ---------- */
+  const handleLogout = () => {
+    localStorage.removeItem("nickname");
+    localStorage.removeItem("email");
+    setNickname("");
+    setEmail("");
+    navigate("/");
+  };
+
   return (
     <>
-      <TopBar
-        showSearch showTags showHamburger={true}
-        onSearchPlaceChange={handleSearchPlaceChange} />
+      <TopBar showSearch showTags showHamburger={true} onSearchPlaceChange={setSearchPlace} />
       <div>
         <div className="map" id="map"
           style={{ width: '393px', height: `${innerHeight - 265}px` }}
         ></div>
         <LocationReset onClick={moveToUserLocation} />
 
-        {/* 마커 클릭 시 팝업을 조건부로 표시 */}
+        {/* 마커 클릭 시 팝업 표시 */}
         {showPopup &&
           <CafePopup
             cafeName={popupContent.name}
@@ -150,6 +149,14 @@ const Home = () => {
             cafeId={popupContent.id}
             onClose={() => setShowPopup(false)}
           />}
+
+        {/* 로그인 상태 표시 */}
+        {nickname && (
+          <div className="user-info">
+            <p>환영합니다, {nickname}님!</p>
+            <button onClick={handleLogout}>로그아웃</button>
+          </div>
+        )}
       </div>
       <BottomBar />
     </>
