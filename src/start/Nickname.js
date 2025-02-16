@@ -1,50 +1,67 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import "./Hamburger.css"
+import "./Hamburger.css";
 import TextInput from "../components/TextInput"; 
 import LongButton from "../components/LongButton"; 
 import Popup from "../components/Popup";
 
-function NicknameChangePage({ onClose }) {
-  const [isPopupOpen, setIsPopupOpen] = useState(false); 
-  const [nickname, setNickname] = useState("");
+function NicknameChangePage() {
   const navigate = useNavigate();
+  const [isPopupOpen, setIsPopupOpen] = useState(false); 
+  const [nickname, setNickname] = useState(""); 
+  const [newNickname, setNewNickname] = useState(""); 
 
-  const handleInputChange = (value) => {
-    setNickname(value);
+  useEffect(() => {
+    const savedNickname = localStorage.getItem("nickname") || "태카"; 
+    setNickname(savedNickname);
+    setNewNickname(savedNickname);
+  }, []);
+
+  
+  const handleInputChange = (event) => {
+    if (!event || !event.target) {
+      console.error("handleInputChange: event 또는 event.target이 없음", event);
+      return;
+    }
+    setNewNickname(event.target.value);
+  };
+
+  const openPopup = () => {
+    setIsPopupOpen(true);
   };
 
   const handleConfirm = () => {
-    setIsPopupOpen(false);
-    if (nickname.length < 2 || nickname.length > 15) {
+    if (newNickname.length < 2 || newNickname.length > 15) {
       alert("닉네임은 2~15자 이내로 입력해주세요.");
-    } else {
-      console.log(`닉네임 변경 완료: ${nickname}`);
-      navigate(-1);
+      return;
     }
+
+    localStorage.setItem("nickname", newNickname);
+
+    setNickname(newNickname);
+    setNewNickname(newNickname);
+
+    setTimeout(() => {
+      localStorage.setItem("nickname", newNickname);
+      console.log("로컬 스토리지에 저장된 닉네임 확인:", localStorage.getItem("nickname"));
+    }, 100);
+
+    setIsPopupOpen(false);
+    navigate(-1);
   };
 
   const handleCancel = () => {
     setIsPopupOpen(false);
-  }
-
-  const openPopup = () => {
-    setIsPopupOpen(true); 
   };
 
-
   const handleBack = () => {
-    navigate(-1); 
+    navigate(-1);
   };
 
   return (
     <div className="hamburger-page">
-      {/* 닫기 버튼 */}
-      <button className="close-button" onClick={handleBack}>
-        ×
-      </button>
+      <button className="close-button" onClick={handleBack}>×</button>
 
-      {/* 로고 및 제목 */}
       <div className="hamburger-header">
         <h1 className="hamburger-title">
           TagCafe
@@ -56,16 +73,14 @@ function NicknameChangePage({ onClose }) {
         <p className="hamburger-description">2~15자 이내로 입력 가능합니다</p>
       </div>
 
-      {/* 입력창 컴포넌트 */}
       <div className="text-input-container">
         <TextInput
           placeholder="닉네임을 입력하세요"
-          value={nickname}
+          value={newNickname}
           onChange={handleInputChange}
         />
       </div>
 
-      {/* 확인 버튼 컴포넌트 */}
       <div className="confirm-button-container">
         <LongButton optionText="확인" onClick={openPopup} />
       </div>

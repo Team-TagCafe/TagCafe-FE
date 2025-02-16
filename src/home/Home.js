@@ -38,7 +38,6 @@ const Home = () => {
       localStorage.setItem("email", emailFromUrl);
       setNickname(nicknameFromUrl);
       setEmail(emailFromUrl);
-      alert(`카카오 로그인 성공! 닉네임: ${nicknameFromUrl}`);
     }
   }, [location]);
 
