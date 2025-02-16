@@ -12,17 +12,12 @@ function NicknameChangePage() {
   const [newNickname, setNewNickname] = useState(""); 
 
   useEffect(() => {
-    const savedNickname = localStorage.getItem("nickname") || "태카"; 
+    const savedNickname = sessionStorage.getItem("nickname") || "태카"; 
     setNickname(savedNickname);
     setNewNickname(savedNickname);
   }, []);
 
-  
   const handleInputChange = (event) => {
-    if (!event || !event.target) {
-      console.error("handleInputChange: event 또는 event.target이 없음", event);
-      return;
-    }
     setNewNickname(event.target.value);
   };
 
@@ -36,15 +31,11 @@ function NicknameChangePage() {
       return;
     }
 
-    localStorage.setItem("nickname", newNickname);
-
+    sessionStorage.setItem("nickname", newNickname);
     setNickname(newNickname);
     setNewNickname(newNickname);
 
-    setTimeout(() => {
-      localStorage.setItem("nickname", newNickname);
-      console.log("로컬 스토리지에 저장된 닉네임 확인:", localStorage.getItem("nickname"));
-    }, 100);
+    console.log("💾 세션 스토리지에 저장된 닉네임 확인:", sessionStorage.getItem("nickname"));
 
     setIsPopupOpen(false);
     navigate(-1);

@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from 'react-router-dom';
 import "./TopBar.css";
 import Tag from './Tag';
 import SideMenu from "../start/SideMenu";
 import SideMenu_un from "../start/SideMenu_un";
+import AuthContext from "../context/AuthContext";
 
 
 const TopBar = ({
@@ -13,12 +14,13 @@ const TopBar = ({
     showTags = false,
     showHamburger = true,
     showClose = false,
-    isLoggedIn = true,
     onSearchPlaceChange
 }) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [inputValue, setInputValue] = useState('');
     const navigate = useNavigate();
+    const { user } = useContext(AuthContext); 
+    const isLoggedIn = !!user;
     const [selectedFilters, setSelectedFilters] = useState({});
     const [selectedOptions, setSelectedOptions] = useState({
         "운영시간": "",
