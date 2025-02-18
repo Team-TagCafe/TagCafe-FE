@@ -110,6 +110,7 @@ const TopBar = ({
         showSearch || showTags ? "141px" :
         (!showSearch && !showTags && title && showHamburger) ? "110px" : "100px";
         
+
         const tagSelectGroupHeight = showSearch && showTags ? "65px" : "45px";
 
         // body padding-top 설정
@@ -120,6 +121,7 @@ const TopBar = ({
         if (topBarElement) {
             topBarElement.style.height = topBarHeight;
         }
+
 
         // .tag-select-group top 동적으로 설정
         const tagSelectGroupElement = document.querySelector('.tag-select-group');
