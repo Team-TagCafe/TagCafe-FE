@@ -17,6 +17,9 @@ function LoginPage() {
 
     if (nickname && email && token) {
       console.log("✅ 로그인 성공: ", nickname, email);
+      localStorage.setItem("nickname", nickname);
+      localStorage.setItem("email", email);
+      localStorage.setItem("token", token);
       login(token, nickname, email); 
       navigate("/home");
     }
