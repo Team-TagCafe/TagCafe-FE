@@ -1,6 +1,7 @@
 import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useState } from 'react';  
+import { AuthProvider } from "./context/AuthContext"; // 로그인 상태 관리 추가
 
 import Home from './home/Home';
 import My from './my/My';
@@ -29,32 +30,35 @@ function App() {
   };
 
   return (
-    <CafeProvider>
-    <div className="App">
-      <BrowserRouter>
-        <Routes>
-          {/* 각 경로 설정 */}
-          <Route path="/" element={<Login />} />
-          <Route path="/home" element={<Home selectedPlace={selectedPlace} />} />
-          <Route path="/saved" element={<Saved />} />
-          <Route path="/my" element={<My />} />
-          <Route path="/my/review/edit/:cafeId" element={<ReviewEdit />} />
-          <Route path="/my/report/add" element={<ReporCafeAdd />} />
-          <Route path="my/report/edit/:id" element={<ReportEdit />} />
-          {/* Search 컴포넌트에 onPlaceSelect 전달 */}
-          <Route path="/search" element={<Search onPlaceSelect={handlePlaceSelect} />} />
-          <Route path="/nickname-change" element={<NicknameChange />} />
-          <Route path="/delete" element={<Delete />} />
-          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-          <Route path="/service-policy" element={<ServicePolicy />} />
-          <Route path="/location-policy" element={<LocationPolicy />} />
-          <Route path="/faq-qa" element={<FAQ />} />
-          <Route path="/cafe/:id" element={<CafeDetail />} />
-          <Route path="/cafe/:id/review-write" element={<ReviewWrite />} />
-        </Routes>
-      </BrowserRouter>
-    </div>
-    </CafeProvider>
+    <AuthProvider>
+      <CafeProvider>
+      <div className="App">
+        <BrowserRouter>
+          <Routes>
+            {/* 각 경로 설정 */}
+            <Route path="/" element={<Login />} />
+            <Route path="/home" element={<Home selectedPlace={selectedPlace} />} />
+            <Route path="/saved" element={<Saved />} />
+            <Route path="/my" element={<My />} />
+            <Route path="/my/review/edit/:cafeId" element={<ReviewEdit />} />
+            <Route path="/my/report/add" element={<ReporCafeAdd />} />
+            <Route path="my/report/edit/:id" element={<ReportEdit />} />
+            {/* Search 컴포넌트에 onPlaceSelect 전달 */}
+            <Route path="/search" element={<Search onPlaceSelect={handlePlaceSelect} />} />
+            <Route path="/nickname-change" element={<NicknameChange />} />
+            <Route path="/delete" element={<Delete />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/service-policy" element={<ServicePolicy />} />
+            <Route path="/location-policy" element={<LocationPolicy />} />
+            <Route path="/faq-qa" element={<FAQ />} />
+            <Route path="/cafe/:id" element={<CafeDetail />} />
+            <Route path="/cafe/:id/review-write" element={<ReviewWrite />} />
+          </Routes>
+        </BrowserRouter>
+      </div>
+      </CafeProvider>
+    </AuthProvider>
+
   );
 }
 

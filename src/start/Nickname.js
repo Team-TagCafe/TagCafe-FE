@@ -1,50 +1,97 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import "./Hamburger.css"
+import "./Hamburger.css";
 import TextInput from "../components/TextInput"; 
 import LongButton from "../components/LongButton"; 
 import Popup from "../components/Popup";
 
-function NicknameChangePage({ onClose }) {
-  const [isPopupOpen, setIsPopupOpen] = useState(false); 
-  const [nickname, setNickname] = useState("");
+function NicknameChangePage() {
   const navigate = useNavigate();
+  const [isPopupOpen, setIsPopupOpen] = useState(false); 
+  const [nickname, setNickname] = useState(""); 
+  const [newNickname, setNewNickname] = useState(""); 
 
-  const handleInputChange = (value) => {
-    setNickname(value);
+  useEffect(() => {
+    const savedNickname = localStorage.getItem("nickname") || "태카"; 
+    setNickname(savedNickname);
+    setNewNickname(savedNickname);
+  }, []);
+
+  const handleInputChange = (event) => {
+    setNewNickname(event.target.value);
   };
 
-  const handleConfirm = () => {
-    setIsPopupOpen(false);
-    if (nickname.length < 2 || nickname.length > 15) {
+  const openPopup = () => {
+    setIsPopupOpen(true);
+  };
+
+  const handleConfirm = async () => {
+    if (newNickname.length < 2 || newNickname.length > 15) {
       alert("닉네임은 2~15자 이내로 입력해주세요.");
-    } else {
-      console.log(`닉네임 변경 완료: ${nickname}`);
-      navigate(-1);
+      return;
+    }
+    
+    const email = localStorage.getItem("email");
+    console.log("📌 현재 이메일 값:", email);
+  
+    if (!email) {
+      alert("로그인 정보가 없습니다. 다시 로그인해주세요.");
+      return;
+    }
+  
+    try {
+      const formData = new URLSearchParams();
+      formData.append("email", email);
+      formData.append("newNickname", newNickname);
+  
+      console.log("📌 닉네임 변경 요청 데이터:", formData.toString()); // ✅ 확인용 로그 추가
+  
+      const response = await fetch("http://localhost:8080/users/nickname", {
+        method: "PUT",
+        headers: { 
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+        },
+        body: JSON.stringify({
+            email: localStorage.getItem("email"),
+            newNickname: newNickname,
+        }),
+        credentials: "include",
+        mode: "cors",
+    });
+
+      console.log("📌 서버 응답 상태 코드:", response.status); // ✅ 응답 상태 확인
+  
+      if (response.ok) {
+        localStorage.setItem("nickname", newNickname);
+        setNickname(newNickname);
+        setNewNickname(newNickname);
+        alert("닉네임이 성공적으로 변경되었습니다.");
+        setIsPopupOpen(false);
+        navigate(-1);
+      } else {
+        const errorText = await response.text();
+        console.error("❌ 닉네임 변경 실패:", errorText);
+        alert(`닉네임 변경 실패: ${errorText}`);
+      }
+    } catch (error) {
+      console.error("❌ 닉네임 변경 중 오류 발생:", error);
+      alert("서버 오류가 발생했습니다.");
     }
   };
 
   const handleCancel = () => {
     setIsPopupOpen(false);
-  }
-
-  const openPopup = () => {
-    setIsPopupOpen(true); 
   };
 
-
   const handleBack = () => {
-    navigate(-1); 
+    navigate(-1);
   };
 
   return (
     <div className="hamburger-page">
-      {/* 닫기 버튼 */}
-      <button className="close-button" onClick={handleBack}>
-        ×
-      </button>
+      <button className="close-button" onClick={handleBack}>×</button>
 
-      {/* 로고 및 제목 */}
       <div className="hamburger-header">
         <h1 className="hamburger-title">
           TagCafe
@@ -56,16 +103,14 @@ function NicknameChangePage({ onClose }) {
         <p className="hamburger-description">2~15자 이내로 입력 가능합니다</p>
       </div>
 
-      {/* 입력창 컴포넌트 */}
       <div className="text-input-container">
         <TextInput
           placeholder="닉네임을 입력하세요"
-          value={nickname}
+          value={newNickname}
           onChange={handleInputChange}
         />
       </div>
 
-      {/* 확인 버튼 컴포넌트 */}
       <div className="confirm-button-container">
         <LongButton optionText="확인" onClick={openPopup} />
       </div>
