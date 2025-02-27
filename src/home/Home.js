@@ -14,7 +14,6 @@ const Home = () => {
   const [popupContent, setPopupContent] = useState({ name: '', address: '', id: null, });  // 팝업 내용 (카페 이름, 주소, id)  
   const location = useLocation();
   const { selectedPlace } = useCafe(); // 전역 상태에서 선택된 장소 가져오기
-
   const [searchResults, setSearchResults] = useState([]);
 
   // 지도 사이즈 설정용
@@ -50,6 +49,63 @@ const Home = () => {
   }, []);
 
 
+  /* ---------- 지도 경계값 가져오기 (현재 영역 내 카페 조회) ---------- */
+  const getMapBounds = () => {
+    if (!map) return null;
+    const bounds = map.getBounds(); // 현재 지도의 경계값 가져오기
+    const sw = bounds.getSouthWest(); // 남서쪽 좌표
+    const ne = bounds.getNorthEast(); // 북동쪽 좌표
+
+    return {
+      minLat: sw.getLat(),
+      maxLat: ne.getLat(),
+      minLng: sw.getLng(),
+      maxLng: ne.getLng(),
+    };
+  };
+
+  /* ---------- 현재 지도 영역 내 카페 조회 (백엔드 API 호출) ---------- */
+  const fetchCafesInArea = async () => {
+    const bounds = getMapBounds();
+    if (!bounds) return;
+
+    try {
+      const response = await fetch(`http://localhost:8080/cafes/area?minLat=${bounds.minLat}&maxLat=${bounds.maxLat}&minLng=${bounds.minLng}&maxLng=${bounds.maxLng}`);
+      const data = await response.json();
+      setSearchResults(data); // 조회된 카페 목록 저장
+    } catch (error) {
+      console.error("카페 조회 중 오류 발생:", error);
+    }
+  };
+
+  /* ---------- 지도 이동 후 카페 조회 (idle 이벤트 추가) ---------- */
+  useEffect(() => {
+    if (!map) return;
+    kakao.maps.event.addListener(map, 'idle', fetchCafesInArea);
+  }, [map]);
+
+  /* ---------- 조회된 카페 데이터를 지도에 마커로 표시 ---------- */
+  useEffect(() => {
+    if (!map || searchResults.length === 0) return;
+
+    searchResults.forEach((cafe) => {
+      const markerPosition = new kakao.maps.LatLng(cafe.latitude, cafe.longitude);
+      const marker = new kakao.maps.Marker({
+        map: map,
+        position: markerPosition,
+        image: markerImage
+      });
+
+      createCustomOverlay(map, markerPosition, cafe.cafeName, cafe.address);
+
+      // 마커 클릭 시 팝업 표시
+      kakao.maps.event.addListener(marker, 'click', () => {
+        setPopupContent({ name: cafe.cafeName, address: cafe.address, id: cafe.cafeId });
+        setShowPopup(true);
+      });
+    });
+  }, [searchResults]);
+
   /* ---------- 장소,카페명 입력 시 검색어 표시 (searchPlace 값 업데이트) ---------- */
   const handleSearchPlaceChange = (place) => {
     setSearchPlace(place);
@@ -77,10 +133,6 @@ const Home = () => {
       map.setCenter(markerPosition);
     }
   }, [map, selectedPlace]);
-
-
-  /* ---------- 검색창에서 장소 검색 시 마커 여러 개 표시 (구현 필요) ---------- */
-
 
 
   /* ---------- 지도 카페명 표시 CustomOverlay 생성  ---------- */
