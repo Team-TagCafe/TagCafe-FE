@@ -35,18 +35,44 @@ const Home = () => {
     };
     window.addEventListener("resize", resizeListener); //화면 사이즈 변경 감지
 
-    // 지도 초기화
-    const container = document.getElementById('map');
+    // 사용자의 위치 권한 요청
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          // 사용자가 위치 권한 허용한 경우
+          const userLat = position.coords.latitude;
+          const userLng = position.coords.longitude;
+          console.log("✅ 사용자 위치:", userLat, userLng);
+
+          initializeMap(userLat, userLng); // 사용자 위치로 지도 초기화
+        },
+        (error) => {
+          console.warn("❌ 위치 권한 거부됨, 기본 위치 사용 (강남역)");
+          initializeMap(37.498095, 127.027610); // 기본 위치 강남역으로 초기화
+        }
+      );
+    } else {
+      console.error("이 브라우저에서는 Geolocation을 지원하지 않습니다.");
+      initializeMap(37.498095, 127.027610); // 기본 위치 강남역으로 초기화
+    }
+
+    return () => window.removeEventListener("resize", resizeListener);
+  }, []);
+
+  /* ---------- 지도 초기화 함수 ---------- */
+  const initializeMap = (lat, lng) => {
+    const container = document.getElementById("map");
     const options = {
-      center: new kakao.maps.LatLng(37.498095, 127.027610), // 초기 지도 중심 (강남역)
-      level: 3 // 지도 확대 레벨
+      center: new kakao.maps.LatLng(lat, lng), // 사용자 위치 or 기본 위치 (강남역)
+      level: 3, // 지도 확대 레벨
     };
 
     const kakaoMap = new kakao.maps.Map(container, options);
     setMap(kakaoMap);
 
-    return () => window.removeEventListener('resize', resizeListener);
-  }, []);
+    // ✅ 지도 데이터 불러오기
+    kakao.maps.event.addListener(kakaoMap, "idle", fetchCafesInArea);
+  };
 
 
   /* ---------- 지도 경계값 가져오기 (현재 영역 내 카페 조회) ---------- */
