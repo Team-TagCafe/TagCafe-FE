@@ -16,6 +16,8 @@ const Home = () => {
   const [cafes, setCafes] = useState([]);
   const [isSearchMode, setIsSearchMode] = useState(false);
   const [selectedFilters, setSelectedFilters] = useState({});
+  const [isFiltering, setIsFiltering] = useState(false);
+
 
 
   // 지도 사이즈 설정용
@@ -130,26 +132,35 @@ const Home = () => {
 
   
 
-  useEffect(() => {
-    if (!map) return;
-    
-    const dataToShow = isSearchMode ? searchResults : cafes;
-    
-    dataToShow.forEach((cafe) => {
-      const markerPosition = new kakao.maps.LatLng(cafe.latitude, cafe.longitude);
-      const marker = new kakao.maps.Marker({
-        map,
-        position: markerPosition,
-        image: markerImage
-      });
-      
-      createCustomOverlay(markerPosition, cafe.cafeName, cafe.address);
-      kakao.maps.event.addListener(marker, "click", () => {
-        setPopupContent({ name: cafe.cafeName, address: cafe.address, id: cafe.cafeId });
-        setShowPopup(true);
-      });
+useEffect(() => {
+  if (!map) return;
+  
+  const dataToShow = isSearchMode ? searchResults : cafes;
+  
+  // 기존 마커 초기화 (필요한 경우)
+  map && map.relayout(); 
+
+  dataToShow.forEach((cafe) => {
+    const markerPosition = new kakao.maps.LatLng(cafe.latitude, cafe.longitude);
+    const marker = new kakao.maps.Marker({
+      map,
+      position: markerPosition,
+      image: markerImage
     });
-  }, [map, searchResults, cafes, isSearchMode]);
+
+    createCustomOverlay(markerPosition, cafe.cafeName, cafe.address);
+    kakao.maps.event.addListener(marker, "click", () => {
+      setPopupContent({ name: cafe.cafeName, address: cafe.address, id: cafe.cafeId });
+      setShowPopup(true);
+    });
+  });
+
+  // ✅ 검색 모드일 때 지도 중심을 첫 번째 검색 결과 위치로 이동
+  if (isSearchMode && searchResults.length > 0) {
+    map.setCenter(new kakao.maps.LatLng(searchResults[0].latitude, searchResults[0].longitude));
+  }
+}, [map, searchResults, cafes, isSearchMode]);
+
 
   useEffect(() => {
     if (map && !isSearchMode) {
@@ -158,35 +169,60 @@ const Home = () => {
     }
   }, [map, isSearchMode]);
 
-  /* ---------- 특정 태그와 값으로 카페 필터링 ---------- */
-const fetchFilteredCafes = async (tagName, value) => {
-  console.log(`📢 [API 요청] 특정 태그 필터링: tagName=${tagName}, value=${value}`); // API 요청 로그
-  try {
-    const response = await fetch(
-      `http://localhost:8080/cafes/filter?tagName=${tagName}&value=${value}`
-    );
-    console.log("📥 [API 응답 상태]", response.status, response.statusText); // 응답 상태 확인
-    const data = await response.json();
-    console.log("✅ [필터링된 카페 데이터]", data); // 받아온 데이터 로그
-    setCafes(data); // 필터링된 카페 목록 저장
-  } catch (error) {
-    console.error("필터링된 카페 조회 중 오류 발생:", error);
-  }
-};
-
-useEffect(() => {
-  if (selectedFilters && Object.keys(selectedFilters).length > 0) {
-    // 선택된 필터 중 첫 번째 태그와 값만 사용 (다중 필터는 추가 로직 필요)
-    const firstTag = Object.keys(selectedFilters)[0];
-    const firstValue = selectedFilters[firstTag];
-
-    if (firstTag && firstValue) {
-      fetchFilteredCafes(firstTag, firstValue);
+  const fetchFilteredCafes = async (tagName, value) => {
+    console.log(`📢 [API 요청] 특정 태그 필터링: tagName=${tagName}, value=${value}`);
+    
+    try {
+      const response = await fetch(
+        `http://localhost:8080/cafes/filter?tagName=${encodeURIComponent(tagName)}&value=${encodeURIComponent(value)}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+  
+      if (!response.ok) {
+        throw new Error(`❌ 서버 응답 오류: ${response.status} ${response.statusText}`);
+      }
+  
+      const data = await response.json();
+      console.log("✅ [필터링된 카페 데이터]", JSON.stringify(data, null, 2));
+  
+      if (data.length > 0) {
+        setIsSearchMode(true); // ✅ 검색 모드 활성화
+        setSearchResults(data); // ✅ 필터링된 결과 저장
+      } else {
+        setIsSearchMode(false); // ✅ 필터링 결과 없으면 검색 모드 해제
+        setSearchResults([]);
+      }
+    } catch (error) {
+      console.error("🚨 필터링된 카페 조회 중 오류 발생:", error);
     }
-  } else {
-    fetchCafesInArea(); // 필터가 없으면 원래 지도 내 카페 표시
-  }
-}, [selectedFilters]); // selectedFilters 변경 시 실행
+  };
+  
+  
+
+  useEffect(() => {
+    console.log("🟡 [필터 변경 감지] selectedFilters:", JSON.stringify(selectedFilters, null, 2));
+  
+    if (selectedFilters && Object.keys(selectedFilters).length > 0) {
+      const firstTag = Object.keys(selectedFilters)[0];
+      const firstValue = selectedFilters[firstTag];
+  
+      if (firstTag && firstValue) {
+        console.log(`🔵 [필터 적용] tagName=${firstTag}, value=${firstValue}`);
+        fetchFilteredCafes(firstTag, firstValue);
+      }
+    } else {
+      console.log("⚪ [필터 없음] 기본 데이터 로드");
+      setIsSearchMode(false); // ✅ 검색 모드 해제
+      fetchCafesInArea();
+    }
+  }, [selectedFilters]);
+  
+  
 
   
 

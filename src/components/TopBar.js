@@ -53,21 +53,22 @@ const TopBar = ({
 
     const handleFilterSelect = (filterGroup, option) => {
         setSelectedFilters((prevFilters) => {
-          const updatedFilters = {
-            ...prevFilters,
-            [filterGroup]: prevFilters[filterGroup] === option ? null : option,
-          };
-          return updatedFilters;
+            const updatedFilters = {
+                ...prevFilters,
+                [filterGroup]: prevFilters[filterGroup] === option ? null : option,
+            };
+            console.log('🔵 [필터 선택] updatedFilters:', updatedFilters);
+            return updatedFilters;
         });
-      
-        // Home에 필터링된 값 전달
+    };
+
+    useEffect(() => {
+        console.log("🟡 [필터 변경 감지] selectedFilters:", selectedFilters);
         if (onFilterChange) {
-          onFilterChange({
-            ...selectedFilters,
-            [filterGroup]: selectedFilters[filterGroup] === option ? null : option,
-          });
+            onFilterChange(selectedFilters);
         }
-      };
+    }, [selectedFilters, onFilterChange]);
+    
       
 
     const handleOptionSelect = (tagText, option) => {
