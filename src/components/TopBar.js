@@ -18,7 +18,8 @@ const TopBar = ({
     isSearchMode,
     onSearchPlaceChange,
     onSearchClick,
-    onClearSearch, // 검색 취소 함수 추가
+    onClearSearch,
+    onFilterChange
 }) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const navigate = useNavigate();
@@ -51,22 +52,23 @@ const TopBar = ({
     };
 
     const handleFilterSelect = (filterGroup, option) => {
-        console.log('Filter selected:', filterGroup, option);  // Debugging line
         setSelectedFilters((prevFilters) => {
-            const updatedFilters = {
-                ...prevFilters,
-                [filterGroup]: prevFilters[filterGroup] === option ? null : option, // 필터 선택/해제
-            };
-            console.log('Updated selectedFilters:', updatedFilters); // selectedFilters 값 출력
-            return updatedFilters;
+          const updatedFilters = {
+            ...prevFilters,
+            [filterGroup]: prevFilters[filterGroup] === option ? null : option,
+          };
+          return updatedFilters;
         });
-
-        // **개별 Tag들도 업데이트하기**
-        setSelectedOptions((prevOptions) => ({
-            ...prevOptions,
-            [filterGroup]: prevOptions[filterGroup] === option ? "" : option,
-        }));
-    };
+      
+        // Home에 필터링된 값 전달
+        if (onFilterChange) {
+          onFilterChange({
+            ...selectedFilters,
+            [filterGroup]: selectedFilters[filterGroup] === option ? null : option,
+          });
+        }
+      };
+      
 
     const handleOptionSelect = (tagText, option) => {
         setSelectedOptions((prevOptions) => {

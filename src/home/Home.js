@@ -1,20 +1,22 @@
 /*global kakao*/
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 import { BottomBar, TopBar, LocationReset, CafePopup } from '../components';
-import { useCafe } from './CafeContext';
-import './Home.css'
+import './Home.css';
 
 const Home = () => {
   /* ---------- 상태 관리 ---------- */
   const [map, setMap] = useState(null); // Kakao 지도
-  const [searchPlace, setSearchPlace] = useState(''); // 검색어 상태
+  const [searchPlace] = useState(''); // 검색어 상태
   const [showPopup, setShowPopup] = useState(false);  // 팝업 표시 여부 상태
   const [popupContent, setPopupContent] = useState({ name: '', address: '', id: null, });  // 팝업 내용 (카페 이름, 주소, id)  
   const location = useLocation();
-  const { selectedPlace } = useCafe(); // 전역 상태에서 선택된 장소 가져오기
   const [searchResults, setSearchResults] = useState([]);
+  const [cafes, setCafes] = useState([]);
+  const [isSearchMode, setIsSearchMode] = useState(false);
+  const [selectedFilters, setSelectedFilters] = useState({});
+
 
   // 지도 사이즈 설정용
   const [innerWidth, setInnerWidth] = useState(window.innerWidth); // 화면 너비
@@ -79,18 +81,15 @@ const Home = () => {
   const getMapBounds = () => {
     if (!map) return null;
     const bounds = map.getBounds(); // 현재 지도의 경계값 가져오기
-    const sw = bounds.getSouthWest(); // 남서쪽 좌표
-    const ne = bounds.getNorthEast(); // 북동쪽 좌표
-
     return {
-      minLat: sw.getLat(),
-      maxLat: ne.getLat(),
-      minLng: sw.getLng(),
-      maxLng: ne.getLng(),
+      minLat: bounds.getSouthWest().getLat(),
+      maxLat: bounds.getNorthEast().getLat(),
+      minLng: bounds.getSouthWest().getLng(),
+      maxLng: bounds.getNorthEast().getLng(),
     };
   };
 
-  /* ---------- 현재 지도 영역 내 카페 조회 (백엔드 API 호출) ---------- */
+  /* ---------- 현재 지도 영역 내 카페 조회 ---------- */
   const fetchCafesInArea = async () => {
     const bounds = getMapBounds();
     if (!bounds) return;
@@ -98,71 +97,101 @@ const Home = () => {
     try {
       const response = await fetch(`http://localhost:8080/cafes/area?minLat=${bounds.minLat}&maxLat=${bounds.maxLat}&minLng=${bounds.minLng}&maxLng=${bounds.maxLng}`);
       const data = await response.json();
-      setSearchResults(data); // 조회된 카페 목록 저장
+      setCafes(data); // 조회된 카페 목록 저장
     } catch (error) {
       console.error("카페 조회 중 오류 발생:", error);
     }
   };
 
-  /* ---------- 지도 이동 후 카페 조회 (idle 이벤트 추가) ---------- */
+  useEffect(() => {
+    if (location.state?.results && location.state.results.length > 0) {
+        setSearchResults(location.state.results);
+        setIsSearchMode(true);
+
+        if (map) {
+            map.setCenter(new kakao.maps.LatLng(location.state.results[0].latitude, location.state.results[0].longitude));
+        }
+
+        // 새로고침 시 location.state 제거
+        window.history.replaceState(null, '', location.pathname);
+    } else if (location.state?.place) { // place가 있을 경우 처리
+        setSearchResults([location.state.place]); // place를 배열로 설정
+        setIsSearchMode(true);
+
+        if (map) {
+            map.setCenter(new kakao.maps.LatLng(location.state.place.latitude, location.state.place.longitude));
+        }
+
+        window.history.replaceState(null, '', location.pathname);
+    } else {
+        setIsSearchMode(false);
+    }
+}, [location.state, map]);
+
+  
+
   useEffect(() => {
     if (!map) return;
-    kakao.maps.event.addListener(map, 'idle', fetchCafesInArea);
-  }, [map]);
-
-  /* ---------- 조회된 카페 데이터를 지도에 마커로 표시 ---------- */
-  useEffect(() => {
-    if (!map || searchResults.length === 0) return;
-
-    searchResults.forEach((cafe) => {
+    
+    const dataToShow = isSearchMode ? searchResults : cafes;
+    
+    dataToShow.forEach((cafe) => {
       const markerPosition = new kakao.maps.LatLng(cafe.latitude, cafe.longitude);
       const marker = new kakao.maps.Marker({
-        map: map,
+        map,
         position: markerPosition,
         image: markerImage
       });
-
-      createCustomOverlay(map, markerPosition, cafe.cafeName, cafe.address);
-
-      // 마커 클릭 시 팝업 표시
-      kakao.maps.event.addListener(marker, 'click', () => {
+      
+      createCustomOverlay(markerPosition, cafe.cafeName, cafe.address);
+      kakao.maps.event.addListener(marker, "click", () => {
         setPopupContent({ name: cafe.cafeName, address: cafe.address, id: cafe.cafeId });
         setShowPopup(true);
       });
     });
-  }, [searchResults]);
+  }, [map, searchResults, cafes, isSearchMode]);
 
-  /* ---------- 장소,카페명 입력 시 검색어 표시 (searchPlace 값 업데이트) ---------- */
-  const handleSearchPlaceChange = (place) => {
-    setSearchPlace(place);
-  };
-
-
-  /* ---------- 검색창에서 특정 카페 선택 시 마커 1개 표시 (selectedPlace 값 변경 시) ---------- */
   useEffect(() => {
-    if (map && selectedPlace) {
-      const markerPosition = new kakao.maps.LatLng(selectedPlace.y, selectedPlace.x);
-      const marker = new kakao.maps.Marker({
-        map: map,
-        position: markerPosition,
-        image: markerImage
-      });
-
-      createCustomOverlay(map, markerPosition, selectedPlace.place_name, selectedPlace.address_name);
-
-      // 마커 클릭 이벤트 - CafePopup 뜸
-      kakao.maps.event.addListener(marker, 'click', () => {
-        setPopupContent({ name: selectedPlace.place_name, address: selectedPlace.address_name });
-        setShowPopup(true);
-      });
-
-      map.setCenter(markerPosition);
+    if (map && !isSearchMode) {
+      fetchCafesInArea(); // 앱 처음 실행할 때 한 번 실행
+      kakao.maps.event.addListener(map, "idle", fetchCafesInArea); // 지도 이동 후 카페 다시 불러오기
     }
-  }, [map, selectedPlace]);
+  }, [map, isSearchMode]);
 
+  /* ---------- 특정 태그와 값으로 카페 필터링 ---------- */
+const fetchFilteredCafes = async (tagName, value) => {
+  console.log(`📢 [API 요청] 특정 태그 필터링: tagName=${tagName}, value=${value}`); // API 요청 로그
+  try {
+    const response = await fetch(
+      `http://localhost:8080/cafes/filter?tagName=${tagName}&value=${value}`
+    );
+    console.log("📥 [API 응답 상태]", response.status, response.statusText); // 응답 상태 확인
+    const data = await response.json();
+    console.log("✅ [필터링된 카페 데이터]", data); // 받아온 데이터 로그
+    setCafes(data); // 필터링된 카페 목록 저장
+  } catch (error) {
+    console.error("필터링된 카페 조회 중 오류 발생:", error);
+  }
+};
+
+useEffect(() => {
+  if (selectedFilters && Object.keys(selectedFilters).length > 0) {
+    // 선택된 필터 중 첫 번째 태그와 값만 사용 (다중 필터는 추가 로직 필요)
+    const firstTag = Object.keys(selectedFilters)[0];
+    const firstValue = selectedFilters[firstTag];
+
+    if (firstTag && firstValue) {
+      fetchFilteredCafes(firstTag, firstValue);
+    }
+  } else {
+    fetchCafesInArea(); // 필터가 없으면 원래 지도 내 카페 표시
+  }
+}, [selectedFilters]); // selectedFilters 변경 시 실행
+
+  
 
   /* ---------- 지도 카페명 표시 CustomOverlay 생성  ---------- */
-  const createCustomOverlay = (map, markerPosition, placeName, placeAdress) => {
+  const createCustomOverlay = (markerPosition, placeName, placeAdress) => {
 
     const content = document.createElement('div');
     content.className = 'label';
@@ -171,7 +200,7 @@ const Home = () => {
 
     // 라벨 클릭 이벤트 -  CafePopup 뜸
     content.addEventListener('click', () => {
-      setPopupContent({ name: placeName, address: placeAdress, id: selectedPlace.id || 1, });
+      setPopupContent({ name: placeName, address: placeAdress, id: 1, }); // id 변경해야함
       setShowPopup(true);
     });
 
@@ -213,7 +242,10 @@ const Home = () => {
     <>
       <TopBar
         showSearch showTags showHamburger={true}
-        onSearchPlaceChange={handleSearchPlaceChange} />
+        searchValue={searchPlace} 
+        isSearchMode={isSearchMode} 
+        onClearSearch={() => setIsSearchMode(false)} 
+        onFilterChange={setSelectedFilters}/>
       <div>
         <div className="map" id="map"
           style={{ width: '393px', height: `${innerHeight - 265}px` }}
