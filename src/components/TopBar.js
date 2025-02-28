@@ -14,10 +14,13 @@ const TopBar = ({
     showHamburger = true,
     showClose = false,
     isLoggedIn = true,
-    onSearchPlaceChange
+    searchValue,
+    isSearchMode,
+    onSearchPlaceChange,
+    onSearchClick,
+    onClearSearch, // 검색 취소 함수 추가
 }) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [inputValue, setInputValue] = useState('');
     const navigate = useNavigate();
     const [selectedFilters, setSelectedFilters] = useState({});
     const [selectedOptions, setSelectedOptions] = useState({
@@ -39,7 +42,6 @@ const TopBar = ({
     };
 
     const handleInputChange = (event) => {
-        setInputValue(event.target.value);
         onSearchPlaceChange(event.target.value);
     };
 
@@ -153,15 +155,21 @@ const TopBar = ({
                     <div className="search-filter">
                         <input
                             type="text"
-                            value={inputValue}
+                            value={searchValue} // 검색어 유지
                             onChange={handleInputChange}
                             onFocus={handleInputFocus} // 포커스 시 페이지 이동
                             className="search-input"
                             placeholder="지역, 카페 이름으로 검색"
                         />
-                        <button className="search-button">
-                            <img src="/img/search.png" alt="Search" />
-                        </button>
+                        {isSearchMode ? (
+                            <button className="search-clear-button" onClick={onClearSearch}>
+                                X
+                            </button>
+                        ) : (
+                            <button className="search-button" onClick={onSearchClick}>
+                                <img src="/img/search.png" alt="Search" />
+                            </button>
+                        )}
                     </div>
                 )}
 

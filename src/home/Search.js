@@ -1,59 +1,68 @@
-/*global kakao*/
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useCafe } from './CafeContext';
-import { TopBar, SearchResult } from '../components';
+import SearchResult from '../components/SearchResult';
+import TopBar from '../components/TopBar';
 
-const Search = ({ onPlaceSelect }) => {
-  // const [results, setResults] = useState([]);
-  const [inputValue, setInputValue] = useState('');
-  const { cafes, setSelectedPlace } = useCafe();
-  const navigate = useNavigate();
+const Search = () => {
+    const [inputValue, setInputValue] = useState('');
+    const [results, setResults] = useState([]);
+    const navigate = useNavigate();
 
-  const handleInputChange = (value) => {
-    setInputValue(value); // Search 컴포넌트 내에서 상태 업데이트
+    // 검색어가 변경될 때마다 API 호출
+    useEffect(() => {
+        if (inputValue.trim() === '') {
+            setResults([]);
+            return;
+        }
 
-    // 카카오 지도 API로 검색
-    // const ps = new kakao.maps.services.Places();
-    // ps.keywordSearch(value + ' 카페', (data, status) => {
-    //   if (status === kakao.maps.services.Status.OK) {
-    //     setResults(data);
-    //   }
-    // });
+        const fetchSearchResults = async () => {
+            try {
+                const response = await fetch(`http://localhost:8080/cafes/search?query=${inputValue}`);
+                const data = await response.json();
+                setResults(data);
+            } catch (error) {
+                console.error('Error fetching search results:', error);
+            }
+        };
+
+        fetchSearchResults();
+    }, [inputValue]);
+
+    const handleInputChange = (value) => {
+        setInputValue(value);
+    };
+
+    const handleResultClick = (place) => {
+        navigate('/home', { state: {place }});
+        console.log(place)
+    };
+
+    const handleSearchClick = () => {
+      navigate('/home', { state: {results } }); // 검색 결과를 Home으로 전달
+      console.log(results)
   };
 
-  const handleResultClick = (place) => {
-    setSelectedPlace(place); // 선택한 장소를 전역 상태로 저장
-    console.log(place); // 전달된 장소 정보를 콘솔에 출력
-
-    // navigate
-    navigate('/home');
-  };
-
-
-  return (
-    <>
-      <TopBar
-        showSearch showClose={true}
-        showHamburger={false}
-        onSearchPlaceChange={handleInputChange} // 실시간으로 입력값을 부모로 전달
-      />
-      <div>
-        <ul>
-        {cafes
-            .filter((cafe) => cafe.place_name.toLowerCase().includes(inputValue.toLowerCase()))
-            .map((place) => (
-              <li key={place.id} onClick={() => handleResultClick(place)}
-                style={{ listStyleType: 'none', padding: '10px 0', cursor: 'pointer' }}>
-                <SearchResult cafeName={place.place_name} address={place.address_name} />
-              </li>
-          ))}
-        </ul>
-      </div>
-    </>
-  );
+    return (
+        <>
+            <TopBar
+                showSearch
+                showClose={true}
+                showHamburger={false}
+                onSearchPlaceChange={handleInputChange}
+                onSearchClick={handleSearchClick}
+            />
+            <div>
+                <ul>
+                    {results.map((place) => (
+                        <li key={place.cafeId} onClick={() => handleResultClick(place)}
+                            style={{ listStyleType: 'none', padding: '10px 0', cursor: 'pointer' }}>
+                            <SearchResult cafeName={place.cafeName} address={place.address} />
+                        </li>
+                    ))}
+                </ul>
+            </div>
+        </>
+    );
 };
 
 export default Search;
-
