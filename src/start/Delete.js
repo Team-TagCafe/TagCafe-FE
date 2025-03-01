@@ -9,16 +9,16 @@ function Delete({ onClose }) {
   const [isPopupOpen, setIsPopupOpen] = useState(false); 
   const [nickname, setNickname] = useState("");
   const navigate = useNavigate();
+  const KAKAO_CLIENT_ID = process.env.REACT_APP_KAKAO_CLIENT_ID;
 
   const handleInputChange = (value) => {
     setNickname(value);
   };
 
   const handleConfirm = async () => {
-    setIsPopupOpen(false);
+  setIsPopupOpen(false);
 
-    const userEmail = localStorage.getItem("email"); // ✅ 로컬 스토리지에서 이메일 가져오기
-
+  const userEmail = localStorage.getItem("email"); // ✅ 로컬 스토리지에서 이메일 가져오기
     if (!userEmail) {
       alert("로그인이 필요합니다.");
       return;
@@ -30,17 +30,26 @@ function Delete({ onClose }) {
         credentials: "include",
       });
 
+      const data = await response.json();
       if (response.ok) {
-        alert("회원 탈퇴가 완료되었습니다.");
-        localStorage.clear(); // ✅ 탈퇴 후 로컬스토리지 초기화
-        navigate("/"); // ✅ 로그인 페이지로 이동
+        console.log("✅ 회원 탈퇴 성공");
+
+        // ✅ 모든 저장 정보 삭제 (자동 로그인 방지)
+        localStorage.clear();
+        sessionStorage.clear();
+
+        // ✅ 백엔드에서 받은 logoutUrl을 직접 사용
+        if (data.logoutUrl) {
+          console.log("🔗 카카오 로그아웃 URL:", data.logoutUrl);
+          window.location.href = data.logoutUrl;
+        } else {
+          navigate("/");
+        }
       } else {
-        const errorMessage = await response.text();
-        alert(`회원 탈퇴 실패: ${errorMessage}`);
+        console.error("❌ 회원 탈퇴 실패:", data.error);
       }
     } catch (error) {
-      alert("회원 탈퇴 중 오류가 발생했습니다.");
-      console.error("Error:", error);
+      console.error("🚨 회원 탈퇴 중 오류 발생:", error);
     }
   };
 
