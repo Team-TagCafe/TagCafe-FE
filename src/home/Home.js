@@ -39,6 +39,11 @@ const Home = () => {
     };
     window.addEventListener("resize", resizeListener); //화면 사이즈 변경 감지
 
+    if (!window.kakao || !window.kakao.maps) {
+      console.error("❌ Kakao 지도 API가 로드되지 않았습니다.");
+      return;
+    }
+
     // 사용자의 위치 권한 요청
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -70,6 +75,11 @@ const Home = () => {
       center: new kakao.maps.LatLng(lat, lng), // 사용자 위치 or 기본 위치 (강남역)
       level: 3, // 지도 확대 레벨
     };
+
+    if (!container) {
+      console.error("❌ 지도 컨테이너를 찾을 수 없습니다.");
+      return;
+    }
 
     const kakaoMap = new kakao.maps.Map(container, options);
     setMap(kakaoMap);
@@ -142,6 +152,8 @@ useEffect(() => {
 
   dataToShow.forEach((cafe) => {
     const markerPosition = new kakao.maps.LatLng(cafe.latitude, cafe.longitude);
+    
+    if (!markerImage) return;
     const marker = new kakao.maps.Marker({
       map,
       position: markerPosition,
