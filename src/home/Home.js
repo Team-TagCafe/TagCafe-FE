@@ -213,12 +213,22 @@ const Home = () => {
   }, [map, isSearchMode, fetchCafesInArea]); // ✅ 의존성 배열에 `fetchCafesInArea` 추가
 
 
-  const fetchFilteredCafes = async (tagName, value) => {
-    console.log(`📢 [API 요청] 특정 태그 필터링: tagName=${tagName}, value=${value}`);
-
+  const fetchFilteredCafes = async (filters) => {
+    if (!filters || Object.keys(filters).length === 0) {
+      console.log("⚪ [필터 없음] 기본 데이터 로드");
+      setIsSearchMode(false);
+      fetchCafesInArea();
+      return;
+    }
+  
+    const tagNames = Object.keys(filters);
+    const values = tagNames.map(tag => filters[tag]);
+  
+    console.log(`📢 [API 요청] 다중 태그 필터링: ${JSON.stringify(filters)}`);
+  
     try {
       const response = await fetch(
-        `http://localhost:8080/cafes/filter?tagName=${encodeURIComponent(tagName)}&value=${encodeURIComponent(value)}`,
+        `http://localhost:8080/cafes/filter/multiple?tagNames=${encodeURIComponent(tagNames.join(','))}&values=${encodeURIComponent(values.join(','))}`,
         {
           method: "GET",
           headers: {
@@ -226,45 +236,32 @@ const Home = () => {
           },
         }
       );
-
+  
       if (!response.ok) {
         throw new Error(`❌ 서버 응답 오류: ${response.status} ${response.statusText}`);
       }
-
+  
       const data = await response.json();
       console.log("✅ [필터링된 카페 데이터]", JSON.stringify(data, null, 2));
-
+  
       if (data.length > 0) {
-        setIsSearchMode(true); // ✅ 검색 모드 활성화
-        setSearchResults(data); // ✅ 필터링된 결과 저장
+        setIsSearchMode(true);
+        setSearchResults(data);
       } else {
-        setIsSearchMode(false); // ✅ 필터링 결과 없으면 검색 모드 해제
+        console.log("🔍 필터링된 결과 없음");
+        setIsSearchMode(false);
         setSearchResults([]);
       }
     } catch (error) {
       console.error("🚨 필터링된 카페 조회 중 오류 발생:", error);
     }
   };
-
-
-
+  
   useEffect(() => {
     console.log("🟡 [필터 변경 감지] selectedFilters:", JSON.stringify(selectedFilters, null, 2));
-
-    if (selectedFilters && Object.keys(selectedFilters).length > 0) {
-      const firstTag = Object.keys(selectedFilters)[0];
-      const firstValue = selectedFilters[firstTag];
-
-      if (firstTag && firstValue) {
-        console.log(`🔵 [필터 적용] tagName=${firstTag}, value=${firstValue}`);
-        fetchFilteredCafes(firstTag, firstValue);
-      }
-    } else {
-      console.log("⚪ [필터 없음] 기본 데이터 로드");
-      setIsSearchMode(false); // ✅ 검색 모드 해제
-      fetchCafesInArea();
-    }
+    fetchFilteredCafes(selectedFilters);
   }, [selectedFilters]);
+  
 
 
 
