@@ -6,6 +6,8 @@ import TopBar from '../components/TopBar';
 const Search = () => {
     const [inputValue, setInputValue] = useState('');
     const [results, setResults] = useState([]);
+    const [noResultsMessage, setNoResultsMessage] = useState('');
+    const [searchTriggered, setSearchTriggered] = useState(false); // 검색 버튼을 눌렀을 때만 체크
     const navigate = useNavigate();
 
     // 검색어가 변경될 때마다 API 호출
@@ -30,6 +32,7 @@ const Search = () => {
 
     const handleInputChange = (value) => {
         setInputValue(value);
+        setSearchTriggered(false); // 검색어 변경 시, 메시지 초기화
     };
 
     const handleResultClick = (place) => {
@@ -38,9 +41,15 @@ const Search = () => {
     };
 
     const handleSearchClick = () => {
-      navigate('/home', { state: {results } }); // 검색 결과를 Home으로 전달
-      console.log(results)
-  };
+        setSearchTriggered(true); // 검색 버튼을 눌렀다는 표시
+
+        if (results.length === 0) {
+            setNoResultsMessage('검색 결과가 없습니다.');
+            return;
+        }
+        navigate('/home', { state: { results } }); // 검색 결과를 Home으로 전달
+        console.log(results);
+    };
 
     return (
         <>
@@ -52,6 +61,11 @@ const Search = () => {
                 onSearchClick={handleSearchClick}
             />
             <div>
+                {searchTriggered && results.length === 0 && (
+                    <p style={{ color: "#422919", textAlign: "center", marginTop: "10px" }}>
+                        {noResultsMessage}
+                    </p>
+                )}
                 <ul>
                     {results.map((place) => (
                         <li key={place.cafeId} onClick={() => handleResultClick(place)}
