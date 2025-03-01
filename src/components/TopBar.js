@@ -166,7 +166,7 @@ const TopBar = ({
                         />
                         {isSearchMode ? (
                             <button className="search-clear-button" onClick={onClearSearch}>
-                                X
+                                x
                             </button>
                         ) : (
                             <button className="search-button" onClick={onSearchClick}>
