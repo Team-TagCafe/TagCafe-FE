@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from 'react-router-dom';
 import "./TopBar.css";
 import Tag from './Tag';
 import SideMenu from "../start/SideMenu";
 import SideMenu_un from "../start/SideMenu_un";
+import AuthContext from "../context/AuthContext";
 
 
 const TopBar = ({
@@ -13,12 +14,13 @@ const TopBar = ({
     showTags = false,
     showHamburger = true,
     showClose = false,
-    isLoggedIn = true,
     onSearchPlaceChange
 }) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [inputValue, setInputValue] = useState('');
     const navigate = useNavigate();
+    const { user } = useContext(AuthContext); 
+    const isLoggedIn = !!user;
     const [selectedFilters, setSelectedFilters] = useState({});
     const [selectedOptions, setSelectedOptions] = useState({
         "운영시간": "",
@@ -103,12 +105,11 @@ const TopBar = ({
     };
 
     useEffect(() => {
-        // 조건별로 TopBar 높이 설정
         const topBarHeight =
-            showSearch && showTags ? "185px" :
-            showSearch || showTags ? "141px" :
-            (!showSearch && !showTags && title && showHamburger) ? "110px" : "100px";
-    
+        showSearch && showTags ? "185px" :
+        showSearch || showTags ? "141px" :
+        (!showSearch && !showTags && title && showHamburger) ? "110px" : "100px";
+        
 
         const tagSelectGroupHeight = showSearch && showTags ? "65px" : "45px";
 
@@ -127,7 +128,7 @@ const TopBar = ({
         if (tagSelectGroupElement) {
             tagSelectGroupElement.style.top = tagSelectGroupHeight;
         }
-
+    
         return () => {
             // 초기화
             document.body.style.paddingTop = "0";
@@ -245,10 +246,10 @@ const TopBar = ({
 
             {/* 사이드 메뉴 */}
             {isMenuOpen && (
-                <>
-                    <div className="topbar-overlay" onClick={closeMenu}></div>
-                    {isLoggedIn ? <SideMenu closeMenu={closeMenu} /> : <SideMenu_un closeMenu={closeMenu} />}
-                </>
+            <>
+                <div className="topbar-overlay" onClick={closeMenu}></div>
+                {user?.guest ? <SideMenu_un closeMenu={closeMenu} /> : <SideMenu closeMenu={closeMenu} />}
+            </>
             )}
         </>
     );
