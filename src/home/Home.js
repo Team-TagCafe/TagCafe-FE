@@ -8,7 +8,7 @@ import './Home.css';
 const Home = () => {
   /* ---------- 상태 관리 ---------- */
   const [map, setMap] = useState(null); // Kakao 지도
-  const [searchPlace] = useState(''); // 검색어 상태
+  const [searchPlace, setSearchPlace] = useState(''); // 검색어 상태
   const [showPopup, setShowPopup] = useState(false);  // 팝업 표시 여부 상태
   const [popupContent, setPopupContent] = useState({ name: '', address: '', id: null, });  // 팝업 내용 (카페 이름, 주소, id)  
   const location = useLocation();
@@ -244,6 +244,11 @@ const Home = () => {
     } else {
       setIsSearchMode(false);
     }
+
+    if (location.state?.searchTerm) {
+      setSearchPlace(location.state.searchTerm); // 검색어 유지
+    }
+
   }, [location.state, map]);
 
 
@@ -319,7 +324,11 @@ const Home = () => {
         showSearch showTags showHamburger={true}
         searchValue={searchPlace}
         isSearchMode={isSearchMode}
-        onClearSearch={() => setIsSearchMode(false)}
+        onSearchPlaceChange={setSearchPlace}
+        onClearSearch={() => {
+          setIsSearchMode(false);
+          setSearchPlace('');
+        }}
         onFilterChange={setSelectedFilters} />
       <div>
         <div className="map" id="map"

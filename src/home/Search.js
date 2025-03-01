@@ -47,7 +47,7 @@ const Search = () => {
             setNoResultsMessage('검색 결과가 없습니다.');
             return;
         }
-        navigate('/home', { state: { results } }); // 검색 결과를 Home으로 전달
+        navigate('/home', { state: { results, searchTerm: inputValue } }); // 검색 결과 & 검색어를 Home으로 전달
         console.log(results);
     };
 
