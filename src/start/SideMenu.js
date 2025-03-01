@@ -1,14 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import AuthContext from "../context/AuthContext";
 import "./SideMenu.css";
 import SideMenuButton from "../components/SideMenuButton";
 import Popup from "../components/Popup";
 
 const SideMenu = () => {
   const navigate = useNavigate();
+  const { user, logout } = useContext(AuthContext); 
   const [isMenuOpen, setIsMenuOpen] = useState(true);
   const [isLogoutPopupOpen, setIsLogoutPopupOpen] = useState(false);
-  const [nickname, setNickname] = useState("태카"); // 기본값
+  const [nickname, setNickname] = useState(
+    localStorage.getItem("nickname") || "sidemenu_un"
+  );  
   const [profileImage, setProfileImage] = useState("/img/user.png"); // 기본 이미지
 
   /* 🔹 1. 로컬 스토리지에서 사용자 정보 가져오기 */
@@ -32,7 +36,11 @@ const SideMenu = () => {
 
   const handleLogoutConfirm = () => {
     localStorage.removeItem("nickname");
+    localStorage.removeItem("email");
+    localStorage.removeItem("token");
+
     localStorage.removeItem("profileImage");
+    logout();
     setIsLogoutPopupOpen(false);
     navigate("/");
   };

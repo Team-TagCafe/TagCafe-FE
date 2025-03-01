@@ -246,10 +246,10 @@ const TopBar = ({
 
             {/* 사이드 메뉴 */}
             {isMenuOpen && (
-                <>
-                    <div className="topbar-overlay" onClick={closeMenu}></div>
-                    {isLoggedIn ? <SideMenu closeMenu={closeMenu} /> : <SideMenu_un closeMenu={closeMenu} />}
-                </>
+            <>
+                <div className="topbar-overlay" onClick={closeMenu}></div>
+                {user?.guest ? <SideMenu_un closeMenu={closeMenu} /> : <SideMenu closeMenu={closeMenu} />}
+            </>
             )}
         </>
     );

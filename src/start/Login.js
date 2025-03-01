@@ -7,7 +7,7 @@ function LoginPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const { login } = useContext(AuthContext);  // AuthContext에서 login 함수 가져오기
-
+  const { handleGuestLogin } = useContext(AuthContext);
  
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -33,6 +33,7 @@ function LoginPage() {
 
   const handleGuestAccess = () => {
     console.log("로그인 없이 사용하기 클릭됨");
+    handleGuestLogin(); 
     navigate("/home");
   };
 
