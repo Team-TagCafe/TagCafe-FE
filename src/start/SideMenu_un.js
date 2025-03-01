@@ -21,7 +21,11 @@ const SideMenu_un = ({  }) => {
   const handleFAQQA = () => {
     navigate("/faq-qa"); 
   };
+  
+  const handleLogin=()=>{
+    window.location.href = "http://localhost:8080/oauth/kakao/login";
 
+  }
 
 
   const handleOverlayClick = (event) => {
@@ -49,7 +53,7 @@ const SideMenu_un = ({  }) => {
             <img src="/img/user.png" alt="Profile" />
           </div>
           <div className="profile-info">
-            <div className="profile-login">로그인하기 <span className="profile-arrow">&gt;</span></div>
+            <div className="profile-login"  onClick={handleLogin}  style={{ cursor: "pointer" }} >로그인하기 <span className="profile-arrow">&gt;</span></div>
           </div>
         </div>
         <div className="side-menu-body">
