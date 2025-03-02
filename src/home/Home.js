@@ -202,6 +202,11 @@ const Home = () => {
       kakao.maps.event.addListener(marker, "click", () => {
         setPopupContent({ name: cafe.cafeName, address: cafe.address, id: cafe.cafeId });
         setShowPopup(true);
+
+        if (map) {
+          map.setLevel(3);
+          map.setCenter(markerPosition);
+        }
       });
     });
 
@@ -285,6 +290,11 @@ const Home = () => {
     content.addEventListener('click', () => {
       setPopupContent({ name: placeName, address: placeAddress, id: 1 }); // id 변경 필요
       setShowPopup(true);
+
+      if (map) {
+        map.setLevel(3);
+        map.setCenter(markerPosition);
+      }
     });
 
     const customOverlay = new kakao.maps.CustomOverlay({
