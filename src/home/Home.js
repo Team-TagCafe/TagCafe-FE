@@ -18,6 +18,7 @@ const Home = () => {
   const [selectedFilters, setSelectedFilters] = useState({});
   const [markers, setMarkers] = useState([]);  // 마커 저장
   const [overlays, setOverlays] = useState([]); // 오버레이 저장
+  const [isBoundsApplied, setIsBoundsApplied] = useState(false);
 
   // 지도 사이즈 설정용
   const [innerWidth, setInnerWidth] = useState(window.innerWidth); // 화면 너비
@@ -175,15 +176,13 @@ const Home = () => {
     const dataToShow = isSearchMode ? searchResults : cafes;
     if (dataToShow.length === 0) return;
 
-    // ✅ 기존 마커 및 오버레이 삭제
+    // 기존 마커 및 오버레이 삭제
     markers.forEach(marker => marker.setMap(null));
     overlays.forEach(overlay => overlay.setMap(null));
 
     const newMarkers = [];
     const newOverlays = [];
-
-    // 지도 영역을 설정할 LatLngBounds 객체 생성
-    const bounds = new kakao.maps.LatLngBounds();
+    const bounds = new kakao.maps.LatLngBounds(); // 지도 영역 설정
 
     dataToShow.forEach((cafe) => {
       const markerPosition = new kakao.maps.LatLng(cafe.latitude, cafe.longitude);
@@ -197,7 +196,6 @@ const Home = () => {
       });
 
       newMarkers.push(marker);
-
       const overlay = createCustomOverlay(markerPosition, cafe.cafeName, cafe.address);
       newOverlays.push(overlay);
 
@@ -211,44 +209,49 @@ const Home = () => {
     setMarkers(newMarkers);
     setOverlays(newOverlays);
 
-    // ✅ 검색 결과가 하나면 중심 이동, 여러 개면 확대 레벨 자동 조절
+    // 검색 결과가 하나면 중심 이동, 여러 개면 바운더리 조절 (확대 렙레)
     if (dataToShow.length === 1) {
       map.setCenter(new kakao.maps.LatLng(dataToShow[0].latitude, dataToShow[0].longitude));
     } else {
-      map.setBounds(bounds);
+      if (!isBoundsApplied) {  // 처음 한 번만 적용 (사용자 조작 방해 방지)
+        map.setBounds(bounds);
+        setIsBoundsApplied(true); // 바운더리 적용 상태를 true로 변경
+      }
     }
   }, [map, searchResults, cafes, isSearchMode]);
+
+  // 사용자가 지도 줌 변경 시 isBoundsApplied를 false로 변경
+  useEffect(() => {
+    if (!map) return;
+
+    kakao.maps.event.addListener(map, "zoom_changed", () => {
+      setIsBoundsApplied(true);  // 사용자가 직접 줌을 조절하면 자동 조정 방지
+    });
+
+    return () => kakao.maps.event.removeListener(map, "zoom_changed", () => {
+      setIsBoundsApplied(true);
+    });
+  }, [map]);
 
 
   /* ---------- 검색 결과 반영 ---------- */
   useEffect(() => {
-    if (location.state?.results && location.state.results.length > 0) {
+    if (location.state?.results && location.state.results.length > 0) { // place가 여러 개인 경우
       setSearchResults(location.state.results);
       setIsSearchMode(true);
-
-      if (map) {
-        map.setCenter(new kakao.maps.LatLng(location.state.results[0].latitude, location.state.results[0].longitude));
-      }
-
-      // 새로고침 시 location.state 제거
-      window.history.replaceState(null, '', location.pathname);
-    } else if (location.state?.place) { // place가 있을 경우 처리
+    } else if (location.state?.place) { // place가 1개인 경우
       setSearchResults([location.state.place]); // place를 배열로 설정
       setIsSearchMode(true);
-
-      if (map) {
-        map.setCenter(new kakao.maps.LatLng(location.state.place.latitude, location.state.place.longitude));
-      }
-
-      window.history.replaceState(null, '', location.pathname);
     } else {
       setIsSearchMode(false);
     }
 
+    // 새로고침 시 location.state 제거
+    window.history.replaceState(null, '', location.pathname);
+    // 검색어 유지
     if (location.state?.searchTerm) {
-      setSearchPlace(location.state.searchTerm); // 검색어 유지
+      setSearchPlace(location.state.searchTerm);
     }
-
   }, [location.state, map]);
 
 
