@@ -111,6 +111,7 @@ const CafeAdd = () => {
 
   // ✅ DB에 카페 저장
   const saveCafeToDB = async (cafe) => {
+    console.log("💾 [DB 저장 요청 데이터]:", cafe); // DB 저장 요청 전 데이터 로그 출력
     try {
       await axios.post('http://localhost:8080/cafes', {
         kakaoPlaceId: cafe.id,
