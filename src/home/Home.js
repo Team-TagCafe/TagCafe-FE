@@ -134,10 +134,19 @@ const Home = () => {
       return;
     }
 
-    const tagNames = Object.keys(filters);
-    const values = tagNames.map(tag => filters[tag]);
+    const validFilters = Object.entries(filters).filter(([_, value]) => value);
+    const tagNames = validFilters.map(([tag]) => tag);
+    const values = validFilters.map(([_, value]) => value);
 
-    console.log(`📢 [API 요청] 다중 태그 필터링: ${JSON.stringify(filters)}`);
+    // 필터가 없다면 기본 데이터 로드
+    if (tagNames.length === 0) {
+      console.log("⚪ [유효한 필터 없음] 기본 데이터 로드");
+      setIsFilterMode(false);
+      fetchCafesInArea();
+      return;
+    }
+
+    console.log(`📢 [API 요청] 다중 태그 필터링: ${JSON.stringify({tagNames, values})}`);
 
     try {
       const response = await fetch(
