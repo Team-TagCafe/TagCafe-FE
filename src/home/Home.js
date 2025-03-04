@@ -134,6 +134,7 @@ const Home = () => {
       return;
     }
 
+    // null 또는 빈 값이 있는 필터 제거
     const validFilters = Object.entries(filters).filter(([_, value]) => value);
     const tagNames = validFilters.map(([tag]) => tag);
     const values = validFilters.map(([_, value]) => value);
@@ -171,8 +172,9 @@ const Home = () => {
         setIsFilterMode(true);
       } else {
         console.log("🔍 필터링된 결과 없음");
+        alert("해당하는 카페가 없습니다.");
         setIsFilterMode(false);
-        setSearchResults([]);
+        fetchCafesInArea(); // 기본 데이터 로드
       }
     } catch (error) {
       console.error("🚨 필터링된 카페 조회 중 오류 발생:", error);
