@@ -15,6 +15,7 @@ const Home = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [cafes, setCafes] = useState([]);
   const [isSearchMode, setIsSearchMode] = useState(false);
+  const [isFilterMode, setIsFilterMode] = useState(false);
   const [selectedFilters, setSelectedFilters] = useState({});
   const [markers, setMarkers] = useState([]);  // 마커 저장
   const [overlays, setOverlays] = useState([]); // 오버레이 저장
@@ -128,7 +129,7 @@ const Home = () => {
   const fetchFilteredCafes = async (filters) => {
     if (!filters || Object.keys(filters).length === 0) {
       console.log("⚪ [필터 없음] 기본 데이터 로드");
-      setIsSearchMode(false);
+      setIsFilterMode(false);
       fetchCafesInArea();
       return;
     }
@@ -157,11 +158,11 @@ const Home = () => {
       console.log("✅ [필터링된 카페 데이터]", JSON.stringify(data, null, 2));
 
       if (data.length > 0) {
-        setIsSearchMode(true);
         setSearchResults(data);
+        setIsFilterMode(true);
       } else {
         console.log("🔍 필터링된 결과 없음");
-        setIsSearchMode(false);
+        setIsFilterMode(false);
         setSearchResults([]);
       }
     } catch (error) {
@@ -173,8 +174,10 @@ const Home = () => {
   useEffect(() => {
     if (!map) return;
 
-    const dataToShow = isSearchMode ? searchResults : cafes;
+    const dataToShow = isSearchMode || isFilterMode ? searchResults : cafes;
     if (dataToShow.length === 0) return;
+    console.log("🔍 isSearchMode:", isSearchMode, "isFilterMode:", isFilterMode);
+    console.log("🟢 [dataToShow]:", dataToShow);
 
     // 기존 마커 및 오버레이 삭제
     markers.forEach(marker => marker.setMap(null));
@@ -218,14 +221,13 @@ const Home = () => {
     if (dataToShow.length === 1) {
       map.setCenter(new kakao.maps.LatLng(dataToShow[0].latitude, dataToShow[0].longitude));
     } else {
-      if (!isBoundsApplied) {  // 처음 한 번만 적용 (사용자 조작 방해 방지)
+      if (!isBoundsApplied && (isSearchMode || isFilterMode)) {
         map.setBounds(bounds);
-        setIsBoundsApplied(true); // 바운더리 적용 상태를 true로 변경
+        setIsBoundsApplied(true);
       }
     }
-  }, [map, searchResults, cafes, isSearchMode]);
+  }, [map, searchResults, cafes, isSearchMode, isFilterMode, selectedFilters]);
 
-  // 사용자가 지도 줌 변경 시 isBoundsApplied를 false로 변경
   useEffect(() => {
     if (!map) return;
 
@@ -262,19 +264,22 @@ const Home = () => {
 
   /* ---------- 지도 이동 후 카페 자동 로딩 ---------- */
   useEffect(() => {
-    if (!map || isSearchMode) return; // 검색 모드에서는 실행 안 함
+    if (!map || isSearchMode || isFilterMode) return; // 검색 모드 & 필터 모드에서는 실행 안 함
     fetchCafesInArea(); // 초기 실행
 
     // 지도 이동이 멈춘 후에만 fetchCafesInArea 실행
     const idleListener = kakao.maps.event.addListener(map, "idle", fetchCafesInArea);
 
     return () => kakao.maps.event.removeListener(map, "idle", idleListener);
-  }, [map, isSearchMode, fetchCafesInArea]);
+  }, [map, isSearchMode, isFilterMode, selectedFilters, fetchCafesInArea]);
 
 
   /* ---------- 필터 변경 시 필터링된 카페 조회 ---------- */
   useEffect(() => {
     console.log("🟡 [필터 변경 감지] selectedFilters:", JSON.stringify(selectedFilters, null, 2));
+    // 필터가 적용되었는지 여부 체크
+    const hasFilters = Object.keys(selectedFilters).length > 0;
+    setIsFilterMode(hasFilters);
     fetchFilteredCafes(selectedFilters);
   }, [selectedFilters]);
 
