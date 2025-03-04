@@ -63,6 +63,18 @@ const TopBar = ({
     };
 
     useEffect(() => {
+        // TagFilter에서 선택한 값이 TagSelection에도 반영되도록 `selectedOptions` 업데이트
+        setSelectedOptions((prevOptions) => {
+            const updatedOptions = { ...prevOptions };
+            Object.keys(selectedFilters).forEach((key) => {
+                updatedOptions[key] = selectedFilters[key] || ""; // 선택 해제 시 ""로 변경
+            });
+            return updatedOptions;
+        });
+    }, [selectedFilters]);
+    
+
+    useEffect(() => {
         console.log("🟡 [필터 변경 감지] selectedFilters:", selectedFilters);
         if (onFilterChange) {
             onFilterChange(selectedFilters);

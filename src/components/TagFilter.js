@@ -40,7 +40,7 @@ function TagFilter({
     console.log('Tag clicked:', group, option);
     setSelectedTags((prev) => ({
       ...prev,
-      [group]: prev[group] === option ? null : option, // 선택된 옵션을 토글
+      [group]: prev[group] === option ? "" : option, // 선택된 옵션을 토글
     }));
     if (onFilterSelect) {
       console.log('Calling onFilterSelect with:', group, option);
