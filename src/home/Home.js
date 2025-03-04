@@ -151,7 +151,7 @@ const Home = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:8080/cafes/filter/multiple?tagNames=${encodeURIComponent(tagNames.join(','))}&values=${encodeURIComponent(values.join(','))}`,
+        `http://localhost:8080/cafes/filter?tagNames=${encodeURIComponent(tagNames.join(','))}&values=${encodeURIComponent(values.join(','))}`,
         {
           method: "GET",
           headers: {
