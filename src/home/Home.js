@@ -54,7 +54,6 @@ const Home = () => {
           // 사용자가 위치 권한 허용한 경우
           const userLat = position.coords.latitude;
           const userLng = position.coords.longitude;
-          console.log("✅ 사용자 위치:", userLat, userLng);
 
           initializeMap(userLat, userLng); // 사용자 위치로 지도 초기화
         },
@@ -130,7 +129,6 @@ const Home = () => {
   /* ---------- 필터링된 카페 조회 ---------- */
   const fetchFilteredCafes = async (filters) => {
     if (!filters || Object.keys(filters).length === 0) {
-      console.log("⚪ [필터 없음] 기본 데이터 로드");
       setIsFilterMode(false);
       fetchCafesInArea();
       return;
@@ -143,13 +141,10 @@ const Home = () => {
 
     // 필터가 없다면 기본 데이터 로드
     if (tagNames.length === 0) {
-      console.log("⚪ [유효한 필터 없음] 기본 데이터 로드");
       setIsFilterMode(false);
       fetchCafesInArea();
       return;
     }
-
-    console.log(`📢 [API 요청] 다중 태그 필터링: ${JSON.stringify({ tagNames, values })}`);
 
     try {
       const response = await fetch(
@@ -167,13 +162,11 @@ const Home = () => {
       }
 
       const data = await response.json();
-      console.log("✅ [필터링된 카페 데이터]", JSON.stringify(data, null, 2));
 
       if (data.length > 0) {
         setSearchResults(data);
         setIsFilterMode(true);
       } else {
-        console.log("🔍 필터링된 결과 없음");
         setPopupMessage("해당하는 카페가 없습니다.");  // 팝업 메시지 설정
         setShowFilterPopup(true);  // 필터링 실패 팝업 표시
       }
@@ -188,8 +181,6 @@ const Home = () => {
 
     const dataToShow = isSearchMode || isFilterMode ? searchResults : cafes;
     if (dataToShow.length === 0) return;
-    console.log("🔍 isSearchMode:", isSearchMode, "isFilterMode:", isFilterMode);
-    console.log("🟢 [dataToShow]:", dataToShow);
 
     // 기존 마커 및 오버레이 삭제
     markers.forEach(marker => marker.setMap(null));
@@ -288,7 +279,6 @@ const Home = () => {
 
   /* ---------- 필터 변경 시 필터링된 카페 조회 ---------- */
   useEffect(() => {
-    console.log("🟡 [필터 변경 감지] selectedFilters:", JSON.stringify(selectedFilters, null, 2));
     // 필터가 적용되었는지 여부 체크
     const hasFilters = Object.keys(selectedFilters).length > 0;
     setIsFilterMode(hasFilters);
@@ -334,10 +324,6 @@ const Home = () => {
           const userLocation = new kakao.maps.LatLng(userLat, userLng);
 
           map.setCenter(userLocation);
-
-          // 경도와 위도 출력
-          console.log("현재 위치 경도:", userLng);
-          console.log("현재 위치 위도:", userLat);
         },
         (error) => {
           console.error('사용자 위치를 가져오는 중 오류 발생:', error.message);

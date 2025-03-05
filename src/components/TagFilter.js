@@ -24,36 +24,22 @@ function TagFilter({
   // 초기 selectedFilters 값으로 selectedTags 설정
   useEffect(() => {
     setSelectedTags(selectedFilters);
-    console.log('Initial selectedFilters applied:', selectedFilters);
   }, [selectedFilters]);
 
-  useEffect(() => {
-    console.log('TagFilter mounted');
-    console.log('Initial selectedFilters:', selectedFilters);
-  }, []);
-
-  useEffect(() => {
-    console.log('Updated selectedTags:', selectedTags);
-  }, [selectedTags]);
-
   const handleTagClick = (group, option) => {
-    console.log('Tag clicked:', group, option);
     setSelectedTags((prev) => ({
       ...prev,
       [group]: prev[group] === option ? "" : option, // 선택된 옵션을 토글
     }));
     if (onFilterSelect) {
-      console.log('Calling onFilterSelect with:', group, option);
       onFilterSelect(group, option);
     }
   };
 
   const handleReset = () => {
-    console.log('Resetting tags');
     setSelectedTags({}); // 로컬 상태 초기화
     if (onFilterSelect) {
       // 부모 컴포넌트의 selectedFilters도 초기화
-      console.log('Resetting selectedFilters in parent component');
       Object.keys(selectedTags).forEach((group) => onFilterSelect(group, null));
     }
     onClose();

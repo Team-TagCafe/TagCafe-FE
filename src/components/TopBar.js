@@ -57,7 +57,6 @@ const TopBar = ({
                 ...prevFilters,
                 [filterGroup]: prevFilters[filterGroup] === option ? null : option,
             };
-            console.log('🔵 [필터 선택] updatedFilters:', updatedFilters);
             return updatedFilters;
         });
     };
@@ -75,7 +74,6 @@ const TopBar = ({
     
 
     useEffect(() => {
-        console.log("🟡 [필터 변경 감지] selectedFilters:", selectedFilters);
         if (onFilterChange) {
             onFilterChange(selectedFilters);
         }
@@ -89,7 +87,6 @@ const TopBar = ({
                 ...prevOptions,
                 [tagText]: prevOptions[tagText] === option ? "" : option,
             };
-            console.log('Option selected:', updatedOptions);
             return updatedOptions;
         });
     
@@ -99,7 +96,6 @@ const TopBar = ({
                 ...prevFilters,
                 [tagText]: prevFilters[tagText] === option ? null : option,
             };
-            console.log('Updated selectedFilters:', updatedFilters);
             return updatedFilters;
         });
     };
@@ -116,7 +112,6 @@ const TopBar = ({
             "평점": ""
         });
         setSelectedFilters({});
-        console.log('Resetting selections');  // Debugging line
     };
 
     useEffect(() => {
