@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
-import { BottomBar, TopBar, LocationReset, CafePopup } from '../components';
+import { BottomBar, TopBar, LocationReset, CafePopup, Popup } from '../components';
 import './Home.css';
 
 const Home = () => {
@@ -20,6 +20,8 @@ const Home = () => {
   const [markers, setMarkers] = useState([]);  // 마커 저장
   const [overlays, setOverlays] = useState([]); // 오버레이 저장
   const [isBoundsApplied, setIsBoundsApplied] = useState(false);
+  const [popupMessage, setPopupMessage] = useState("");  // 팝업 메시지 상태 추가
+  const [showFilterPopup, setShowFilterPopup] = useState(false);  // 필터링 실패 팝업 상태
 
   // 지도 사이즈 설정용
   const [innerWidth, setInnerWidth] = useState(window.innerWidth); // 화면 너비
@@ -147,7 +149,7 @@ const Home = () => {
       return;
     }
 
-    console.log(`📢 [API 요청] 다중 태그 필터링: ${JSON.stringify({tagNames, values})}`);
+    console.log(`📢 [API 요청] 다중 태그 필터링: ${JSON.stringify({ tagNames, values })}`);
 
     try {
       const response = await fetch(
@@ -172,9 +174,8 @@ const Home = () => {
         setIsFilterMode(true);
       } else {
         console.log("🔍 필터링된 결과 없음");
-        alert("해당하는 카페가 없습니다.");
-        setIsFilterMode(false);
-        fetchCafesInArea(); // 기본 데이터 로드
+        setPopupMessage("해당하는 카페가 없습니다.");  // 팝업 메시지 설정
+        setShowFilterPopup(true);  // 필터링 실패 팝업 표시
       }
     } catch (error) {
       console.error("🚨 필터링된 카페 조회 중 오류 발생:", error);
@@ -372,6 +373,18 @@ const Home = () => {
             cafeId={popupContent.id}
             onClose={() => setShowPopup(false)}
           />}
+
+        {/* ❗ 필터링된 결과가 없을 때 팝업 표시 */}
+        {showFilterPopup && (
+          <Popup
+            message={popupMessage}
+            onConfirm={() => {
+              setShowFilterPopup(false);
+              fetchCafesInArea(); // 기본 데이터 다시 로드
+            }}
+            showCancel={false}
+          />
+        )}
       </div>
       <BottomBar />
     </>
