@@ -14,7 +14,7 @@ function TagSelection({
 
   // 단일 선택 처리
   const handleOptionSelect = (option) => {
-    const newSelectedOption = option === selectedOption ? null : option; // 선택된 옵션 토글
+    const newSelectedOption = option === selectedOption ? "" : option; // 선택된 옵션 토글
     onOptionSelect(newSelectedOption); // 전달된 onOptionSelect로 부모에게 옵션 전달
   };
 
