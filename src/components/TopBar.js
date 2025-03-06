@@ -14,7 +14,6 @@ const TopBar = ({
     showTags = false,
     showHamburger = true,
     showClose = false,
-    isLoggedIn = true,
     searchValue,
     isSearchMode,
     onSearchPlaceChange,
