@@ -1,9 +1,10 @@
 /*global kakao*/
 
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useContext } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { BottomBar, TopBar, LocationReset, CafePopup, Popup } from '../components';
 import './Home.css';
+import AuthContext from '../context/AuthContext';
 
 const Home = () => {
   /* ---------- 상태 관리 ---------- */
@@ -25,6 +26,7 @@ const Home = () => {
   const [isBoundsApplied, setIsBoundsApplied] = useState(false);
   const [popupMessage, setPopupMessage] = useState("");  // 팝업 메시지 상태 추가
   const [showFilterPopup, setShowFilterPopup] = useState(false);  // 필터링 실패 팝업 상태
+  const { setUser } = useContext(AuthContext);  // AuthContext에서 setUser 가져오기
 
   // 지도 사이즈 설정용
   const [innerWidth, setInnerWidth] = useState(window.innerWidth); // 화면 너비
@@ -41,14 +43,22 @@ const Home = () => {
     const params = new URLSearchParams(location.search);
     const nicknameFromUrl = params.get("nickname");
     const emailFromUrl = params.get("email");
+    const tokenFromUrl = params.get("token");
 
-    if (nicknameFromUrl && emailFromUrl) {
+    if (nicknameFromUrl && emailFromUrl && tokenFromUrl) {
       localStorage.setItem("nickname", nicknameFromUrl);
       localStorage.setItem("email", emailFromUrl);
-      setNickname(nicknameFromUrl);
-      setEmail(emailFromUrl);
+      localStorage.setItem("token", tokenFromUrl);
+
+      // ✅ AuthContext의 setUser 호출하여 상태 업데이트
+      setUser({ token: tokenFromUrl, nickname: nicknameFromUrl, email: emailFromUrl });
+
+      // URL 정리 (상태 업데이트 후 실행)
+      setTimeout(() => {
+        window.history.replaceState({}, document.title, "/home");
+      }, 100);
     }
-  }, [location]);
+  }, [location, setUser]);
 
   /* ---------- 초기 Kakao 지도 설정 ---------- */
   useEffect(() => {
