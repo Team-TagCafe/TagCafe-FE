@@ -14,10 +14,14 @@ const TopBar = ({
     showTags = false,
     showHamburger = true,
     showClose = false,
-    onSearchPlaceChange
+    searchValue,
+    isSearchMode,
+    onSearchPlaceChange,
+    onSearchClick,
+    onClearSearch,
+    onFilterChange
 }) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [inputValue, setInputValue] = useState('');
     const navigate = useNavigate();
     const { user } = useContext(AuthContext); 
     const isLoggedIn = !!user;
@@ -41,7 +45,6 @@ const TopBar = ({
     };
 
     const handleInputChange = (event) => {
-        setInputValue(event.target.value);
         onSearchPlaceChange(event.target.value);
     };
 
@@ -51,22 +54,34 @@ const TopBar = ({
     };
 
     const handleFilterSelect = (filterGroup, option) => {
-        console.log('Filter selected:', filterGroup, option);  // Debugging line
         setSelectedFilters((prevFilters) => {
             const updatedFilters = {
                 ...prevFilters,
-                [filterGroup]: prevFilters[filterGroup] === option ? null : option, // 필터 선택/해제
+                [filterGroup]: prevFilters[filterGroup] === option ? null : option,
             };
-            console.log('Updated selectedFilters:', updatedFilters); // selectedFilters 값 출력
             return updatedFilters;
         });
-
-        // **개별 Tag들도 업데이트하기**
-        setSelectedOptions((prevOptions) => ({
-            ...prevOptions,
-            [filterGroup]: prevOptions[filterGroup] === option ? "" : option,
-        }));
     };
+
+    useEffect(() => {
+        // TagFilter에서 선택한 값이 TagSelection에도 반영되도록 `selectedOptions` 업데이트
+        setSelectedOptions((prevOptions) => {
+            const updatedOptions = { ...prevOptions };
+            Object.keys(selectedFilters).forEach((key) => {
+                updatedOptions[key] = selectedFilters[key] || ""; // 선택 해제 시 ""로 변경
+            });
+            return updatedOptions;
+        });
+    }, [selectedFilters]);
+    
+
+    useEffect(() => {
+        if (onFilterChange) {
+            onFilterChange(selectedFilters);
+        }
+    }, [selectedFilters, onFilterChange]);
+    
+      
 
     const handleOptionSelect = (tagText, option) => {
         setSelectedOptions((prevOptions) => {
@@ -74,7 +89,6 @@ const TopBar = ({
                 ...prevOptions,
                 [tagText]: prevOptions[tagText] === option ? "" : option,
             };
-            console.log('Option selected:', updatedOptions);
             return updatedOptions;
         });
     
@@ -84,7 +98,6 @@ const TopBar = ({
                 ...prevFilters,
                 [tagText]: prevFilters[tagText] === option ? null : option,
             };
-            console.log('Updated selectedFilters:', updatedFilters);
             return updatedFilters;
         });
     };
@@ -101,7 +114,6 @@ const TopBar = ({
             "평점": ""
         });
         setSelectedFilters({});
-        console.log('Resetting selections');  // Debugging line
     };
 
     useEffect(() => {
@@ -154,15 +166,21 @@ const TopBar = ({
                     <div className="search-filter">
                         <input
                             type="text"
-                            value={inputValue}
+                            value={searchValue} // 검색어 유지
                             onChange={handleInputChange}
                             onFocus={handleInputFocus} // 포커스 시 페이지 이동
                             className="search-input"
                             placeholder="지역, 카페 이름으로 검색"
                         />
-                        <button className="search-button">
-                            <img src="/img/search.png" alt="Search" />
-                        </button>
+                        {isSearchMode ? (
+                            <button className="search-clear-button" onClick={onClearSearch}>
+                                x
+                            </button>
+                        ) : (
+                            <button className="search-button" onClick={onSearchClick}>
+                                <img src="/img/search.png" alt="Search" />
+                            </button>
+                        )}
                     </div>
                 )}
 
