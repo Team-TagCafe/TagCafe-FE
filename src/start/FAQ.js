@@ -8,7 +8,7 @@ const FAQ = () => {
   const [openIndexes, setOpenIndexes] = useState([]); // 열려 있는 질문의 인덱스를 관리
   const [activeTab, setActiveTab] = useState("faq"); // 기본 탭: FAQ
   const [feedbackText, setFeedbackText] = useState("")
-  const [faqs, setFaqs] = useState([]);
+  const [qas, setQas] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -27,7 +27,7 @@ const FAQ = () => {
       })
       .then((data) => {
         console.log("받아온 데이터:", data);
-        setFaqs(data);
+        setQas(data);
         setLoading(false);
       })
       .catch((error) => {
@@ -60,7 +60,7 @@ const FAQ = () => {
       return;
     }
 
-    fetch("http://localhost:8080/faq/feedback", {  // ✅ 절대 경로로 수정
+    fetch("http://localhost:8080/faq/feedback", {  // 절대 경로로 수정
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -68,7 +68,7 @@ const FAQ = () => {
       body: JSON.stringify({ content: feedbackText }),
     })
       .then((response) => {
-        console.log("응답 상태 코드:", response.status);  // ✅ 응답 상태 확인
+        console.log("응답 상태 코드:", response.status);  
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
@@ -76,7 +76,7 @@ const FAQ = () => {
       })
       .then((data) => {
         console.log("서버 응답 데이터:", data);
-        alert(data.message || "피드백이 정상적으로 제출되었습니다!");  // ✅ 서버 응답 메시지 표시
+        alert(data.message || "피드백이 정상적으로 제출되었습니다!");  
         setFeedbackText(""); // 입력 필드 초기화
       })
       .catch((error) => {
@@ -107,7 +107,7 @@ const FAQ = () => {
       {/* 탭 내용 */}
       {activeTab === "faq" ? (
         <div className="faq-list">
-          {faqs.map((faq, index) => (
+          {qas.map((faq, index) => (
             <div key={index} className="faq-item">
               <div className="faq-question" onClick={() => toggleAnswer(index)}>
                 <div className="faq-category">{faq.category}</div>
