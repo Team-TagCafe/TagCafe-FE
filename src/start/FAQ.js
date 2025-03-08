@@ -60,12 +60,17 @@ const FAQ = () => {
       return;
     }
 
+    const userEmail = localStorage.getItem("email"); 
+
     fetch("http://localhost:8080/faq/feedback", {  // 절대 경로로 수정
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ content: feedbackText }),
+      body: JSON.stringify({
+        content: feedbackText,
+        email: userEmail, // ✅ 이메일도 함께 전송
+      }),
     })
       .then((response) => {
         console.log("응답 상태 코드:", response.status);  
