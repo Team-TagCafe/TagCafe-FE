@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import "./FAQ.css";
 import "./Policy.css";
 import { TopBar } from "../components";
@@ -8,14 +8,43 @@ const FAQ = () => {
   const [openIndexes, setOpenIndexes] = useState([]); // 열려 있는 질문의 인덱스를 관리
   const [activeTab, setActiveTab] = useState("faq"); // 기본 탭: FAQ
   const [feedbackText, setFeedbackText] = useState("")
+  const [qas, setQas] = useState([]);
+  const [loading, setLoading] = useState(true);
 
+  useEffect(() => {
+    fetch("http://localhost:8080/faq/qa", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {
+        console.log("응답 상태 코드:", response.status);
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("받아온 데이터:", data);
+        setQas(data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("FAQ 데이터를 불러오는 중 오류 발생:", error);
+        setLoading(false);
+      });
+  }, []);
+
+  // 🔹 질문 클릭 시 답변 표시/숨김
   const toggleAnswer = (index) => {
-    if (openIndexes.includes(index)) {
-      setOpenIndexes(openIndexes.filter((i) => i !== index)); // 이미 열려 있으면 닫기
-    } else {
-      setOpenIndexes([...openIndexes, index]); // 닫혀 있으면 열기
-    }
+    setOpenIndexes((prevIndexes) =>
+      prevIndexes.includes(index)
+        ? prevIndexes.filter((i) => i !== index) // 이미 열려 있으면 닫기
+        : [...prevIndexes, index] // 닫혀 있으면 열기
+    );
   };
+
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
@@ -25,23 +54,41 @@ const FAQ = () => {
     setFeedbackText(event.target.value); // 입력값 상태 업데이트
   };
 
-  const faqs = [
-    {
-      category: "서비스 관련",
-      question: "필터를 어떻게 사용하나요?",
-      answer: "필터는 검색창 옆의 버튼을 클릭하여 사용할 수 있습니다.",
-    },
-    {
-      category: "서비스 관련",
-      question: "회원 가입 없이 사용할 수 있나요?",
-      answer: "회원 가입 없이도 일부 서비스를 이용할 수 있습니다.",
-    },
-    {
-      category: "기능 관련",
-      question: "내가 좋아하는 카페를 추가할 수 있나요?",
-      answer: "내 프로필에서 좋아하는 카페를 추가할 수 있습니다.",
-    },
-  ];
+  const handleSubmitFeedback = () => {
+    if (feedbackText.trim() === "") {
+      alert("내용을 입력해주세요!");
+      return;
+    }
+
+    const userEmail = localStorage.getItem("email"); 
+
+    fetch("http://localhost:8080/faq/feedback", {  // 절대 경로로 수정
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        content: feedbackText,
+        email: userEmail, // ✅ 이메일도 함께 전송
+      }),
+    })
+      .then((response) => {
+        console.log("응답 상태 코드:", response.status);  
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("서버 응답 데이터:", data);
+        alert(data.message || "피드백이 정상적으로 제출되었습니다!");  
+        setFeedbackText(""); // 입력 필드 초기화
+      })
+      .catch((error) => {
+        console.error("피드백 제출 중 오류 발생:", error);
+        alert("오류가 발생했습니다. 다시 시도해주세요.");
+      });
+};
 
   return (
     <div className="faq-page">
@@ -65,7 +112,7 @@ const FAQ = () => {
       {/* 탭 내용 */}
       {activeTab === "faq" ? (
         <div className="faq-list">
-          {faqs.map((faq, index) => (
+          {qas.map((faq, index) => (
             <div key={index} className="faq-item">
               <div className="faq-question" onClick={() => toggleAnswer(index)}>
                 <div className="faq-category">{faq.category}</div>
@@ -98,7 +145,7 @@ const FAQ = () => {
           <div className="feedback-char-counter">
             {feedbackText.length}/200 {/* 현재 글자 수와 최대 글자 수 표시 */}
           </div>          
-          <LongButton optionText="제출하기" onClick={() => alert("제출되었습니다!")} />
+          <LongButton optionText="제출하기" onClick={handleSubmitFeedback} />
         </div>
       )}
     </div>
