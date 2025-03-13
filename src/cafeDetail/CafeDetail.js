@@ -1,19 +1,36 @@
 /*global kakao*/
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { BottomBar, Bookmark, CafeInformationDetail, TopBar } from "../components";
+import { BottomBar, Bookmark, CafeInformationDetail } from "../components";
 import "./CafeDetail.css";
 import ImageCarousel from "./ImageCarousel";
 import DetailReviewCard from "./DetailReviewCard";
-import { useCafe } from "../home/CafeContext";
 
 const CafeDetail = () => {
-  const navigate = useNavigate(); // useNavigate 훅 사용
+  const navigate = useNavigate();
   const { id } = useParams(); // 카페 id
   const [activeTab, setActiveTab] = useState("cafe-detail-info"); // 현재 활성화된 탭 관리  
-  const { cafes, toggleSaveCafe } = useCafe(); // 카페 전역 상태 가져오기
-  
-  const selectedCafe = cafes.find((cafe) => cafe.id === parseInt(id)); // 현재 선택된 카페 찾기
+  const [cafe, setCafe] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [map, setMap] = useState(null);
+
+  // 카페 정보 가져오기
+  useEffect(() => {
+    const fetchCafeData = async () => {
+      try {
+        const response = await fetch(`http://localhost:8080/cafes/${id}`);
+        if (!response.ok) throw new Error("Failed to fetch cafe data");
+
+        const data = await response.json();
+        setCafe(data); // 여기서 setCafe 사용됨
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchCafeData();
+  }, [id, setCafe]);
 
   // 뒤로가기 핸들러
   const handleBackClick = () => {
@@ -51,17 +68,14 @@ const CafeDetail = () => {
   const averageRating =
     reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length;
 
-  // 지도 관련 상태
-  const [map, setMap] = useState(null);
-
   // 마커 이미지 설정
   const imageSrc = '/img/map-cafe.png';
   const imageSize = new kakao.maps.Size(17, 17);
   const imageOption = { offset: new kakao.maps.Point(5, 5) };
   const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
-
+  
   useEffect(() => {
-    if (activeTab !== "cafe-detail-info" || !selectedCafe ) {
+    if (activeTab !== "cafe-detail-info" || !cafe) {
       setMap(null);
       return; // activeTab이 "cafe-detail-info"가 아니면 아무 작업도 하지 않음
     }
@@ -71,19 +85,19 @@ const CafeDetail = () => {
     // 이미 초기화된 지도 삭제 후 새로 초기화
     if (map) {
       map.relayout(); // 지도 크기 재조정
-      map.setCenter(new kakao.maps.LatLng(selectedCafe.y, selectedCafe.x)); // 중심 좌표 재설정
+      map.setCenter(new kakao.maps.LatLng(cafe.latitude, cafe.longitude)); // 중심 좌표 재설정
       return; // 기존 지도를 재활용하므로 새로 생성하지 않음
     }
 
     const options = {
-      center: new kakao.maps.LatLng(selectedCafe.y, selectedCafe.x),
+      center: new kakao.maps.LatLng(cafe.latitude, cafe.longitude),
       level: 3,
     };
 
     const kakaoMap = new kakao.maps.Map(container, options);
     setMap(kakaoMap);
 
-    const markerPosition = new kakao.maps.LatLng(selectedCafe.y, selectedCafe.x);
+    const markerPosition = new kakao.maps.LatLng(cafe.latitude, cafe.longitude);
     const marker = new kakao.maps.Marker({
       position: markerPosition,
       image: markerImage,
@@ -91,16 +105,18 @@ const CafeDetail = () => {
 
     marker.setMap(kakaoMap);
 
-    createCustomOverlay(kakaoMap, markerPosition, selectedCafe.place_name, selectedCafe.address_name);
-  }, [activeTab, selectedCafe]); // `activeTab`에 따라 업데이트  
+    createCustomOverlay(kakaoMap, markerPosition, cafe.cafeName, cafe.address);
+  }, [activeTab, cafe]); // `activeTab`에 따라 업데이트  
+
+  if (!cafe) return <div>카페 정보를 찾을 수 없습니다.</div>;
 
 
   /* ---------- 지도 카페명 표시 CustomOverlay 생성  ---------- */
-  const createCustomOverlay = (map, markerPosition, placeName) => {
+  const createCustomOverlay = (map, markerPosition, cafeName) => {
 
     const content = document.createElement('div');
     content.className = 'label';
-    content.innerText = placeName;
+    content.innerText = cafeName;
 
     const customOverlay = new kakao.maps.CustomOverlay({
       position: markerPosition,
@@ -130,16 +146,16 @@ const CafeDetail = () => {
       {/* 카페 헤더 정보 */}
       <div className="cafe-detail-header">
         <div className="cafe-detail-header-text">
-          <div className="cafe-detail-name">{selectedCafe.place_name}</div>
-          <div className="cafe-detail-address">{selectedCafe.address_name}</div>
+          <div className="cafe-detail-name">{cafe.cafeName}</div>
+          <div className="cafe-detail-address">{cafe.address}</div>
         </div>
         <Bookmark
           width="17px"
           height="31px"
-          isSaved={selectedCafe.saved}
-          onClick={() => toggleSaveCafe(selectedCafe.id)}
-        />      
-        </div>
+          isSaved={cafe.saved}
+        // onClick={() => toggleSaveCafe(cafe.id)}
+        />
+      </div>
 
       {/* 구분선 */}
       <div className="cafe-detail-divider"></div>
@@ -182,7 +198,7 @@ const CafeDetail = () => {
             <div className="cafe-detail-info-text">
               <div>
                 <img src="/img/location.png" />
-                <span>{selectedCafe.address_name}</span>
+                <span>{cafe.address}</span>
               </div>
               <div>
                 <img src="/img/phone.png" />
@@ -210,13 +226,13 @@ const CafeDetail = () => {
                   src="/img/star_full.png"
                   alt="Star Icon"
                   className="cafe-detail-review-star"
-                /> 
+                />
                 <div className="cafe-detail-review-score">{averageRating.toFixed(2)}</div>
                 <div className="cafe-detail-review-text">{reviews.length}개 리뷰</div>
               </div>
               <button className="cafe-detail-review-write-btn"
-               onClick={handleWriteReviewClick}
-               >리뷰쓰기</button>
+                onClick={handleWriteReviewClick}
+              >리뷰쓰기</button>
             </div>
             <div className="cafe-detail-review-cards">
               {reviews.map((review, index) => (
