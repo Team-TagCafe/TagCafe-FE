@@ -38,7 +38,7 @@ const CafeDetail = () => {
   };
 
   const handleWriteReviewClick = () => {
-    navigate(`/cafe/${id}/review-write`);
+    navigate(`/cafe/${id}/review-write`, { state: { cafe } });
   };
 
   const [reviews, setReviews] = useState([
