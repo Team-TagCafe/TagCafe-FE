@@ -2,20 +2,42 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./SavedCafeCard.css";
 import { Bookmark, VisitStatus } from "../components";
-import { useCafe } from "../home/CafeContext";
 
 const SavedCafeCard = ({ cafe }) => {
-  const { id, place_name, address_name, tags } = cafe;
-  const { toggleSaveCafe } = useCafe();
+  const { cafeId, cafeName, address, tags } = cafe;
   const navigate = useNavigate();
 
   const handleCardClick = () => {
-    navigate(`/cafe/${id}`);
+    navigate(`/cafe/${cafeId}`);
   };
 
-  const handleBookmarkClick = (event) => {
-    event.stopPropagation();  // 부모 이벤트 전파 방지
-    toggleSaveCafe(id);  // 북마크 해제 (saved: false로 변경)
+  const handleBookmarkClick = async (event) => {
+    event.stopPropagation(); // 부모 이벤트 전파 방지
+
+    try {
+      const storedEmail = localStorage.getItem("email");
+      if (!storedEmail) return;
+
+      const response = await fetch(`http://localhost:8080/users/id?email=${storedEmail}`, {
+        credentials: "include",
+      });
+
+      if (!response.ok) throw new Error("사용자 ID를 가져오는데 실패했습니다.");
+
+      const userId = await response.json();
+
+      await fetch(`http://localhost:8080/saved-cafes/${cafeId}?userId=${userId}`, {
+        method: "PATCH",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      window.location.reload(); // 새로고침하여 변경된 상태 반영
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleVisitStatusClick = (event) => {
@@ -41,18 +63,18 @@ const SavedCafeCard = ({ cafe }) => {
       <div className="saved-cafe-info">
         <div className="saved-cafe-header">
           <div className="saved-cafe-header-text">
-            <h3 className="saved-cafe-name">{place_name}</h3>
-            <p className="saved-cafe-location">{address_name}</p>
+            <h3 className="saved-cafe-name">{cafeName}</h3>
+            <p className="saved-cafe-location">{address}</p>
           </div>
           <div onClick={handleVisitStatusClick}>
             <VisitStatus />
           </div>        </div>
         <div className="saved-cafe-tags">
-          {tags.map((tag, index) => (
+          {/* {tags.map((tag, index) => (
             <span key={index} className="saved-cafe-tag">
               #{tag}
             </span>
-          ))}
+          ))} */}
         </div>
       </div>
     </div>
