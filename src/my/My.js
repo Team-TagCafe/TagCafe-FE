@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { BottomBar, TopBar } from '../components';
 import ReviewCafeCard from "./ReviewCafeCard"; 
@@ -8,55 +8,7 @@ import './My.css';
 const My = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("reviewedCafes"); 
-  const [reviewedCafes, setReviewedCafes] = useState([
-    { 
-      cafeId :1,
-      name: "스테이 어도러블",
-      date: "12.20 금",
-      rating: 4,
-      description: "카페가 조용하고 공부하기 좋습니다!",
-      tags: ["와이파이 빠름", "콘센트 일부", "책상 적당함", "화장실 외부", "주차 가능(무료)"],
-      image: "/img/cafe-img.png",
-    },
-
-    {
-      cafeId :2,
-      name: "카레 클린트",
-      date: "12.20 금",
-      rating: 3,
-      description: "카페가 조용하고 공부하기 좋습니다!",
-      tags: ["와이파이 빠름", "콘센트 일부", "책상 적당함", "화장실 외부", "주차 가능(무료)"],
-      image: "/img/cafe-img.png",
-    },
-
-    {
-      cafeId :3,
-      name: "스타벅스",
-      date: "12.20 금",
-      rating: 5,
-      description: "카페가 조용하고 공부하기 좋습니다!",
-      tags: ["와이파이 빠름", "콘센트 일부", "책상 적당함", "화장실 외부", "주차 가능(무료)"],
-      image: "/img/cafe-img.png",
-    },
-    {
-      cafeId :4,
-      name: "스테이 어도러블",
-      date: "12.20 금",
-      rating: 4,
-      description: "카페가 조용하고 공부하기 좋습니다!",
-      tags: ["와이파이 빠름", "콘센트 일부", "책상 적당함", "화장실 외부", "주차 가능(무료)"],
-      image: "/img/cafe-img.png",
-    },
-    {
-      cafeId :5,
-      name: "스테이 어도러블",
-      date: "12.20 금",
-      rating: 4,
-      description: "카페가 조용하고 공부하기 좋습니다!",
-      tags: ["와이파이 빠름", "콘센트 일부", "책상 적당함", "화장실 외부", "주차 가능(무료)"],
-      image: "/img/cafe-img.png",
-    }
-  ]);
+  const [reviewedCafes, setReviewedCafes] = useState([]);
 
   const [reportedCafes, setReportedCafes] = useState([
     {
@@ -84,6 +36,40 @@ const My = () => {
       status: "denied", 
     },
   ]);
+
+  const userEmail = localStorage.getItem("email");
+
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const userEmail = localStorage.getItem("email");
+    console.log("사용자 이메일:", userEmail);
+    
+    if (!userEmail) return; // userEmail이 없으면 요청하지 않음
+  
+    fetch(`http://localhost:8080/my/reviews?userEmail=${encodeURIComponent(userEmail)}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
+      },
+      credentials: "include"
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("받은 리뷰 데이터:", data); 
+        setReviewedCafes(data || []); // 데이터가 없을 경우 빈 배열 설정
+      })
+      .catch((error) => {
+        console.error("리뷰 데이터를 불러오는 중 오류 발생:", error);
+        setReviewedCafes([]); // 오류 발생 시에도 빈 배열로 설정
+      });
+  }, []);
 
 
   const handleTabClick = (tab) => {
