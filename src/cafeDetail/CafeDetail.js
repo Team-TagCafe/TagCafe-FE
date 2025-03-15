@@ -1,36 +1,117 @@
 /*global kakao*/
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { BottomBar, Bookmark, CafeInformationDetail } from "../components";
+import { BottomBar, Bookmark, CafeInformationDetail, Popup } from "../components";
 import "./CafeDetail.css";
 import ImageCarousel from "./ImageCarousel";
 import DetailReviewCard from "./DetailReviewCard";
 
 const CafeDetail = () => {
   const navigate = useNavigate();
-  const { id } = useParams(); // 카페 id
+  const { id: cafeId } = useParams(); // 카페 id
   const [activeTab, setActiveTab] = useState("cafe-detail-info"); // 현재 활성화된 탭 관리  
   const [cafe, setCafe] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [map, setMap] = useState(null);
+  const [isSaved, setIsSaved] = useState(false);
+  const [userId, setUserId] = useState(null);
+  const [showPopup, setShowPopup] = useState(false);
 
   // 카페 정보 가져오기
   useEffect(() => {
     const fetchCafeData = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/cafes/${id}`);
+        const response = await fetch(`http://localhost:8080/cafes/${cafeId}`);
         if (!response.ok) throw new Error("Failed to fetch cafe data");
 
         const data = await response.json();
-        setCafe(data); // 여기서 setCafe 사용됨
+        setCafe(data);
       } catch (error) {
         console.error(error);
-      } finally {
-        setLoading(false);
       }
     };
     fetchCafeData();
-  }, [id, setCafe]);
+  }, [cafeId, setCafe]);
+
+  useEffect(() => {
+    const fetchUserId = async () => {
+      try {
+        const storedEmail = localStorage.getItem("email");
+        if (!storedEmail) {
+          return;
+        }
+
+        // userId 가져오기
+        const response = await fetch(`http://localhost:8080/users/id?email=${storedEmail}`, {
+          credentials: "include",
+        });
+
+        if (!response.ok) throw new Error("Failed to fetch user ID");
+
+        const userId = await response.json();
+        setUserId(userId);
+        console.log("가져온 userId:", userId);
+
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchUserId();
+  }, []);
+
+  // 카페 저장 여부 확인
+  useEffect(() => {
+    if (!userId) return;
+
+    const checkSavedCafe = async () => {
+      try {
+        const response = await fetch(`http://localhost:8080/saved-cafes?userId=${userId}`, {
+          credentials: "include",
+        });
+
+        if (!response.ok) throw new Error("Failed to fetch saved cafes");
+
+        const savedCafes = await response.json();
+        const isCafeSaved = savedCafes.some((saved) => saved.cafe.cafeId === Number(cafeId));
+        setIsSaved(isCafeSaved);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    checkSavedCafe();
+  }, [userId, cafeId]);
+
+  const handleClosePopup = () => {
+    setShowPopup(false);
+  };
+
+  // 카페 저장 여부 토글 핸들러
+  const handleBookmarkClick = async () => {
+    if (!userId) {
+      setShowPopup(true);
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://localhost:8080/saved-cafes/${cafeId}?userId=${userId}`, {
+        method: "PATCH",
+        mode: "cors",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) throw new Error("Failed to toggle visited status");
+
+      const isCafeSaved = await response.json();
+      console.log("카페 저장 상태 변경됨:", isCafeSaved);
+      setIsSaved(isCafeSaved);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   // 뒤로가기 핸들러
   const handleBackClick = () => {
@@ -38,7 +119,7 @@ const CafeDetail = () => {
   };
 
   const handleWriteReviewClick = () => {
-    navigate(`/cafe/${id}/review-write`);
+    navigate(`/cafe/${cafeId}/review-write`);
   };
 
   const [reviews, setReviews] = useState([
@@ -152,8 +233,8 @@ const CafeDetail = () => {
         <Bookmark
           width="17px"
           height="31px"
-          isSaved={cafe.saved}
-        // onClick={() => toggleSaveCafe(cafe.id)}
+          isSaved={isSaved}
+          onClick={handleBookmarkClick}
         />
       </div>
 
@@ -240,6 +321,15 @@ const CafeDetail = () => {
               ))}
             </div>
           </div>
+        )}
+
+        {/* 비로그인 상태에서 저장버튼 눌렀을 때 팝업 */}
+        {showPopup && (
+          <Popup
+            message="로그인이 필요합니다."
+            onConfirm={handleClosePopup}
+            showCancel={false}
+          />
         )}
       </div>
 
