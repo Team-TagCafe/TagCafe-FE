@@ -397,14 +397,6 @@ const Home = () => {
             onClose={() => setShowPopup(false)}
           />}
 
-        {/* 로그인 상태 표시 */}
-        {nickname && (
-          <div className="user-info">
-            <p>환영합니다, {nickname}님!</p>
-            <button onClick={handleLogout}>로그아웃</button>
-          </div>
-          )}
-
         {/* ❗ 필터링된 결과가 없을 때 팝업 표시 */}
         {showFilterPopup && (
           <Popup
