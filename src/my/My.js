@@ -43,7 +43,6 @@ const My = () => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     const userEmail = localStorage.getItem("email");
-    console.log("사용자 이메일:", userEmail);
     
     if (!userEmail) return; // userEmail이 없으면 요청하지 않음
   
@@ -84,8 +83,12 @@ const My = () => {
     }
   };
 
-  const handleEdit=(cafeId)=>{
-    navigate(`/my/review/edit/${cafeId}`);
+  const handleEdit = (reviewId) => {
+    if (!reviewId) {
+      console.error("잘못된 reviewId:", reviewId);
+      return;
+    }
+    navigate(`/my/review/edit/${reviewId}`);
   };
 
   return (
@@ -125,7 +128,7 @@ const My = () => {
               key={index}
               cafe={cafe}
               onDeleteConfirmed={(id) => handleDeleteConfirmed(id, "reviewedCafes")}
-              onEdit={handleEdit}
+              onEdit={() => handleEdit(cafe.reviewId)}
             />
           ))}
         </div>

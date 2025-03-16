@@ -41,7 +41,7 @@ function App() {
               <Route path="/home" element={<Home selectedPlace={selectedPlace} />} />
               <Route path="/saved" element={<Saved />} />
               <Route path="/my" element={<My />} />
-              <Route path="/my/review/edit/:cafeId" element={<ReviewEdit />} />
+              <Route path="/my/review/edit/:reviewId" element={<ReviewEdit />} />
               <Route path="/my/report/add" element={<ReporCafeAdd />} />
               <Route path="my/report/edit/:id" element={<ReportEdit />} />
               {/* Search 컴포넌트에 onPlaceSelect 전달 */}

@@ -6,18 +6,15 @@ import ShortButton from "../components/ShortButton";
 import Popup from "../components/Popup";
 
 const ReviewCafeCard = ({ cafe, onEdit, onDeleteConfirmed }) => {
-  // ✅ React Hooks는 항상 최상위에서 호출되어야 함
   const [menuVisible, setMenuVisible] = useState(false);
   const [popupVisible, setPopupVisible] = useState(false);
   const navigate = useNavigate();
 
-  // ✅ `cafe`가 없을 경우 기본값을 설정하여 에러 방지
   if (!cafe) {
     console.error("ReviewCafeCard: cafe 객체가 undefined입니다.");
     return <div className="review-cafe-card">리뷰 데이터를 불러올 수 없습니다.</div>;
   }
 
-  // ✅ 백엔드 응답 데이터에 맞게 필드 매핑
   const {
     cafeId,
     cafeName = "카페 이름 없음",
@@ -32,7 +29,7 @@ const ReviewCafeCard = ({ cafe, onEdit, onDeleteConfirmed }) => {
     wifi = "",
   } = cafe;
 
-  // ✅ 날짜 변환 (createdAt이 배열 형태이므로 변환 필요)
+  // 날짜 변환 (createdAt이 배열 형태이므로 변환 필요)
   const formatDate = (dateArray) => {
     if (!Array.isArray(dateArray) || dateArray.length < 5) return "날짜 없음";
     const [year, month, day, hour, minute] = dateArray;
@@ -40,13 +37,12 @@ const ReviewCafeCard = ({ cafe, onEdit, onDeleteConfirmed }) => {
   };
   const formattedDate = formatDate(createdAt);
 
-  // ✅ `tags` 배열 변환
   const tagIcons = {
-    "빠름": "/img/wifi.png", // Wi-Fi
-    "좁음": "/img/desk.png", // 책상 크기
-    "없음": "/img/plug.png", // 콘센트
-    "불가능": "/img/park.png", // 주차 가능 여부
-    "외부": "/img/toilet.png", // 화장실 위치
+    "빠름": "/img/wifi.png", 
+    "좁음": "/img/desk.png", 
+    "없음": "/img/plug.png", 
+    "불가능": "/img/park.png", 
+    "외부": "/img/toilet.png", 
   };
 
   const tags = [
@@ -58,6 +54,7 @@ const ReviewCafeCard = ({ cafe, onEdit, onDeleteConfirmed }) => {
   ];
 
   const toggleMenu = () => setMenuVisible((prev) => !prev);
+  
   const handleEdit = () => {
     onEdit(cafeId);
     setMenuVisible(false);
