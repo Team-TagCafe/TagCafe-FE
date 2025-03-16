@@ -4,9 +4,10 @@ import "./SavedCafeCard.css";
 import { Bookmark, VisitStatus } from "../components";
 
 const SavedCafeCard = ({ cafe }) => {
-  const { cafeId, cafeName, address, tags, visited } = cafe;
+  const { cafeId, cafeName, address, visited } = cafe;
   const [isVisited, setIsVisited] = useState(visited);
   const [userId, setUserId] = useState(null);
+  const [tags, setTags] = useState([]);
   const navigate = useNavigate();
 
   const handleCardClick = () => {
@@ -34,6 +35,28 @@ const SavedCafeCard = ({ cafe }) => {
     };
     fetchUserId();
   }, []);
+
+  // 카페 태그 가져오기
+  useEffect(() => {
+    const fetchTags = async () => {
+      try {
+        const response = await fetch(`http://localhost:8080/cafes/${cafeId}/tags`);
+        if (!response.ok) throw new Error("태그 데이터를 가져오는 중 오류 발생");
+        const data = await response.json();
+
+        // wifi & outlets 태그만 배열로 저장
+        const tagList = [];
+        if (data.wifi && data.wifi !== "NONE") tagList.push(`와이파이 ${data.wifi}`);
+        if (data.outlets && data.outlets !== "NONE") tagList.push(`콘센트 ${data.outlets}`);
+
+        setTags(tagList);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchTags();
+  }, [cafeId]);
 
   const handleBookmarkClick = async (event) => {
     event.stopPropagation(); // 부모 이벤트 전파 방지
@@ -109,11 +132,11 @@ const SavedCafeCard = ({ cafe }) => {
             <VisitStatus isVisited={isVisited} />
           </div>        </div>
         <div className="saved-cafe-tags">
-          {/* {tags.map((tag, index) => (
+          {tags.map((tag, index) => (
             <span key={index} className="saved-cafe-tag">
               #{tag}
             </span>
-          ))} */}
+          ))}
         </div>
       </div>
     </div>
