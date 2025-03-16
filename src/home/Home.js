@@ -152,6 +152,13 @@ const Home = () => {
     }
   }, [map]); // map이 바뀔 때만 새로운 fetch 함수를 생성
 
+  const filterMapping = {
+    "가능(무료)": "가능_무료",
+    "가능(유료)": "가능_유료",
+    "가능(일부)": "가능_일부",
+    "불가능": "불가능"
+};
+
 
   /* ---------- 필터링된 카페 조회 ---------- */
   const fetchFilteredCafes = async (filters) => {
@@ -164,7 +171,7 @@ const Home = () => {
     // null 또는 빈 값이 있는 필터 제거
     const validFilters = Object.entries(filters).filter(([_, value]) => value);
     const tagNames = validFilters.map(([tag]) => tag);
-    const values = validFilters.map(([_, value]) => value);
+    const values = validFilters.map(([_, value]) => filterMapping[value] || value); // 변환 적용
 
     // 필터가 없다면 기본 데이터 로드
     if (tagNames.length === 0) {

@@ -99,8 +99,8 @@ const CafeEdit = () => {
             onChange={(e) => handleTagChange(cafe.cafeId, "restroom", e.target.value)}
           >
             <option value="">선택</option>
-            <option value="가능">가능</option>
-            <option value="불가능">불가능</option>
+            <option value="실내">실내</option>
+            <option value="외부">외부</option>
           </select>
 
           {/* 주차 */}
@@ -112,7 +112,7 @@ const CafeEdit = () => {
             <option value="">선택</option>
             <option value="가능_무료">가능(무료)</option>
             <option value="가능_유료">가능(유료)</option>
-            <option value="가능_일부제공">가능(일부 제공)</option>
+            <option value="가능_일부">가능(일부)</option>
             <option value="불가능">불가능</option>
           </select>
 
