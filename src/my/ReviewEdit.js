@@ -7,34 +7,32 @@ import "./MyEdit.css";
 const ReviewEdit = () => {
   const { reviewId } = useParams();
   const navigate = useNavigate();
-  const [reviewData, setReviewData] = useState(null); // 🔥 foundReview 대신 사용
+  const [reviewData, setReviewData] = useState(null);
   const [reviewEditText, setReviewEditText] = useState("");
   const [rating, setRating] = useState(0);
   const [cafeOptions, setCafeOptions] = useState({});
   const [loading, setLoading] = useState(true);
   const [selectedOptions, setSelectedOptions] = useState({
-    와이파이: "",
-    콘센트: "",
-    책상: "",
-    화장실: "",
-    주차: ""
+    wifi: "",
+    outlets: "",
+    desk: "",
+    restroom: "",
+    parking: ""
   });
 
-  const convertKeysToEnglish = (options) => {
-    const keyMap = {
-      와이파이: "wifi",
-      콘센트: "outlets",
-      책상: "desk",
-      화장실: "restroom",
-      주차: "parking",
-    };
-    
-    return Object.fromEntries(
-      Object.entries(options).map(([key, value]) => [keyMap[key] || key, value])
-    );
+  const optionMap = {
+    "가능(무료)": "가능_무료",
+    "가능(유료)": "가능_유료",
+    "불가능": "불가능",
+    "가능(일부)": "가능_일부",
   };
 
-
+  const reverseOptionMap = {
+    가능_무료: "가능(무료)",
+    가능_유료: "가능(유료)",
+    불가능: "불가능",
+    가능_일부: "가능(일부)",
+  };
 
   useEffect(() => {
     if (!reviewId || reviewId === "undefined") {
@@ -57,25 +55,22 @@ const ReviewEdit = () => {
         }
     
         const data = await response.json();
-        console.log("Fetched Review Data:", data);
     
-        setReviewData(data.review); //리뷰 데이터 저장
+        setReviewData(data.review);
         setReviewEditText(data.review.content);
         setRating(data.review.rating);
-        const options = {
-          와이파이: data.review.wifi,
-          콘센트: data.review.outlets,
-          책상: data.review.desk,
-          화장실: data.review.restroom,
-          주차: data.review.parking,
-        };
-  
-        //카페 옵션 초기값 설정
-        setCafeOptions(options);
-        setSelectedOptions(options); 
 
-    
-        // 카페 정보 설정
+        const options = {
+          wifi: data.review.wifi,
+          outlets: data.review.outlets,
+          desk: data.review.desk,
+          restroom: data.review.restroom,
+          parking: data.review.parking,
+        };
+
+        setCafeOptions(options);
+        setSelectedOptions(options);
+
         setReviewData((prev) => ({
           ...prev,
           cafeName: data.cafeName,
@@ -91,8 +86,6 @@ const ReviewEdit = () => {
     fetchReview();
   }, [reviewId]);
 
-
-
   const handleReviewEditChange = (event) => {
     setReviewEditText(event.target.value);
   };
@@ -102,22 +95,16 @@ const ReviewEdit = () => {
   };
 
   const handleCafeOptionChange = (category, option) => {
-    const optionMap = {
-      "가능(무료)": "가능_무료",
-      "가능(유료)": "가능_유료",
-      "불가능": "불가능",
-      "가능(일부)": "가능_일부",
-    };
-    console.log("변환된 값:", optionMap[option]); // 디버깅 로그 추가
-  
+    const newOptionValue = optionMap[option] || option;
+
     setCafeOptions((prevOptions) => ({
       ...prevOptions,
-      [category]: optionMap[option] || option,  // Enum 값으로 변환
+      [category]: newOptionValue,
     }));
-  
+
     setSelectedOptions((prevOptions) => ({
       ...prevOptions,
-      [category]: optionMap[option] || option,
+      [category]: newOptionValue,
     }));
   };
 
@@ -128,14 +115,14 @@ const ReviewEdit = () => {
       const requestBody = {
         content: reviewEditText,
         rating,
-        wifi: cafeOptions.와이파이,
-        outlets: cafeOptions.콘센트,
-        desk: cafeOptions.책상,
-        restroom: cafeOptions.화장실,
-        parking: cafeOptions.주차,  // 이미 변환된 Enum 값으로 전달됨
+        wifi: cafeOptions.wifi,
+        outlets: cafeOptions.outlets,
+        desk: cafeOptions.desk,
+        restroom: cafeOptions.restroom,
+        parking: cafeOptions.parking,
       };
   
-      console.log("PUT 요청 데이터:", requestBody); // 디버깅용 로그
+      console.log("PUT 요청 데이터:", requestBody);
   
       const response = await fetch(`http://localhost:8080/my/reviews/${reviewId}`, {
         method: "PUT",
@@ -191,7 +178,7 @@ const ReviewEdit = () => {
           </div>
         </div>
 
-       <CafeInformation onChange={handleCafeOptionChange} selectedOptions={convertKeysToEnglish(selectedOptions)} />
+       <CafeInformation onChange={handleCafeOptionChange} selectedOptions={selectedOptions} />
         
         <div className="my-edit-form">
           <textarea
