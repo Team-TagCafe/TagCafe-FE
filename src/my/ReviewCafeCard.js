@@ -9,6 +9,9 @@ const ReviewCafeCard = ({ cafe, onEdit, onDeleteConfirmed }) => {
   const [menuVisible, setMenuVisible] = useState(false);
   const [popupVisible, setPopupVisible] = useState(false);
   const navigate = useNavigate();
+  const handleViewDetails = () => {
+    navigate(`/cafe/${cafeId}`);
+  };
 
   if (!cafe) {
     console.error("ReviewCafeCard: cafe 객체가 undefined입니다.");
@@ -73,7 +76,7 @@ const ReviewCafeCard = ({ cafe, onEdit, onDeleteConfirmed }) => {
     <div className="review-cafe-card">
       <div className="review-cafe-image-container">
         <img className="review-cafe-image" src="/img/cafe-img.png" alt="카페 이미지" />
-        <button className="review-view-details">카페 상세보기 &gt;</button>
+        <button className="review-view-details" onClick={handleViewDetails}>카페 상세보기 &gt;</button>
       </div>
 
       <div className="review-cafe-info">
