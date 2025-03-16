@@ -242,7 +242,7 @@ const CafeDetail = () => {
       <div className="cafe-detail-divider"></div>
 
       <div className="cafe-info-title">카페 정보</div>
-      <CafeInformationDetail />
+      <CafeInformationDetail cafeId={cafeId} />
 
       {/* 구분선 */}
       <div className="cafe-detail-divider"></div>

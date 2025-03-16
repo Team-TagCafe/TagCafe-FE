@@ -1,8 +1,75 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./CafeInformationDetail.css";
 
-function CafeInformationDetail() {
+function CafeInformationDetail({ cafeId }) {
   const [isHoursOpen, setIsHoursOpen] = useState(false); // 운영시간 토글 상태
+  const [tags, setTags] = useState({}); // 카페 태그 상태
+  const [updateAt, setUpdateAt] = useState(""); // 업데이트 시간 상태
+
+  useEffect(() => {
+    if (!cafeId) return;
+
+    // 태그 정보 가져오기
+    const fetchTags = async () => {
+      try {
+        const response = await fetch(`http://localhost:8080/cafes/${cafeId}/tags`);
+        if (!response.ok) throw new Error("태그 데이터를 불러오는 중 오류 발생");
+
+        const data = await response.json();
+        setTags(data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    // 카페 상세 정보 가져오기
+    const fetchCafeInfo = async () => {
+      try {
+        const response = await fetch(`http://localhost:8080/cafes/${cafeId}`);
+        if (!response.ok) throw new Error("카페 정보를 불러오는 중 오류 발생");
+
+        const data = await response.json();
+
+        if (data.updateAt && Array.isArray(data.updateAt)) {
+          const updatedDate = new Date(
+            data.updateAt[0],  // 연도
+            data.updateAt[1] - 1,  // 월 (0부터 시작)
+            data.updateAt[2],  // 일
+            data.updateAt[3],  // 시
+            data.updateAt[4],  // 분
+            data.updateAt[5]   // 초
+          );
+
+          setUpdateAt(
+            `${updatedDate.getFullYear()}년 ${updatedDate.getMonth() + 1}월 ${updatedDate.getDate()}일 ${updatedDate.getHours().toString().padStart(2, "0")
+            }:${updatedDate.getMinutes().toString().padStart(2, "0")} 업데이트`
+          );
+        } else {
+          setUpdateAt("업데이트 정보 없음");
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchTags();
+    fetchCafeInfo();
+  }, [cafeId]);
+
+  // 태그 정보 매핑
+  const tagMappings = {
+    wifi: { icon: "/img/wifi.png", label: "와이파이" },
+    outlets: { icon: "/img/plug.png", label: "콘센트" },
+    desk: { icon: "/img/desk.png", label: "책상" },
+    restroom: { icon: "/img/toilet.png", label: "화장실" },
+    parking: { icon: "/img/park.png", label: "주차" },
+  };
+
+  const parkingValueMap = {
+    "가능_무료": "가능(무료)",
+    "가능_유료": "가능(유료)",
+    "가능_일부제공": "가능(일부)",
+    "불가능": "불가능",
+  };
 
   // 운영시간 데이터
   const operatingHours = {
@@ -14,18 +81,6 @@ function CafeInformationDetail() {
     화: "9:00 ~ 21:00",
     수: "9:00 ~ 21:00",
   };
-
-  // 카페 정보 데이터
-  const cafeDetails = [
-    { icon: "/img/wifi.png", label: "와이파이", value: "빠름" },
-    { icon: "/img/plug.png", label: "콘센트", value: "일부" },
-    { icon: "/img/desk.png", label: "책상", value: "적당함" },
-    { icon: "/img/toilet.png", label: "화장실", value: "외부" },
-    { icon: "/img/park.png", label: "주차", value: "가능(무료)" },
-  ];
-
-  const updatedTime = "2024년 12월 30일 오전 12:53 업데이트";
-
 
   return (
     <div className="cafe-information-detail">
@@ -58,20 +113,18 @@ function CafeInformationDetail() {
       )}
 
       {/* 카페 세부 정보 */}
-      {cafeDetails.map((detail) => (
-        <div key={detail.label} className="cafe-information-detail__group">
-          <img
-            src={detail.icon}
-            alt={detail.label}
-            className="cafe-information-detail__icon"
-          />
-          <div className="cafe-information-detail__label">{detail.label}</div>
-          <div className="cafe-information-detail__value">{detail.value}</div>
+      {Object.entries(tagMappings).map(([key, { icon, label }]) => (
+        <div key={key} className="cafe-information-detail__group">
+          <img src={icon} alt={label} className="cafe-information-detail__icon" />
+          <div className="cafe-information-detail__label">{label}</div>
+          <div className="cafe-information-detail__value">
+            {key === "parking" ? parkingValueMap[tags[key]] || tags[key] : tags[key]}
+          </div>
         </div>
       ))}
 
       {/* 업데이트 시간 */}
-      <div className="cafe-information-detail__updated">{updatedTime}</div>
+      <div className="cafe-information-detail__updated">{updateAt}</div>
     </div>
   );
 }
