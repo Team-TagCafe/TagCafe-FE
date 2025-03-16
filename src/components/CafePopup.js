@@ -1,18 +1,57 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import './CafePopup.css';
 import TagGroup from '../components/TagGroup';
 
-const tags = [
-    { icon: "/img/wifi.png", text: "와이파이 빠름" },
-    { icon: "/img/plug.png", text: "콘센트 일부" },
-    { icon: "/img/desk.png", text: "책상 적당함" },
-    { icon: "/img/toilet.png", text: "화장실 외부" },
-    { icon: "/img/park.png", text: "주차 가능(무료)" },
-];
-
 const CafePopup = ({ cafeName, cafeAddress, cafeId, onClose }) => {
-    const navigate = useNavigate(); // Hook to navigate programmatically
+    const navigate = useNavigate();
+    const [tags, setTags] = useState([]);
+
+    useEffect(() => {
+        const fetchTags = async () => {
+            try {
+                const response = await fetch(`http://localhost:8080/cafes/${cafeId}/tags`);
+                if (!response.ok) {
+                    throw new Error("태그 데이터를 불러오는 중 오류 발생");
+                }
+                const data = await response.json();
+
+                const tagMappings = {
+                    wifi: { icon: "/img/wifi.png", label: "와이파이" },
+                    outlets: { icon: "/img/plug.png", label: "콘센트" },
+                    desk: { icon: "/img/desk.png", label: "책상" },
+                    restroom: { icon: "/img/toilet.png", label: "화장실" },
+                    parking: { icon: "/img/park.png", label: "주차" },
+                };
+
+                const parkingValueMap = {
+                    "가능_무료": "가능(무료)",
+                    "가능_유료": "가능(유료)",
+                    "가능_일부제공": "가능(일부 제공)",
+                    "불가능": "불가능",
+                };
+
+
+                const tagArray = Object.entries(data)
+                    .filter(([key]) => tagMappings[key])
+                    .map(([key, value]) => ({
+                        icon: tagMappings[key].icon,
+                        text: `${tagMappings[key].label}: ${key === "parking" ? parkingValueMap[value] || "-" : value === "NONE" ? "-" : value
+                            }`,
+                    }));
+
+                setTags(tagArray);
+            } catch (error) {
+                console.error("태그 데이터를 불러오는 중 오류 발생:", error);
+                setTags([]); // 오류 발생 시 빈 배열 설정
+            }
+        };
+
+        if (cafeId) {
+            fetchTags();
+        }
+    }, [cafeId]);
+
 
     const handleOverlayClick = (e) => {
         onClose(); // 외부 클릭 시 팝업 닫기

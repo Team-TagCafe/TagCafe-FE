@@ -27,6 +27,7 @@ const Home = () => {
   const [popupMessage, setPopupMessage] = useState("");  // 팝업 메시지 상태 추가
   const [showFilterPopup, setShowFilterPopup] = useState(false);  // 필터링 실패 팝업 상태
   const { setUser } = useContext(AuthContext);  // AuthContext에서 setUser 가져오기
+  const [cafeTags, setCafeTags] = useState([]);
 
   // 지도 사이즈 설정용
   const [innerWidth, setInnerWidth] = useState(window.innerWidth); // 화면 너비
@@ -326,6 +327,7 @@ const Home = () => {
         id: cafeId
       });
       setShowPopup(true);
+      fetchCafeTags(cafeId);
 
       if (map) {
         map.setLevel(3);
@@ -341,6 +343,20 @@ const Home = () => {
 
     customOverlay.setMap(map);
     return customOverlay;
+  };
+
+  /* ---------- 카페 태그 가져오기 ---------- */
+  const fetchCafeTags = async (cafeId) => {
+    try {
+      const response = await fetch(`http://localhost:8080/cafes/${cafeId}/tags`);
+      if (!response.ok) {
+        throw new Error("태그 데이터를 불러오는 중 오류 발생");
+      }
+      const data = await response.json();
+      setCafeTags(data);
+    } catch (error) {
+      console.error("태그 데이터를 불러오는 중 오류 발생:", error);
+    }
   };
 
   /* ---------- 현재 위치로 지도 중심 이동 ---------- */
@@ -407,7 +423,7 @@ const Home = () => {
             }}
             showCancel={false}
           />
-          )}
+        )}
       </div>
       <BottomBar />
     </>
