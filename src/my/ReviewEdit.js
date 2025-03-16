@@ -49,20 +49,17 @@ const ReviewEdit = () => {
         setReviewData(data.review); //리뷰 데이터 저장
         setReviewEditText(data.review.content);
         setRating(data.review.rating);
-        setCafeOptions({
+        const options = {
           와이파이: data.review.wifi,
           콘센트: data.review.outlets,
           책상: data.review.desk,
           화장실: data.review.restroom,
           주차: data.review.parking,
-        });
-        setSelectedOptions({
-          와이파이: data.review.wifi,
-          콘센트: data.review.outlets,
-          책상: data.review.desk,
-          화장실: data.review.restroom,
-          주차: data.review.parking,
-        });
+        };
+  
+        //카페 옵션 초기값 설정
+        setCafeOptions(options);
+        setSelectedOptions(options); 
 
     
         // 카페 정보 설정
@@ -80,6 +77,8 @@ const ReviewEdit = () => {
 
     fetchReview();
   }, [reviewId]);
+
+
 
   const handleReviewEditChange = (event) => {
     setReviewEditText(event.target.value);
@@ -166,8 +165,9 @@ const ReviewEdit = () => {
           </div>
         </div>
 
-        <CafeInformation onChange={handleCafeOptionChange} />
+        <CafeInformation onChange={handleCafeOptionChange} selectedOptions={selectedOptions} />
 
+        
         <div className="my-edit-form">
           <textarea
             className="my-edit-textarea"
