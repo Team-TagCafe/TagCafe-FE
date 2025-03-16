@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { BottomBar, TopBar } from '../components';
 import ReviewCafeCard from "./ReviewCafeCard"; 
@@ -9,6 +9,7 @@ const My = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("reviewedCafes"); 
   const [reviewedCafes, setReviewedCafes] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const [reportedCafes, setReportedCafes] = useState([
     {
@@ -38,7 +39,6 @@ const My = () => {
   ]);
 
   const userEmail = localStorage.getItem("email");
-
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -70,16 +70,37 @@ const My = () => {
       });
   }, []);
 
-
   const handleTabClick = (tab) => {
     setActiveTab(tab);
   };
 
-  const handleDeleteConfirmed = (cafeId, tab) => {
-    if (tab === "reviewedCafes") {
-      setReviewedCafes((prevCafes) => prevCafes.filter((cafe) => cafe.id !== cafeId));
-    } else if (tab === "reportedCafes") {
-      setReportedCafes((prevCafes) => prevCafes.filter((cafe) => cafe.id !== cafeId));
+  const handleDelete = async (reviewId) => {
+    try {
+      setLoading(true);
+      const token = localStorage.getItem("token");
+
+      const response = await fetch(`http://localhost:8080/my/reviews/${reviewId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        },
+      });
+
+      if (response.status === 404) {
+        alert("해당 리뷰가 존재하지 않습니다.");
+        return;
+      }
+
+      if (!response.ok) throw new Error("Failed to delete review");
+
+      alert("리뷰가 삭제되었습니다.");
+      setReviewedCafes((prevCafes) => prevCafes.filter((cafe) => cafe.reviewId !== reviewId));
+    } catch (error) {
+      console.error("Error deleting review:", error);
+      alert("리뷰 삭제에 실패했습니다.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -127,7 +148,7 @@ const My = () => {
             <ReviewCafeCard
               key={index}
               cafe={cafe}
-              onDeleteConfirmed={(id) => handleDeleteConfirmed(id, "reviewedCafes")}
+              onDeleteConfirmed={() => handleDelete(cafe.reviewId)}
               onEdit={() => handleEdit(cafe.reviewId)}
             />
           ))}

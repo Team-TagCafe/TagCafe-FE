@@ -64,7 +64,7 @@ const ReviewCafeCard = ({ cafe, onEdit, onDeleteConfirmed }) => {
     setMenuVisible(false);
   };
   const confirmDelete = () => {
-    onDeleteConfirmed(cafe);
+    onDeleteConfirmed(cafe.reviewId); 
     setPopupVisible(false);
   };
   const cancelDelete = () => setPopupVisible(false);
@@ -104,7 +104,7 @@ const ReviewCafeCard = ({ cafe, onEdit, onDeleteConfirmed }) => {
 
       {popupVisible && (
         <Popup
-          message={`"${content}" 리뷰를 삭제하시겠습니까?`}
+          message={`"${cafeName}" 리뷰를 삭제하시겠습니까?`}
           onConfirm={confirmDelete}
           onCancel={cancelDelete}
         />
