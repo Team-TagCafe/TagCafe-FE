@@ -20,10 +20,23 @@ const ReviewEdit = () => {
     주차: ""
   });
 
+  const convertKeysToEnglish = (options) => {
+    const keyMap = {
+      와이파이: "wifi",
+      콘센트: "outlets",
+      책상: "desk",
+      화장실: "restroom",
+      주차: "parking",
+    };
+    
+    return Object.fromEntries(
+      Object.entries(options).map(([key, value]) => [keyMap[key] || key, value])
+    );
+  };
+
+
 
   useEffect(() => {
-    console.log("Fetched reviewId:", reviewId);
-
     if (!reviewId || reviewId === "undefined") {
       console.error("Invalid reviewId:", reviewId);
       return;
@@ -89,38 +102,51 @@ const ReviewEdit = () => {
   };
 
   const handleCafeOptionChange = (category, option) => {
-    // 업데이트된 옵션 상태를 반영
+    const optionMap = {
+      "가능(무료)": "가능_무료",
+      "가능(유료)": "가능_유료",
+      "불가능": "불가능",
+      "가능(일부)": "가능_일부",
+    };
+    console.log("변환된 값:", optionMap[option]); // 디버깅 로그 추가
+  
     setCafeOptions((prevOptions) => ({
       ...prevOptions,
-      [category]: option,
+      [category]: optionMap[option] || option,  // Enum 값으로 변환
     }));
+  
     setSelectedOptions((prevOptions) => ({
       ...prevOptions,
-      [category]: option,
+      [category]: optionMap[option] || option,
     }));
   };
 
   const handleSubmit = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`/my/reviews/${reviewId}`, {
+      
+      const requestBody = {
+        content: reviewEditText,
+        rating,
+        wifi: cafeOptions.와이파이,
+        outlets: cafeOptions.콘센트,
+        desk: cafeOptions.책상,
+        restroom: cafeOptions.화장실,
+        parking: cafeOptions.주차,  // 이미 변환된 Enum 값으로 전달됨
+      };
+  
+      console.log("PUT 요청 데이터:", requestBody); // 디버깅용 로그
+  
+      const response = await fetch(`http://localhost:8080/my/reviews/${reviewId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          content: reviewEditText,
-          rating,
-          wifi: cafeOptions.와이파이,
-          outlets: cafeOptions.콘센트,
-          desk: cafeOptions.책상,
-          restroom: cafeOptions.화장실,
-          parking: cafeOptions.주차,
-        }),
+        body: JSON.stringify(requestBody),
       });
-
+  
       if (!response.ok) throw new Error("Failed to update review");
-
+  
       alert(`리뷰가 수정되었습니다.`);
       navigate("/my");
     } catch (error) {
@@ -165,8 +191,7 @@ const ReviewEdit = () => {
           </div>
         </div>
 
-        <CafeInformation onChange={handleCafeOptionChange} selectedOptions={selectedOptions} />
-
+       <CafeInformation onChange={handleCafeOptionChange} selectedOptions={convertKeysToEnglish(selectedOptions)} />
         
         <div className="my-edit-form">
           <textarea

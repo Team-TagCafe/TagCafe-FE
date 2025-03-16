@@ -44,6 +44,13 @@ const options = {
   parking: ["가능(무료)", "가능(유료)", "가능(일부)", "불가능"],
 };
 
+const reverseOptionMap = {
+  가능_무료: "가능(무료)",
+  가능_유료: "가능(유료)",
+  불가능: "불가능",
+  가능_일부: "가능(일부)",
+};
+
 const icons = {
   wifi: "/img/wifi.png",
   outlets: "/img/plug.png",
@@ -69,7 +76,7 @@ const icons = {
               <SelectTag
                 key={option}
                 tagText={option}
-                isSelected={internalSelectedOptions[category] === option}
+                isSelected={reverseOptionMap[internalSelectedOptions[category]] === option || internalSelectedOptions[category] === option} // 비교 로직 수정                
                 onClick={() => handleOptionSelect(category, option)}
               />
             ))}

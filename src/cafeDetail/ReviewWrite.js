@@ -45,6 +45,16 @@ const ReviewWrite = () => {
         return;
     }
 
+    const mapParkingOption = (option) => {
+        const mapping = {
+            "가능(무료)": "가능_무료",
+            "가능(유료)": "가능_유료",
+            "불가능": "불가능",
+            "일부 가능": "가능_일부제공"
+        };
+        return mapping[option] || "불가능"; // 기본값 설정
+    };
+
     const handleReviewSubmit = async () => {
         const reviewData = {
             cafeId: parseInt(id),
@@ -55,7 +65,7 @@ const ReviewWrite = () => {
             outlets: cafeOptions.outlets,
             desk: cafeOptions.desk,
             restroom: cafeOptions.restroom,
-            parking: cafeOptions.parking,
+            parking: mapParkingOption(cafeOptions.parking),
         };
         console.log("서버로 보낼 데이터:", reviewData); 
 
