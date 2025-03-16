@@ -38,19 +38,19 @@ const ReviewCafeCard = ({ cafe, onEdit, onDeleteConfirmed }) => {
   const formattedDate = formatDate(createdAt);
 
   const tagIcons = {
-    "빠름": "/img/wifi.png", 
-    "좁음": "/img/desk.png", 
-    "없음": "/img/plug.png", 
-    "불가능": "/img/park.png", 
-    "외부": "/img/toilet.png", 
+    "Wi-Fi": "/img/wifi.png",
+    "책상": "/img/desk.png",
+    "콘센트": "/img/plug.png",
+    "주차": "/img/park.png",
+    "화장실": "/img/toilet.png",
   };
 
   const tags = [
-    { text: `Wi-Fi: ${wifi}`, icon: tagIcons[wifi] || "/img/default-tag.png" },
-    { text: `책상: ${desk}`, icon: tagIcons[desk] || "/img/default-tag.png" },
-    { text: `콘센트: ${outlets}`, icon: tagIcons[outlets] || "/img/default-tag.png" },
-    { text: `주차: ${parking}`, icon: tagIcons[parking] || "/img/default-tag.png" },
-    { text: `화장실: ${restroom}`, icon: tagIcons[restroom] || "/img/default-tag.png" },
+    { text: `Wi-Fi: ${wifi}`, icon: tagIcons["Wi-Fi"] },
+    { text: `책상: ${desk}`, icon: tagIcons["책상"] },
+    { text: `콘센트: ${outlets}`, icon: tagIcons["콘센트"] },
+    { text: `주차: ${parking}`, icon: tagIcons["주차"] },
+    { text: `화장실: ${restroom}`, icon: tagIcons["화장실"] },
   ];
 
   const toggleMenu = () => setMenuVisible((prev) => !prev);
