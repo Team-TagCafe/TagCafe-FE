@@ -15,22 +15,28 @@ const ReviewWrite = () => {
     };
 
     const [content, setContent] = useState("");
-    const [rating, setRating] = useState(3); // 기본 평점 설정
+    const [rating, setRating] = useState(3); 
     const [cafeOptions, setCafeOptions] = useState({
-        wifi: "빠름",
-        outlets: "없음",
-        desk: "좁음",
-        restroom: "외부",
-        parking: "불가능",
+        wifi: "",
+        outlets: "",
+        desk: "",
+        restroom: "",
+        parking: "",
     });
 
     const handleRatingClick = (value) => setRating(value);
+
     const handleCafeOptionChange = (category, option) => {
-        setCafeOptions((prevOptions) => ({
-            ...prevOptions,
-            [category]: option,
-        }));
+        setCafeOptions((prevOptions) => {
+            const updatedOptions = {
+                ...prevOptions,
+                [category]: option,  // 선택한 옵션 반영
+            };
+            return updatedOptions;
+        });
     };
+    
+
 
     const userEmail = localStorage.getItem("email");
     
@@ -45,12 +51,13 @@ const ReviewWrite = () => {
             userEmail,
             rating,
             content,
-            wifi: cafeOptions["wifi"],
-            outlets: cafeOptions["outlets"],
-            desk: cafeOptions["desk"],
-            restroom: cafeOptions["restroom"],
-            parking: cafeOptions["parking"],
+            wifi: cafeOptions.wifi,
+            outlets: cafeOptions.outlets,
+            desk: cafeOptions.desk,
+            restroom: cafeOptions.restroom,
+            parking: cafeOptions.parking,
         };
+        console.log("서버로 보낼 데이터:", reviewData); 
 
         try {
             const response = await fetch("http://localhost:8080/reviews/create", {
@@ -108,7 +115,7 @@ const ReviewWrite = () => {
                     </div>
                 </div>
 
-                <CafeInformation onChange={handleCafeOptionChange} />
+                <CafeInformation onChange={handleCafeOptionChange} selectedOptions={cafeOptions} />
 
                 <div className="cafe-detail-edit-form">
                     <textarea
