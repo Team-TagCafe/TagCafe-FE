@@ -36,7 +36,7 @@ const CafePopup = ({ cafeName, cafeAddress, cafeId, onClose }) => {
                     .filter(([key]) => tagMappings[key])
                     .map(([key, value]) => ({
                         icon: tagMappings[key].icon,
-                        text: `${tagMappings[key].label}: ${key === "parking" ? parkingValueMap[value] || "-" : value === "NONE" ? "-" : value
+                        text: `${tagMappings[key].label}: ${key === "parking" ? parkingValueMap[value] || value : value
                             }`,
                     }));
 
