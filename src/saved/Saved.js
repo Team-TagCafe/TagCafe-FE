@@ -47,7 +47,7 @@ const Saved = () => {
         if (!response.ok) throw new Error("저장한 카페 목록을 불러오는데 실패했습니다.");
 
         const data = await response.json();
-        setSavedCafes(Array.isArray(data) ? data.map(saved => saved.cafe) : []);
+        setSavedCafes(Array.isArray(data) ? data : []);
       } catch (error) {
         console.error(error);
       } finally {

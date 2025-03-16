@@ -72,7 +72,7 @@ const CafeDetail = () => {
         if (!response.ok) throw new Error("Failed to fetch saved cafes");
 
         const savedCafes = await response.json();
-        const isCafeSaved = savedCafes.some((saved) => saved.cafe.cafeId === Number(cafeId));
+        const isCafeSaved = savedCafes.some((saved) => saved.cafeId === Number(cafeId));
         setIsSaved(isCafeSaved);
       } catch (error) {
         console.error(error);

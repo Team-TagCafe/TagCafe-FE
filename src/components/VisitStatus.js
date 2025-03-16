@@ -1,15 +1,7 @@
-import React, { useState } from "react";
-import "./VisitStatus.css"; // CSS 파일을 import
+import React from "react";
+import "./VisitStatus.css";
 
-function VisitStatus({ onClick }) {
-  const [isVisited, setIsVisited] = useState(false);
-
-  // 버튼 클릭 시 상태 전환
-  const toggleVisitStatus = () => {
-    setIsVisited(!isVisited); // 방문 여부를 토글
-    if (onClick) onClick(!isVisited); // 상태 변경 후 콜백 함수 호출
-  };
-
+function VisitStatus({ isVisited, onClick }) {
   // 동적 클래스 설정
   const buttonClassName = isVisited
     ? "visit-status visited"
@@ -22,7 +14,7 @@ function VisitStatus({ onClick }) {
 
   return (
     <div className="visit-status-container">
-      <button className={buttonClassName} onClick={toggleVisitStatus}>
+      <button className={buttonClassName} onClick={onClick}>
         <img src={imageSrc} alt="Visit Status" className="visit-status-image" />
       </button>
     </div>
