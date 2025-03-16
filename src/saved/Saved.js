@@ -7,6 +7,7 @@ const Saved = () => {
   const [savedCafes, setSavedCafes] = useState([]);
   const [userId, setUserId] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [filters, setFilters] = useState({});
 
   // userId 가져오기
   useEffect(() => {
@@ -40,7 +41,26 @@ const Saved = () => {
     const fetchSavedCafes = async () => {
       setLoading(true);
       try {
-        const response = await fetch(`http://localhost:8080/saved-cafes?userId=${userId}`, {
+        const url = new URL(`http://localhost:8080/saved-cafes/filter`);
+        url.searchParams.append("userId", userId);
+
+        // 필터 값이 있으면 API 요청에 추가
+        const tagNames = [];
+        const values = [];
+        Object.entries(filters).forEach(([tag, value]) => {
+          if (value) {
+            tagNames.push(tag);
+            values.push(value);
+          }
+        });
+
+        // 필터가 있을 때만 추가
+        if (tagNames.length > 0) {
+          url.searchParams.append("tags", tagNames.join(","));
+          url.searchParams.append("values", values.join(","));
+        }
+
+        const response = await fetch(url, {
           credentials: "include",
         });
 
@@ -56,13 +76,14 @@ const Saved = () => {
     };
 
     fetchSavedCafes();
-  }, [userId]);
+  }, [userId, filters]); // userId 또는 filters 변경될 때 실행
 
   return (
     <div className="saved-page">
       <TopBar
         title="# Saved"
-        showTags showHamburger={true} />
+        showTags showHamburger={true}
+        onFilterChange={setFilters} />
 
       <div className="saved-content">
         <p className="saved-cafe-count">총 {savedCafes.length}개</p>
