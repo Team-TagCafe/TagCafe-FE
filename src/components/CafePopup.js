@@ -31,14 +31,16 @@ const CafePopup = ({ cafeName, cafeAddress, cafeId, onClose }) => {
                     "불가능": "불가능",
                 };
 
-
+                const tagOrder = ["wifi", "outlets", "desk", "restroom", "parking"];
                 const tagArray = Object.entries(data)
                     .filter(([key]) => tagMappings[key])
                     .map(([key, value]) => ({
                         icon: tagMappings[key].icon,
                         text: `${tagMappings[key].label}: ${key === "parking" ? parkingValueMap[value] || value : value
                             }`,
-                    }));
+                        order: tagOrder.indexOf(key),
+                    }))
+                    .sort((a, b) => a.order - b.order);
 
                 setTags(tagArray);
             } catch (error) {
