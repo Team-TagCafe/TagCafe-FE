@@ -25,8 +25,6 @@ const Saved = () => {
 
         const userId = await response.json();
         setUserId(userId);
-        console.log("가져온 userId:", userId);
-
       } catch (error) {
         console.error(error);
       }

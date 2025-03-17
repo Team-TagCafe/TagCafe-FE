@@ -49,8 +49,6 @@ const CafeDetail = () => {
 
         const userId = await response.json();
         setUserId(userId);
-        console.log("가져온 userId:", userId);
-
       } catch (error) {
         console.error(error);
       }
@@ -106,7 +104,6 @@ const CafeDetail = () => {
       if (!response.ok) throw new Error("Failed to toggle visited status");
 
       const isCafeSaved = await response.json();
-      console.log("카페 저장 상태 변경됨:", isCafeSaved);
       setIsSaved(isCafeSaved);
     } catch (error) {
       console.error(error);
