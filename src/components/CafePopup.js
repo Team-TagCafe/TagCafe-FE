@@ -27,7 +27,7 @@ const CafePopup = ({ cafeName, cafeAddress, cafeId, onClose }) => {
                 const parkingValueMap = {
                     "가능_무료": "가능(무료)",
                     "가능_유료": "가능(유료)",
-                    "가능_일부제공": "가능(일부 제공)",
+                    "가능_일부": "가능(일부)",
                     "불가능": "불가능",
                 };
 

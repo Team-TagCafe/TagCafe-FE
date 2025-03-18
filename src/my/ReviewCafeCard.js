@@ -9,9 +9,6 @@ const ReviewCafeCard = ({ cafe, onEdit, onDeleteConfirmed }) => {
   const [menuVisible, setMenuVisible] = useState(false);
   const [popupVisible, setPopupVisible] = useState(false);
   const navigate = useNavigate();
-  const handleViewDetails = () => {
-    navigate(`/cafe/${cafeId}`);
-  };
 
   if (!cafe) {
     console.error("ReviewCafeCard: cafe 객체가 undefined입니다.");
@@ -28,7 +25,6 @@ const ReviewCafeCard = ({ cafe, onEdit, onDeleteConfirmed }) => {
     parking = "",
     rating = 0,
     restroom = "",
-    userEmail = "",
     wifi = "",
   } = cafe;
 
@@ -40,21 +36,33 @@ const ReviewCafeCard = ({ cafe, onEdit, onDeleteConfirmed }) => {
   };
   const formattedDate = formatDate(createdAt);
 
-  const tagIcons = {
-    "Wi-Fi": "/img/wifi.png",
-    "책상": "/img/desk.png",
-    "콘센트": "/img/plug.png",
-    "주차": "/img/park.png",
-    "화장실": "/img/toilet.png",
+  // 태그 정보 매핑
+  const tagMappings = {
+    wifi: { icon: "/img/wifi.png", label: "와이파이" },
+    outlets: { icon: "/img/plug.png", label: "콘센트" },
+    desk: { icon: "/img/desk.png", label: "책상" },
+    restroom: { icon: "/img/toilet.png", label: "화장실" },
+    parking: { icon: "/img/park.png", label: "주차" },
   };
 
-  const tags = [
-    { text: `Wi-Fi: ${wifi}`, icon: tagIcons["Wi-Fi"] },
-    { text: `책상: ${desk}`, icon: tagIcons["책상"] },
-    { text: `콘센트: ${outlets}`, icon: tagIcons["콘센트"] },
-    { text: `주차: ${parking}`, icon: tagIcons["주차"] },
-    { text: `화장실: ${restroom}`, icon: tagIcons["화장실"] },
-  ];
+  // 주차 태그 값 변환
+  const parkingValueMap = {
+    "가능_무료": "가능(무료)",
+    "가능_유료": "가능(유료)",
+    "가능_일부": "가능(일부)",
+    "불가능": "불가능",
+  };
+
+  // 태그 리스트 생성
+  const tagOrder = ["wifi", "outlets", "desk", "restroom", "parking"];
+  const tags = Object.entries({ wifi, outlets, desk, restroom, parking })
+    .filter(([key, value]) => value) // 값이 존재하는 태그만 필터링
+    .map(([key, value]) => ({
+      icon: tagMappings[key].icon,
+      text: `${tagMappings[key].label}: ${key === "parking" ? parkingValueMap[value] || value : value}`,
+      order: tagOrder.indexOf(key),
+    }))
+    .sort((a, b) => a.order - b.order);
 
   const toggleMenu = () => setMenuVisible((prev) => !prev);
   
@@ -76,7 +84,7 @@ const ReviewCafeCard = ({ cafe, onEdit, onDeleteConfirmed }) => {
     <div className="review-cafe-card">
       <div className="review-cafe-image-container">
         <img className="review-cafe-image" src="/img/cafe-img.png" alt="카페 이미지" />
-        <button className="review-view-details" onClick={handleViewDetails}>카페 상세보기 &gt;</button>
+        <button className="review-view-details" onClick={() => navigate(`/cafe/${cafeId}`)}>카페 상세보기 &gt;</button>
       </div>
 
       <div className="review-cafe-info">
@@ -102,6 +110,7 @@ const ReviewCafeCard = ({ cafe, onEdit, onDeleteConfirmed }) => {
         <p className="review-cafe-date">{formattedDate}</p>
         <p className="review-cafe-description">{content}</p>
 
+        {/* 동적으로 생성한 태그 리스트 전달 */}
         <TagGroup tags={tags} />
       </div>
 

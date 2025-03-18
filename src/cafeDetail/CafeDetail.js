@@ -5,7 +5,6 @@ import { BottomBar, Bookmark, CafeInformationDetail, Popup } from "../components
 import "./CafeDetail.css";
 import ImageCarousel from "./ImageCarousel";
 import DetailReviewCard from "./DetailReviewCard";
-import Popup from "../components/Popup";
 
 
 const CafeDetail = () => {
