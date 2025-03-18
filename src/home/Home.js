@@ -27,6 +27,7 @@ const Home = () => {
   const [popupMessage, setPopupMessage] = useState("");  // 팝업 메시지 상태 추가
   const [showFilterPopup, setShowFilterPopup] = useState(false);  // 필터링 실패 팝업 상태
   const { setUser } = useContext(AuthContext);  // AuthContext에서 setUser 가져오기
+  const [cafeTags, setCafeTags] = useState([]);
 
   // 지도 사이즈 설정용
   const [innerWidth, setInnerWidth] = useState(window.innerWidth); // 화면 너비
@@ -151,6 +152,13 @@ const Home = () => {
     }
   }, [map]); // map이 바뀔 때만 새로운 fetch 함수를 생성
 
+  const filterMapping = {
+    "가능(무료)": "가능_무료",
+    "가능(유료)": "가능_유료",
+    "가능(일부)": "가능_일부",
+    "불가능": "불가능"
+};
+
 
   /* ---------- 필터링된 카페 조회 ---------- */
   const fetchFilteredCafes = async (filters) => {
@@ -163,7 +171,7 @@ const Home = () => {
     // null 또는 빈 값이 있는 필터 제거
     const validFilters = Object.entries(filters).filter(([_, value]) => value);
     const tagNames = validFilters.map(([tag]) => tag);
-    const values = validFilters.map(([_, value]) => value);
+    const values = validFilters.map(([_, value]) => filterMapping[value] || value); // 변환 적용
 
     // 필터가 없다면 기본 데이터 로드
     if (tagNames.length === 0) {
@@ -228,7 +236,7 @@ const Home = () => {
       });
 
       newMarkers.push(marker);
-      const overlay = createCustomOverlay(markerPosition, cafe.cafeName, cafe.address);
+      const overlay = createCustomOverlay(markerPosition, cafe.cafeName, cafe.address, cafe.cafeId);
       newOverlays.push(overlay);
 
       kakao.maps.event.addListener(marker, "click", () => {
@@ -312,16 +320,21 @@ const Home = () => {
 
 
   /* ---------- 지도 카페명 표시 CustomOverlay 생성  ---------- */
-  const createCustomOverlay = (markerPosition, placeName, placeAddress) => {
+  const createCustomOverlay = (markerPosition, cafeName, cafeAddress, cafeId) => {
     const content = document.createElement('div');
     content.className = 'label';
-    content.innerText = placeName;
+    content.innerText = cafeName;
     content.style.cursor = 'pointer';
 
     // 라벨 클릭 이벤트 - CafePopup 뜸
     content.addEventListener('click', () => {
-      setPopupContent({ name: placeName, address: placeAddress, id: 1 }); // id 변경 필요
+      setPopupContent({
+        name: cafeName,
+        address: cafeAddress, 
+        id: cafeId
+      });
       setShowPopup(true);
+      fetchCafeTags(cafeId);
 
       if (map) {
         map.setLevel(3);
@@ -337,6 +350,20 @@ const Home = () => {
 
     customOverlay.setMap(map);
     return customOverlay;
+  };
+
+  /* ---------- 카페 태그 가져오기 ---------- */
+  const fetchCafeTags = async (cafeId) => {
+    try {
+      const response = await fetch(`http://localhost:8080/cafes/${cafeId}/tags`);
+      if (!response.ok) {
+        throw new Error("태그 데이터를 불러오는 중 오류 발생");
+      }
+      const data = await response.json();
+      setCafeTags(data);
+    } catch (error) {
+      console.error("태그 데이터를 불러오는 중 오류 발생:", error);
+    }
   };
 
   /* ---------- 현재 위치로 지도 중심 이동 ---------- */
@@ -393,14 +420,6 @@ const Home = () => {
             onClose={() => setShowPopup(false)}
           />}
 
-        {/* 로그인 상태 표시 */}
-        {nickname && (
-          <div className="user-info">
-            <p>환영합니다, {nickname}님!</p>
-            <button onClick={handleLogout}>로그아웃</button>
-          </div>
-          )}
-
         {/* ❗ 필터링된 결과가 없을 때 팝업 표시 */}
         {showFilterPopup && (
           <Popup
@@ -411,7 +430,7 @@ const Home = () => {
             }}
             showCancel={false}
           />
-          )}
+        )}
       </div>
       <BottomBar />
     </>

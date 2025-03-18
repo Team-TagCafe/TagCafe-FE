@@ -37,7 +37,6 @@ const Search = () => {
 
     const handleResultClick = (place) => {
         navigate('/home', { state: {place }});
-        console.log(place)
     };
 
     const handleSearchClick = () => {
@@ -48,7 +47,6 @@ const Search = () => {
             return;
         }
         navigate('/home', { state: { results, searchTerm: inputValue } }); // 검색 결과 & 검색어를 Home으로 전달
-        console.log(results);
     };
 
     return (

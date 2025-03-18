@@ -21,6 +21,7 @@ import CafeDetail from './cafeDetail/CafeDetail';
 import ReviewWrite from './cafeDetail/ReviewWrite';
 import { CafeProvider } from './home/CafeContext';
 import CafeAdd from './admin/CafeAdd';
+import CafeEdit from './admin/CafeEdit';
 
 function App() {
   const [selectedPlace, setSelectedPlace] = useState(null); // 선택된 장소 상태
@@ -41,7 +42,7 @@ function App() {
               <Route path="/home" element={<Home selectedPlace={selectedPlace} />} />
               <Route path="/saved" element={<Saved />} />
               <Route path="/my" element={<My />} />
-              <Route path="/my/review/edit/:cafeId" element={<ReviewEdit />} />
+              <Route path="/my/review/edit/:reviewId" element={<ReviewEdit />} />
               <Route path="/my/report/add" element={<ReporCafeAdd />} />
               <Route path="my/report/edit/:id" element={<ReportEdit />} />
               {/* Search 컴포넌트에 onPlaceSelect 전달 */}
@@ -55,6 +56,7 @@ function App() {
               <Route path="/cafe/:id" element={<CafeDetail />} />
               <Route path="/cafe/:id/review-write" element={<ReviewWrite />} />
               <Route path="/cafe-add" element={<CafeAdd />} />
+              <Route path="/cafe-edit" element={<CafeEdit />} />
             </Routes>
           </BrowserRouter>
         </div>

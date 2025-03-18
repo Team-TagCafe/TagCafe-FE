@@ -27,13 +27,6 @@ function TagSelection({
     setIsOpen(false); // 컴포넌트를 닫음
     onClose(); // Close the popup in the parent
   };
-  
-    // TagSelection이 열릴 때마다 현재 선택된 옵션을 콘솔에 출력
-    useEffect(() => {
-      if (isOpen) {
-        console.log("현재 선택된 옵션:", selectedOption);
-      }
-    }, [isOpen, selectedOption]);
 
   if (!isOpen) return null; 
 

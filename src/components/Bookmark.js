@@ -8,9 +8,16 @@ function Bookmark({ onClick, width = "24px", height = "50px", isSaved = false}) 
     setIsBookmarked(isSaved);
   }, [isSaved]);
 
-  const toggleBookmarkStatus = () => {
-    setIsBookmarked(!isBookmarked);
-    if (onClick) onClick(!isBookmarked);
+  const toggleBookmarkStatus = async () => {
+    if (!onClick) return; // API 요청 없으면 실행X (비로그인시 북마크 변경되지 않도록함)
+
+    try {
+      const newStatus = await onClick(!isBookmarked);
+      setIsBookmarked(newStatus);
+    } catch (error) {
+      console.error("북마크 상태 변경 실패:", error);
+    }
+
   };
 
   const buttonClassName = isBookmarked

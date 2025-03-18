@@ -1,34 +1,43 @@
 .saved-page {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    max-width: 393px;
-    height: 100vh;
-    margin-top: 0 auto;
-    background-color: #ffffff;
-    overflow-y: auto;
-    padding-bottom: 220px; 
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 393px;
+  height: 100vh;
+  margin-top: 0 auto;
+  background-color: #ffffff;
+  overflow-y: auto;
+  padding-bottom: 220px;
 }
 
 .saved-cafe-count {
-    width: 50px;
-    font-size: 10px;
-    font-weight: 600;
-    color: #A69180;
-    margin-bottom: 5px;
-    margin-left : 30px;
-  }
+  width: 50px;
+  font-size: 10px;
+  font-weight: 600;
+  color: #A69180;
+  margin-bottom: 5px;
+  margin-left: 30px;
+}
 
-  .saved-cafe-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); /* Dynamic columns */
-    gap: 30px;
-    max-width: 315px;
-    margin: 0 auto;
-    padding: 12px;
-  }
-  
-  .saved-cafe-card {
-    width: 100%;
-  }
-  
+.saved-cafe-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  /* Dynamic columns */
+  gap: 30px;
+  max-width: 315px;
+  margin: 0 auto;
+  padding: 12px;
+}
+
+.saved-cafe-card {
+  width: 100%;
+}
+
+.no-saved-cafe {
+  width: 100%;
+  font-size: 13px;
+  font-weight: 500;
+  color: #422919;
+  text-align: center;
+  grid-column: span 2;
+}
