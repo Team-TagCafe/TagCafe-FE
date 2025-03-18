@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { TopBar, BottomBar, LongButton } from "../components";
 import CafeInformation from "../components/CafeInformation";
+import Popup from "../components/Popup"; // Import the Popup component
 import "./ReviewWrite.css";
 
 const ReviewWrite = () => {
@@ -23,6 +24,7 @@ const ReviewWrite = () => {
         restroom: "",
         parking: "",
     });
+    const [showOptionPopup, setShowOptionPopup] = useState(false); // New state for popup
 
     const handleRatingClick = (value) => setRating(value);
 
@@ -36,8 +38,6 @@ const ReviewWrite = () => {
         });
     };
     
-
-
     const userEmail = localStorage.getItem("email");
     
     if (!userEmail) {
@@ -56,6 +56,12 @@ const ReviewWrite = () => {
     };
 
     const handleReviewSubmit = async () => {
+        const isOptionMissing = Object.values(cafeOptions).some(option => option === ""); // Check for missing options
+        if (isOptionMissing) {
+            setShowOptionPopup(true); // Show popup if options are missing
+            return;
+        }
+
         const reviewData = {
             cafeId: parseInt(id),
             userEmail,
@@ -144,6 +150,14 @@ const ReviewWrite = () => {
                     <LongButton optionText="작성 완료" onClick={handleReviewSubmit} />
                 </div>
             </section>
+
+            {showOptionPopup && (
+                <Popup
+                    message="모든 옵션을 선택해주세요."
+                    onConfirm={() => setShowOptionPopup(false)}
+                    showCancel={false}
+                />
+            )}
 
             <BottomBar />
         </div>
