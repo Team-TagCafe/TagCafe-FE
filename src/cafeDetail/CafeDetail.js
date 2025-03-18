@@ -5,6 +5,8 @@ import { BottomBar, Bookmark, CafeInformationDetail } from "../components";
 import "./CafeDetail.css";
 import ImageCarousel from "./ImageCarousel";
 import DetailReviewCard from "./DetailReviewCard";
+import Popup from "../components/Popup";
+
 
 const CafeDetail = () => {
   const navigate = useNavigate();
@@ -13,6 +15,8 @@ const CafeDetail = () => {
   const [cafe, setCafe] = useState(null);
   const [loading, setLoading] = useState(true);
   const [map, setMap] = useState(null);
+  const [showLoginPopup, setShowLoginPopup] = useState(false);
+  const userEmail = localStorage.getItem("email");
 
   // 카페 정보 가져오기
   useEffect(() => {
@@ -38,6 +42,10 @@ const CafeDetail = () => {
   };
 
   const handleWriteReviewClick = () => {
+    if (!userEmail) {
+      setShowLoginPopup(true);
+      return; // Prevents navigation
+    }
     navigate(`/cafe/${id}/review-write`, { state: { cafe } });
   };
 
@@ -134,6 +142,13 @@ const CafeDetail = () => {
 
   return (
     <div className="cafe-detail-page">
+      {showLoginPopup && (
+          <Popup
+              message="로그인이 필요합니다"
+              onConfirm={() => setShowLoginPopup(false)}
+              showCancel={false}
+          />
+      )}
       {/* 뒤로가기 버튼 */}
       <div className="cafe-detail-back-button" onClick={handleBackClick}>
         <img src="/img/back-button.png" alt="뒤로가기" />
