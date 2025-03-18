@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { BottomBar, TopBar } from '../components';
 import ReviewCafeCard from "./ReviewCafeCard"; 
 import ReportCafeCard from "./ReportCafeCard";
+import Popup from "../components/Popup";
 import './My.css';
 
 const My = () => {
@@ -10,6 +11,7 @@ const My = () => {
   const [activeTab, setActiveTab] = useState("reviewedCafes"); 
   const [reviewedCafes, setReviewedCafes] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [showDeletePopup, setShowDeletePopup] = useState(false);
 
   const [reportedCafes, setReportedCafes] = useState([
     {
@@ -94,7 +96,7 @@ const My = () => {
 
       if (!response.ok) throw new Error("Failed to delete review");
 
-      alert("리뷰가 삭제되었습니다.");
+      setShowDeletePopup(true);
       setReviewedCafes((prevCafes) => prevCafes.filter((cafe) => cafe.reviewId !== reviewId));
     } catch (error) {
       console.error("Error deleting review:", error);
@@ -162,6 +164,14 @@ const My = () => {
         </div>
       )}
     </div>
+
+    {showDeletePopup && (
+      <Popup
+          message="리뷰가 삭제되었습니다."
+          onConfirm={() => setShowDeletePopup(false)}
+          showCancel={false}
+      />
+    )}
 
     <BottomBar />
   </div>
