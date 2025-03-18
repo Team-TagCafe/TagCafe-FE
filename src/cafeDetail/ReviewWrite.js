@@ -1,60 +1,104 @@
 import React, { useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { TopBar, BottomBar, LongButton } from "../components";
 import CafeInformation from "../components/CafeInformation";
+import Popup from "../components/Popup"; // Import the Popup component
 import "./ReviewWrite.css";
-import { useCafe } from "../home/CafeContext";
 
 const ReviewWrite = () => {
     const { id } = useParams();
     const navigate = useNavigate();
-    const { cafes } = useCafe(); 
-
-    const [reviewWriteText, setreviewWriteText] = useState("")
-
-    const handleReviewWriteChange = (event) => {
-        setreviewWriteText(event.target.value); // 입력값 상태 업데이트
-    };
-
-    const foundReview = cafes.find((cafe) => cafe.id === parseInt(id)) || {
-        place_name: "카페 이름 없음",
-        address_name: "주소 없음",
-        saved: false,
-        x: 0,
-        y: 0,
-        tags: [],
-        wifi: "빠름",
-        outlets: "없음",
-        desk: "좁음",
-        restroom: "외부",
-        parking: "불가능",
-        description: "",
+    const location = useLocation();
+    const cafe = location.state?.cafe || {
+        cafeName: "카페 이름 없음",
+        address: "주소 없음",
         image: "",
     };
 
-    const [rating, setRating] = useState(foundReview.rating);
+    const [content, setContent] = useState("");
+    const [rating, setRating] = useState(3); 
     const [cafeOptions, setCafeOptions] = useState({
-        와이파이: foundReview.wifi,
-        콘센트: foundReview.outlets,
-        책상: foundReview.desk,
-        화장실: foundReview.restroom,
-        주차: foundReview.parking,
+        wifi: "",
+        outlets: "",
+        desk: "",
+        restroom: "",
+        parking: "",
     });
+    const [showOptionPopup, setShowOptionPopup] = useState(false); // New state for popup
 
     const handleRatingClick = (value) => setRating(value);
 
     const handleCafeOptionChange = (category, option) => {
-        setCafeOptions((prevOptions) => ({
-            ...prevOptions,
-            [category]: option,
-        }));
+        setCafeOptions((prevOptions) => {
+            const updatedOptions = {
+                ...prevOptions,
+                [category]: option,  // 선택한 옵션 반영
+            };
+            return updatedOptions;
+        });
+    };
+    
+    const userEmail = localStorage.getItem("email");
+    
+    if (!userEmail) {
+        alert("로그인이 필요합니다. 로그인 후 다시 시도해주세요.");
+        return;
+    }
+
+    const mapParkingOption = (option) => {
+        const mapping = {
+            "가능(무료)": "가능_무료",
+            "가능(유료)": "가능_유료",
+            "불가능": "불가능",
+            "일부 가능": "가능_일부제공"
+        };
+        return mapping[option] || "불가능"; // 기본값 설정
+    };
+
+    const handleReviewSubmit = async () => {
+        const isOptionMissing = Object.values(cafeOptions).some(option => option === ""); // Check for missing options
+        if (isOptionMissing) {
+            setShowOptionPopup(true); // Show popup if options are missing
+            return;
+        }
+
+        const reviewData = {
+            cafeId: parseInt(id),
+            userEmail,
+            rating,
+            content,
+            wifi: cafeOptions.wifi,
+            outlets: cafeOptions.outlets,
+            desk: cafeOptions.desk,
+            restroom: cafeOptions.restroom,
+            parking: mapParkingOption(cafeOptions.parking),
+        };
+        //console.log("서버로 보낼 데이터:", reviewData); 
+
+        try {
+            const response = await fetch("http://localhost:8080/reviews/create", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(reviewData),
+            });
+
+            if (response.ok) {
+                //alert("리뷰가 저장되었습니다.");
+                navigate(-1);
+            } else {
+                alert("리뷰 저장에 실패했습니다.");
+            }
+        } catch (error) {
+            console.error("Error submitting review:", error);
+            alert("리뷰 저장 중 오류가 발생했습니다.");
+        }
     };
 
     return (
         <div className="cafe-detail-edit-page">
-            <TopBar
-                title="# Review"
-                showHamburger={true} />
+            <TopBar title="# Review" showHamburger={true} />
 
             <header className="cafe-detail-edit-header">
                 <button className="back-button" onClick={() => navigate(-1)}>
@@ -64,10 +108,10 @@ const ReviewWrite = () => {
             </header>
 
             <section className="cafe-detail-cafe-info">
-                <img src={foundReview.image || "/img/cafe-img.png"} alt={foundReview.place_name} className="cafe-detail-cafe-image" />
+                <img src={cafe.image || "/img/cafe-img.png"} alt={cafe.cafeName} className="cafe-detail-cafe-image" />
                 <div>
-                    <h3 className="cafe-detail-cafe-name">{foundReview.place_name || "카페 이름 없음"}</h3>
-                    <p className="cafe-detail-cafe-address">{foundReview.address_name || "주소 없음"}</p>
+                    <h3 className="cafe-detail-cafe-name">{cafe.cafeName}</h3>
+                    <p className="cafe-detail-cafe-address">{cafe.address}</p>
                 </div>
             </section>
 
@@ -87,7 +131,7 @@ const ReviewWrite = () => {
                     </div>
                 </div>
 
-                <CafeInformation onChange={handleCafeOptionChange} />
+                <CafeInformation onChange={handleCafeOptionChange} selectedOptions={cafeOptions} />
 
                 <div className="cafe-detail-edit-form">
                     <textarea
@@ -95,17 +139,25 @@ const ReviewWrite = () => {
                         placeholder="이 카페는 카공하기 어땠나요?
                         좋았던 점, 아쉬운 점을 공유해보세요!"
                         maxLength={200}
-                        value={reviewWriteText}
-                        onChange={handleReviewWriteChange}
+                        value={content}
+                        onChange={(e) => setContent(e.target.value)}
                     />
                     <div className="cafe-detail-edit-char-counter">
-                        {reviewWriteText.length}/200 {/* 현재 글자 수와 최대 글자 수 표시 */}
+                        {content.length}/200 {/* 현재 글자 수와 최대 글자 수 표시 */}
                     </div>
                 </div>
                 <div className="cafe-detail-long-button-container">
-                    <LongButton optionText="작성 완료" onClick={() => alert("작성 완료되었습니다!")} />
+                    <LongButton optionText="작성 완료" onClick={handleReviewSubmit} />
                 </div>
             </section>
+
+            {showOptionPopup && (
+                <Popup
+                    message="모든 옵션을 선택해주세요."
+                    onConfirm={() => setShowOptionPopup(false)}
+                    showCancel={false}
+                />
+            )}
 
             <BottomBar />
         </div>

@@ -20,7 +20,7 @@
     background: #ffffff;
     box-shadow: 0 0 0 0.5px #422919; /* Border 대신 얇은 박스 그림자 사용 */
     border-radius: 30px;
-    padding: 3px 8px; /* 아이콘과 텍스트 간 여백 */
+    padding: 3px 5px; /* 아이콘과 텍스트 간 여백 */
     gap: 6px; 
   }
   
