@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { TopBar, BottomBar, LongButton } from "../components";
 import CafeInformation from "../components/CafeInformation";
+import Popup from "../components/Popup";
 import "./MyEdit.css";
 
 const ReviewEdit = () => {
@@ -19,6 +20,7 @@ const ReviewEdit = () => {
     restroom: "",
     parking: ""
   });
+  const [showEditPopup, setShowEditPopup] = useState(false);
 
   const optionMap = {
     "가능(무료)": "가능_무료",
@@ -121,9 +123,7 @@ const ReviewEdit = () => {
         restroom: cafeOptions.restroom,
         parking: cafeOptions.parking,
       };
-  
-      console.log("PUT 요청 데이터:", requestBody);
-  
+
       const response = await fetch(`http://localhost:8080/my/reviews/${reviewId}`, {
         method: "PUT",
         headers: {
@@ -131,11 +131,10 @@ const ReviewEdit = () => {
         },
         body: JSON.stringify(requestBody),
       });
-  
+
       if (!response.ok) throw new Error("Failed to update review");
-  
-      alert(`리뷰가 수정되었습니다.`);
-      navigate("/my");
+
+      setShowEditPopup(true); // Show popup instead of navigating immediately
     } catch (error) {
       console.error("Error updating review:", error);
       alert("리뷰 수정에 실패했습니다.");
@@ -197,6 +196,17 @@ const ReviewEdit = () => {
           <LongButton optionText="제출하기" onClick={handleSubmit} />
         </div>
       </section>
+
+      {showEditPopup && (
+        <Popup
+          message="리뷰가 수정되었습니다."
+          onConfirm={() => {
+              setShowEditPopup(false);
+              navigate("/my");
+          }}
+          showCancel={false}
+        />
+      )}
 
       <BottomBar />
     </div>

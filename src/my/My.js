@@ -63,7 +63,7 @@ const My = () => {
         return response.json();
       })
       .then((data) => {
-        console.log("받은 리뷰 데이터:", data); 
+        //console.log("받은 리뷰 데이터:", data); 
         setReviewedCafes(data || []); // 데이터가 없을 경우 빈 배열 설정
       })
       .catch((error) => {

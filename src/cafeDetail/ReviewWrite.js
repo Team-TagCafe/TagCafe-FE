@@ -73,7 +73,7 @@ const ReviewWrite = () => {
             restroom: cafeOptions.restroom,
             parking: mapParkingOption(cafeOptions.parking),
         };
-        console.log("서버로 보낼 데이터:", reviewData); 
+        //console.log("서버로 보낼 데이터:", reviewData); 
 
         try {
             const response = await fetch("http://localhost:8080/reviews/create", {
@@ -85,7 +85,7 @@ const ReviewWrite = () => {
             });
 
             if (response.ok) {
-                alert("리뷰가 저장되었습니다.");
+                //alert("리뷰가 저장되었습니다.");
                 navigate(-1);
             } else {
                 alert("리뷰 저장에 실패했습니다.");
