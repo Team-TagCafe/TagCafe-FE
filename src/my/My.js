@@ -12,7 +12,7 @@ const My = () => {
   const [reviewedCafes, setReviewedCafes] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showDeletePopup, setShowDeletePopup] = useState(false);
-
+  const [filters, setFilters] = useState({});
   const [reportedCafes, setReportedCafes] = useState([
     {
       id: 1,
@@ -41,39 +41,81 @@ const My = () => {
   ]);
 
   const userEmail = localStorage.getItem("email");
+  const token= localStorage.getItem("token");
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    const userEmail = localStorage.getItem("email");
-    
-    if (!userEmail) return; // userEmail이 없으면 요청하지 않음
-  
-    fetch(`http://localhost:8080/my/reviews?userEmail=${encodeURIComponent(userEmail)}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`,
-      },
-      credentials: "include"
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+useEffect(() => {
+  if (!userEmail) return;
+
+  const fetchReviewedCafes = async () => {
+    setLoading(true);
+    try {
+      let url = new URL(`http://localhost:8080/my/reviews`);
+      url.searchParams.append("userEmail", userEmail);
+
+      const tagNames = [];
+      const values = [];
+      Object.entries(filters).forEach(([tag, value]) => {
+        if (value) {
+          tagNames.push(tag);
+          values.push(value);
         }
-        return response.json();
-      })
-      .then((data) => {
-        //console.log("받은 리뷰 데이터:", data); 
-        setReviewedCafes(data || []); // 데이터가 없을 경우 빈 배열 설정
-      })
-      .catch((error) => {
-        console.error("리뷰 데이터를 불러오는 중 오류 발생:", error);
-        setReviewedCafes([]); // 오류 발생 시에도 빈 배열로 설정
       });
-  }, []);
+
+      // 필터가 있을 때만 필터링 엔드포인트 사용
+      if (tagNames.length > 0) {
+        url = new URL(`http://localhost:8080/my/reviews/filter`);
+        url.searchParams.append("userEmail", userEmail);
+
+        tagNames.forEach(tag => url.searchParams.append("tags", tag));
+        values.forEach(value => url.searchParams.append("values", value));
+      }
+
+      
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        },
+        credentials: "include",
+      });
+
+      if (!response.ok) throw new Error(`Failed to fetch reviews, status: ${response.status}`);
+
+      const data = await response.json();
+      setReviewedCafes(Array.isArray(data) ? data : []);
+    } catch (error) {
+      console.error("Error fetching reviews:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchReviewedCafes();
+}, [userEmail, filters]); // filters 변경 시 데이터 다시 로드
+
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
+  };
+
+
+  const handleFilterChange = (tag, value) => {
+    setFilters((prevFilters) => {
+      const tagIndex = prevFilters.tagNames.indexOf(tag);
+      let newTagNames = [...prevFilters.tagNames];
+      let newValues = [...prevFilters.values];
+
+      if (tagIndex === -1) {
+        newTagNames.push(tag);
+        newValues.push(value);
+      } else {
+        newTagNames.splice(tagIndex, 1);
+        newValues.splice(tagIndex, 1);
+      }
+
+      return { tagNames: newTagNames, values: newValues };
+    });
   };
 
   const handleDelete = async (reviewId) => {
@@ -116,7 +158,13 @@ const My = () => {
 
   return (
   <div className="my-page">
-    <TopBar title="# My" showSearch showTags onSearchPlaceChange />
+    <TopBar
+      title="# My"
+      showSearch
+      showTags
+      onSearchPlaceChange={() => {}}
+      onFilterChange={setFilters} 
+    />
 
     <div className="my-tabs">
       <button
