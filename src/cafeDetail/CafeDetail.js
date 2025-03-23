@@ -136,7 +136,6 @@ const CafeDetail = () => {
       }
 
       const data = await response.json();
-      console.log("🔍 백엔드 응답 데이터:", data);
 
       const processed = data.map((review) => {
         const [year, month, day, hour, minute, second] = review.createdAt;
