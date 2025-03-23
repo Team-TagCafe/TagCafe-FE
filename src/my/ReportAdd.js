@@ -111,7 +111,7 @@ const ReportCafeAdd = () => {
 
 
     const reportData = {
-      user: { email: userEmail },      
+      userEmail,
       kakaoPlaceId,
       cafeName: place_name,
       address: road_address_name,

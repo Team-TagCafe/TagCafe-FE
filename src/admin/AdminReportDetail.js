@@ -39,7 +39,7 @@ const AdminReportDetail = () => {
       <p><strong>카페 이름:</strong> {report.cafeName}</p>
       <p><strong>카카오 ID:</strong> {report.kakaoPlaceId}</p>
       <p><strong>내용:</strong> {report.content}</p>
-      <p><strong>작성자:</strong> {report.user?.email}</p>
+      <p><strong>작성자:</strong> {report.userEmail}</p>
       <button onClick={handleApprove}>승인</button>
     </div>
   );
