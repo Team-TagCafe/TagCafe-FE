@@ -13,32 +13,7 @@ const My = () => {
   const [loading, setLoading] = useState(false);
   const [showDeletePopup, setShowDeletePopup] = useState(false);
   const [filters, setFilters] = useState({});
-  const [reportedCafes, setReportedCafes] = useState([
-    {
-      id: 1,
-      name: "스테이 어도러블",
-      address: "경기 용인시 기흥구 죽전로43번길 15-3 (보정동)",
-      tags: ["와이파이 빠름", "콘센트 일부", "책상 적당함", "화장실 외부", "주차 가능(무료)"],
-      description: "카페가 조용하고 공부하기 좋습니다!",
-      status: "wait", 
-    },
-    {
-      id: 2,
-      name: "카페 테라스",
-      address: "서울 강남구 테헤란로 123",
-      tags: ["와이파이 느림", "콘센트 일부", "책상 적당함", "화장실 외부", "주차 가능(무료)"],
-      description: "테라스가 멋진 카페입니다.",
-      status: "accepted", 
-    },
-    {
-      id: 3,
-      name: "조용한 카페",
-      address: "서울 송파구 방이동 45-6",
-      tags: ["와이파이 없음", "콘센트 없음", "책상 좁음", "화장실 외부", "주차 불가능"],
-      description: "조용히 책 읽기 좋은 카페입니다.",
-      status: "denied", 
-    },
-  ]);
+  const [reportedCafes, setReportedCafes] = useState([]);
 
   const userEmail = localStorage.getItem("email");
   const token= localStorage.getItem("token");
@@ -92,6 +67,17 @@ useEffect(() => {
   };
 
   fetchReviewedCafes();
+  const fetchReportedCafes = async () => {
+    try {
+      const response = await fetch(`http://localhost:8080/report/${userEmail}`);
+      if (!response.ok) throw new Error("제보한 카페 조회 실패");
+      const data = await response.json();
+      setReportedCafes(data);
+    } catch (error) {
+      console.error("제보한 카페 조회 중 오류:", error);
+    }
+  };
+  fetchReportedCafes();
 }, [userEmail, filters]); // filters 변경 시 데이터 다시 로드
 
 
@@ -206,8 +192,8 @@ useEffect(() => {
       ) : (
         <div className="report-cafe-list">
           <p className="cafe-count">총 {reportedCafes.length}개</p>
-          {reportedCafes.map((cafe) => (
-            <ReportCafeCard key={cafe.id} cafe={cafe} />
+          {reportedCafes.map((cafe, index) => (
+            <ReportCafeCard key={index} cafe={cafe} />
           ))}
         </div>
       )}

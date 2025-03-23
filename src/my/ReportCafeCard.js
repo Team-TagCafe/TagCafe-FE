@@ -4,11 +4,23 @@ import TagGroup from "../components/TagGroup";
 import "./ReportCafeCard.css";
 
 const ReportCafeCard = ({ cafe }) => {
-  const { cafeId, name , address, description, tags, status } = cafe;
+  const {
+    reportedCafeId,
+    cafeName,
+    address,
+    content,
+    approved,
+    wifi,
+    outlets,
+    desk,
+    restroom,
+    parking,
+  } = cafe;
   const [isExpanded, setIsExpanded] = useState(false);
   const [showMessage, setShowMessage] = useState(false); // 개별 메시지 상태
   const [messageType, setMessageType] = useState(null);   
   const navigate = useNavigate();
+  const status = approved ? "accepted" : "wait";
 
   const handleNavigateToEdit = () => {
     navigate(`/my/report/edit/${cafe.id}`);
@@ -38,11 +50,17 @@ const ReportCafeCard = ({ cafe }) => {
   };
 
 
+  const tags = [];
+  if (wifi) tags.push(`와이파이: ${wifi}`);
+if (outlets) tags.push(`콘센트: ${outlets}`);
+if (desk) tags.push(`책상: ${desk}`);
+if (restroom) tags.push(`화장실: ${restroom}`);
+if (parking) tags.push(`주차: ${parking}`);
+
   const formattedTags = tags.map((tag) => {
-    // 태그 키워드 기반 아이콘 매칭
-    let iconKey = Object.keys(tagIcons).find((key) => tag.includes(key)) || "기본"; // 기본값 추가 가능
+    let iconKey = Object.keys(tagIcons).find((key) => tag.includes(key)) || "기본";
     return {
-      icon: tagIcons[iconKey], 
+      icon: tagIcons[iconKey],
       text: tag,
     };
   });
@@ -67,7 +85,7 @@ const ReportCafeCard = ({ cafe }) => {
         <div className="report-cafe-header">
             <div className="report-cafe-info">
                 <div className="report-cafe-toggle">
-                    <h3 className="report-cafe-name">{cafe.name}</h3>
+                    <h3 className="report-cafe-name">{cafeName}</h3>
                     <button className="report-cafe-toggle-button" onClick={toggleDetails}>
                     <img
                     src={
@@ -79,7 +97,7 @@ const ReportCafeCard = ({ cafe }) => {
                     />
                     </button>
                 </div>
-                <p className="report-cafe-address">{cafe.address}</p>
+                <p className="report-cafe-address">{address}</p>
                 <div className="report-cafe-check" onClick={() => handleCheckClick("wait")}>
                   <img src="/img/report-wait.png" alt="Check" />
                 </div>
@@ -88,7 +106,7 @@ const ReportCafeCard = ({ cafe }) => {
 
         {isExpanded && (
         <div className="report-cafe-details">
-            <p className="report-cafe-description">{cafe.description}</p>
+            <p className="report-cafe-description">{content}</p>
             <TagGroup tags={formattedTags} />
         </div>
         )}
