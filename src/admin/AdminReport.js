@@ -6,8 +6,8 @@ const AdminReports = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("/report/admin/pending")
-      .then((res) => res.json())
+    fetch("http://localhost:8080/report/admin/pending")      
+    .then((res) => res.json())
       .then(setPendingReports)
       .catch(console.error);
   }, []);
@@ -18,10 +18,15 @@ const AdminReports = () => {
       {pendingReports.length === 0 ? (
         <p>승인 대기 중인 제보가 없습니다.</p>
       ) : (
-        <ul>
+        <ul className="admin-report-list">
           {pendingReports.map((report) => (
-            <li key={report.reportedCafeId} onClick={() => navigate(`/admin/reports/${report.reportedCafeId}`)}>
-              {report.cafeName || "이름 없음"} ({report.kakaoPlaceId})
+            <li
+              key={report.reportedCafeId}
+              className="admin-report-item"
+              onClick={() => navigate(`/admin/reports/${report.reportedCafeId}`)}
+            >
+              <div><strong>{report.cafeName || "이름 없음"}</strong> ({report.kakaoPlaceId})</div>
+              <div><small>작성자: {report.userEmail}</small></div>
             </li>
           ))}
         </ul>

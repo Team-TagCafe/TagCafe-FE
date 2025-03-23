@@ -7,8 +7,8 @@ const AdminReportDetail = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch(`/report/admin/pending/${id}`)
-      .then((res) => res.json())
+    fetch(`http://localhost:8080/report/admin/pending/${id}`)      
+    .then((res) => res.json())
       .then(setReport)
       .catch(console.error);
   }, [id]);
@@ -18,12 +18,15 @@ const AdminReportDetail = () => {
     if (!confirm) return;
 
     try {
-      const res = await fetch(`/report/admin/approve/${id}`, { method: "POST" });
+      const res = await fetch(`http://localhost:8080/report/admin/approve/${id}`, {
+        method: "POST",
+      });
       if (res.ok) {
         alert("승인 완료!");
         navigate("/admin/reports");
       } else {
-        alert("승인 실패");
+        const text = await res.text();
+        alert("승인 실패: " + text);
       }
     } catch (e) {
       console.error(e);
