@@ -16,17 +16,22 @@ function CafeInformation({ onChange, selectedOptions={} }) {
   }, [selectedOptions]); //부모 컴포넌트에서 변경된 값 반영
 
   const handleOptionSelect = (category, option) => {
+    // 렌더링 중 호출 방지용 안전장치
+    if (!option || typeof option !== "string") return;
+  
     setInternalSelectedOptions((prev) => {
-        const newOptions = {
-            ...prev,
-            [category]: option, // 영어 키 유지
-        };
-        if (onChange) {
-            onChange(category, option); // 부모 컴포넌트로 전달
-        }
-        return newOptions;
+      const newOptions = {
+        ...prev,
+        [category]: option,
+      };
+      if (onChange) {
+        setTimeout(() => {
+          onChange(category, option); // ⏱️ 렌더링 이후 비동기로 호출
+        }, 0);
+      }
+      return newOptions;
     });
-};
+  };
 
 const categoryLabels = {
   wifi: "와이파이",

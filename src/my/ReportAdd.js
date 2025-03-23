@@ -1,10 +1,20 @@
 /*global kakao*/
-
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { TopBar, BottomBar, LongButton } from "../components";
 import CafeInformation from "../components/CafeInformation";
+import Popup from "../components/Popup";
 import "./ReportAdd.css"
+ 
+const mapParkingOption = (option) => {
+  const mapping = {
+      "가능(무료)": "가능_무료",
+      "가능(유료)": "가능_유료",
+      "불가능": "불가능",
+      "가능(일부)": "가능_일부"
+  };
+  return mapping[option] || "불가능"; // 기본값 설정
+};
 
 const ReportCafeAdd = () => {
   const navigate = useNavigate();
@@ -15,7 +25,9 @@ const ReportCafeAdd = () => {
   const [searchResults, setSearchResults] = useState([]);
   const userEmail= localStorage.getItem("email");
   const [selectedCafe, setSelectedCafe] = useState(null);
+  const [showOptionPopup, setShowOptionPopup] = useState(false);
 
+  
   useEffect(() => {
     if (location.state) {
       const { selectedCafe, searchKeyword } = location.state;
@@ -56,11 +68,11 @@ const ReportCafeAdd = () => {
   };
 
   const [cafeOptions, setCafeOptions] = useState({
-    와이파이: "",
-    콘센트: "",
-    책상: "",
-    화장실: "",
-    주차: "",
+    wifi: "",
+    outlets: "",
+    desk: "",
+    restroom: "",
+    parking: "",
   });
 
   const handleCafeOptionChange = (category, option) => {
@@ -71,31 +83,61 @@ const ReportCafeAdd = () => {
   };
 
   const handleSubmit = async () => {
+    if (!userEmail) {
+      alert("로그인이 필요합니다. 로그인 후 다시 시도해주세요.");
+      return;
+    }
+
     if (!selectedCafe) {
       alert("카페를 먼저 선택해주세요.");
       return;
     }
-  
-    const { place_name, id: kakaoPlaceId } = selectedCafe;
-  
+
+    const isOptionMissing = Object.values(cafeOptions).some(option => option === "");
+    if (isOptionMissing) {
+      setShowOptionPopup(true);
+      return;
+    }
+
+    const {
+      id: kakaoPlaceId,
+      place_name,
+      road_address_name,
+      x,
+      y,
+      phone,
+      place_url,
+    } = selectedCafe;
+
+
+    const reportData = {
+      user: { email: userEmail },      
+      kakaoPlaceId,
+      cafeName: place_name,
+      address: road_address_name,
+      latitude: y,
+      longitude: x,
+      phoneNumber: phone || "",
+      websiteUrl: place_url || "",
+      content: reportText,
+      wifi: cafeOptions.wifi,
+      outlets: cafeOptions.outlets,
+      desk: cafeOptions.desk,
+      restroom: cafeOptions.restroom,
+      parking: mapParkingOption(cafeOptions.parking),
+    };
+
+    console.log("선택된 옵션:", reportData);
+
     try {
-      const response = await fetch('http://localhost:8080/report', {
+      const response = await fetch("http://localhost:8080/report", {
         method: "POST",
         headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
+          "Content-Type": "application/json",
         },
-        body: new URLSearchParams({
-          userEmail: userEmail, 
-          kakaoPlaceId: kakaoPlaceId,
-          content: reportText,
-          wifi: cafeOptions["와이파이"],
-          outlet: cafeOptions["콘센트"],
-          desk: cafeOptions["책상"],
-          restroom: cafeOptions["화장실"],
-          parking: cafeOptions["주차"]
-        }),
+        body: JSON.stringify(reportData),
       });
-  
+
       if (response.ok) {
         alert("제보가 완료되었습니다!");
         navigate("/my");
@@ -157,6 +199,13 @@ const ReportCafeAdd = () => {
         </div>
       </section>
 
+      {showOptionPopup && (
+        <Popup
+          message="모든 옵션을 선택해주세요."
+          onConfirm={() => setShowOptionPopup(false)}
+          showCancel={false}
+        />
+      )}
       <BottomBar />
     </div>
   );
