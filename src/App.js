@@ -22,6 +22,10 @@ import ReviewWrite from './cafeDetail/ReviewWrite';
 import { CafeProvider } from './home/CafeContext';
 import CafeAdd from './admin/CafeAdd';
 import CafeEdit from './admin/CafeEdit';
+import AdminReports from './admin/AdminReport';
+import AdminReportDetail from './admin/AdminReportDetail';
+import ReportAdd from "./my/ReportAdd";
+import ReportSearch from "./my/ReportSearch";
 
 function App() {
   const [selectedPlace, setSelectedPlace] = useState(null); // 선택된 장소 상태
@@ -57,6 +61,10 @@ function App() {
               <Route path="/cafe/:id/review-write" element={<ReviewWrite />} />
               <Route path="/cafe-add" element={<CafeAdd />} />
               <Route path="/cafe-edit" element={<CafeEdit />} />
+              <Route path="/report" element={<ReportAdd />} />
+              <Route path="/reportsearch" element={<ReportSearch />} />
+              <Route path="/admin/reports" element={<AdminReports />} />
+              <Route path="/admin/reports/:id" element={<AdminReportDetail />} />
             </Routes>
           </BrowserRouter>
         </div>
