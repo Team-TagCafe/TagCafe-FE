@@ -18,6 +18,7 @@ const CafeDetail = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [showLoginPopup, setShowLoginPopup] = useState(false);
   const userEmail = localStorage.getItem("email");
+  const [reviews, setReviews] = useState([]);
 
   // 카페 정보 가져오기
   useEffect(() => {
@@ -126,39 +127,54 @@ const CafeDetail = () => {
     navigate(`/cafe/${cafeId}/review-write`, { state: { cafe } });
   };
 
-  const [reviews, setReviews] = useState([
-    {
-      userName: "커피스터디",
-      date: "12.20 금",
-      rating: 4,
-      content: "카페가 조용하고 공부하기 좋습니다!",
-      tags: ["와이파이 빠름", "콘센트 일부", "책상 적당함", "화장실 외부", "주차 가능(무료)"],
-    },
-    {
-      userName: "음료러버",
-      date: "12.22 일",
-      rating: 5,
-      content: "음료가 정말 맛있고 분위기가 너무 좋아요!",
-      tags: ["와이파이 빠름", "콘센트 일부", "책상 적당함", "화장실 외부", "주차 가능(무료)"],
-    },
-    {
-      userName: "공부러버",
-      date: "12.25 수",
-      rating: 4.5,
-      content: "조용하고 공부하기 좋았습니다. 추천합니다!",
-      tags: ["와이파이 빠름", "콘센트 일부", "책상 적당함", "화장실 외부", "주차 가능(무료)"],
-    },
-  ]);
+  // 리뷰 불러오기
+  const fetchReviews = async () => {
+    try {
+      const response = await fetch(`http://localhost:8080/reviews/${cafeId}`);
+      if (!response.ok) {
+        throw new Error("리뷰 데이터를 불러오지 못했습니다.");
+      }
+
+      const data = await response.json();
+      console.log("🔍 백엔드 응답 데이터:", data);
+
+      const processed = data.map((review) => {
+        const [year, month, day, hour, minute, second] = review.createdAt;
+        const dateObj = new Date(year, month - 1, day, hour, minute, second);
+        const rawDate = dateObj.toLocaleDateString("ko-KR", {
+          month: "numeric",
+          day: "numeric",
+          weekday: "short",
+        }); // 예: "3. 23. 토"
+      
+        const formattedDate = rawDate.replace(/\./g, '').replace(/ /g, '.').replace(/\.(?=[^\.]*$)/, ' ');
+      
+        return {
+          userName: review.userEmail.split("@")[0],
+          date: formattedDate,
+          ...review,
+        };
+      });
+
+      setReviews(processed);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const averageRating =
     reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length;
+
+  useEffect(() => {
+    fetchReviews();
+  }, [activeTab, cafeId]);
 
   // 마커 이미지 설정
   const imageSrc = '/img/map-cafe.png';
   const imageSize = new kakao.maps.Size(17, 17);
   const imageOption = { offset: new kakao.maps.Point(5, 5) };
   const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
-  
+
   useEffect(() => {
     if (activeTab !== "cafe-detail-info" || !cafe) {
       setMap(null);
@@ -220,11 +236,11 @@ const CafeDetail = () => {
   return (
     <div className="cafe-detail-page">
       {showLoginPopup && (
-          <Popup
-              message="로그인이 필요합니다"
-              onConfirm={() => setShowLoginPopup(false)}
-              showCancel={false}
-          />
+        <Popup
+          message="로그인이 필요합니다"
+          onConfirm={() => setShowLoginPopup(false)}
+          showCancel={false}
+        />
       )}
       {/* 뒤로가기 버튼 */}
       <div className="cafe-detail-back-button" onClick={handleBackClick}>
@@ -343,11 +359,6 @@ const CafeDetail = () => {
           />
         )}
       </div>
-
-
-
-
-      {/* 하단 바 */}
       <BottomBar />
     </div>
   );
