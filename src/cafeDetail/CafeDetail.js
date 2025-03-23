@@ -146,9 +146,9 @@ const CafeDetail = () => {
           day: "numeric",
           weekday: "short",
         }); // 예: "3. 23. 토"
-      
+
         const formattedDate = rawDate.replace(/\./g, '').replace(/ /g, '.').replace(/\.(?=[^\.]*$)/, ' ');
-      
+
         return {
           userName: review.userEmail.split("@")[0],
           date: formattedDate,
@@ -335,7 +335,9 @@ const CafeDetail = () => {
                   alt="Star Icon"
                   className="cafe-detail-review-star"
                 />
-                <div className="cafe-detail-review-score">{averageRating.toFixed(2)}</div>
+                <div className="cafe-detail-review-score">
+                  {cafe?.averageRating?.toFixed(2) ?? "0.00"}
+                </div>
                 <div className="cafe-detail-review-text">{reviews.length}개 리뷰</div>
               </div>
               <button className="cafe-detail-review-write-btn"
