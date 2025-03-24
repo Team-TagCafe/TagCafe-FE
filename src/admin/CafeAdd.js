@@ -109,26 +109,76 @@ const CafeAdd = () => {
     }
   };
 
+  const getGooglePlaceDetails = (placeName, lat, lng) => {
+    return new Promise((resolve, reject) => {
+      const service = new window.google.maps.places.PlacesService(document.createElement('div'));
+      const request = {
+        location: new window.google.maps.LatLng(lat, lng),
+        radius: 100,
+        query: placeName,
+      };
+
+      service.textSearch(request, (results, status) => {
+        if (status === window.google.maps.places.PlacesServiceStatus.OK && results.length > 0) {
+          const placeId = results[0].place_id;
+
+          service.getDetails({ placeId }, (details, detailStatus) => {
+            if (detailStatus === window.google.maps.places.PlacesServiceStatus.OK) {
+              resolve(details);
+            } else {
+              reject('장소 상세 정보 조회 실패');
+            }
+          });
+        } else {
+          reject('장소 검색 실패');
+        }
+      });
+    });
+  };
+
+
   // ✅ DB에 카페 저장
-  const saveCafeToDB = async (cafe) => {
-    console.log("💾 [DB 저장 요청 데이터]:", cafe); // DB 저장 요청 전 데이터 로그 출력
+  const saveCafeWithGoogleDetails = async (kakaoCafe) => {
     try {
+      const googleDetails = await getGooglePlaceDetails(
+        kakaoCafe.place_name,
+        parseFloat(kakaoCafe.y),
+        parseFloat(kakaoCafe.x)
+      );
+
+      const photoUrl =
+        googleDetails.photos && googleDetails.photos.length > 0
+          ? googleDetails.photos[0].getUrl({ maxWidth: 400 })
+          : '정보 없음';
+
+      const openingHours =
+        googleDetails.opening_hours?.weekday_text?.length > 0
+          ? googleDetails.opening_hours.weekday_text.join(', ')
+          : '정보 없음';
+
+      const website = googleDetails.website || '정보 없음';
+      console.log("📦 구글 상세 정보:", googleDetails);
+
       await axios.post('http://localhost:8080/cafes', {
-        kakaoPlaceId: cafe.id,
-        cafeName: cafe.place_name,
-        latitude: parseFloat(cafe.y),
-        longitude: parseFloat(cafe.x),
-        address: cafe.road_address_name || cafe.address_name,
-        phoneNumber: cafe.phone || '정보 없음',
-        websiteUrl: cafe.place_url || '정보 없음',
+        kakaoPlaceId: kakaoCafe.id,
+        cafeName: kakaoCafe.place_name,
+        latitude: parseFloat(kakaoCafe.y),
+        longitude: parseFloat(kakaoCafe.x),
+        address: kakaoCafe.road_address_name || kakaoCafe.address_name,
+        phoneNumber: kakaoCafe.phone || '정보 없음',
+        websiteUrl: website,
+        openingHours: openingHours,
+        photoUrl: photoUrl,
       });
 
-      alert(`${cafe.place_name}이(가) DB에 저장되었습니다.`);
+
+      alert(`${kakaoCafe.place_name} 저장 완료!`);
     } catch (error) {
       console.error('카페 저장 실패:', error);
-      alert('카페 저장에 실패했습니다.');
+      alert('카페 저장 중 오류가 발생했습니다.');
     }
   };
+
 
   return (
     <div>
@@ -146,7 +196,7 @@ const CafeAdd = () => {
         {searchResults.map((cafe) => (
           <li key={cafe.id}>
             {cafe.place_name} ({cafe.address_name})
-            <button onClick={() => saveCafeToDB(cafe)}>DB 저장</button>
+            <button onClick={() => saveCafeWithGoogleDetails(cafe)}>DB 저장</button>
           </li>
         ))}
       </ul>
