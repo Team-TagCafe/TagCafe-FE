@@ -20,10 +20,17 @@ const ReportCafeCard = ({ cafe }) => {
   const [showMessage, setShowMessage] = useState(false); // 개별 메시지 상태
   const [messageType, setMessageType] = useState(null);   
   const navigate = useNavigate();
-  const status = approved ? "accepted" : "wait";
+  const status = approved ? "accepted" : (cafe.deleted ? "denied" : "wait");
 
+
+  console.log("cafe", cafe);
+  
   const handleNavigateToEdit = () => {
-    navigate(`/my/report/edit/${cafe.id}`);
+    if (status === "accepted") {
+      navigate(`/cafe/${cafe.cafe?.cafeId}`); // Navigate using cafeId
+    } else {
+      navigate(`/my/report/edit/${reportedCafeId}`);
+    }
   };
 
   const toggleDetails = () => {
@@ -32,7 +39,7 @@ const ReportCafeCard = ({ cafe }) => {
 
 
   const handleCheckClick = (type) => {
-    setMessageType(cafe.status); // 메시지 유형 설정
+    setMessageType(status); // 메시지 유형 설정
     setShowMessage(true);
   };
 
@@ -52,10 +59,10 @@ const ReportCafeCard = ({ cafe }) => {
 
   const tags = [];
   if (wifi) tags.push(`와이파이: ${wifi}`);
-if (outlets) tags.push(`콘센트: ${outlets}`);
-if (desk) tags.push(`책상: ${desk}`);
-if (restroom) tags.push(`화장실: ${restroom}`);
-if (parking) tags.push(`주차: ${parking}`);
+  if (outlets) tags.push(`콘센트: ${outlets}`);
+  if (desk) tags.push(`책상: ${desk}`);
+  if (restroom) tags.push(`화장실: ${restroom}`);
+  if (parking) tags.push(`주차: ${parking}`);
 
   const formattedTags = tags.map((tag) => {
     let iconKey = Object.keys(tagIcons).find((key) => tag.includes(key)) || "기본";
@@ -99,7 +106,16 @@ if (parking) tags.push(`주차: ${parking}`);
                 </div>
                 <p className="report-cafe-address">{address}</p>
                 <div className="report-cafe-check" onClick={() => handleCheckClick("wait")}>
-                  <img src="/img/report-wait.png" alt="Check" />
+                  <img
+                    src={
+                      status === "accepted"
+                        ? "/img/report-accepted.png"
+                        : status === "denied"
+                        ? "/img/report-denied.png"
+                        : "/img/report-wait.png"
+                    }
+                    alt="Check"
+                  />
                 </div>
             </div>
         </div>
