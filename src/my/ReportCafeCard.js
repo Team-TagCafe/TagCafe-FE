@@ -16,6 +16,7 @@ const ReportCafeCard = ({ cafe }) => {
     restroom,
     parking,
   } = cafe;
+  
   const [isExpanded, setIsExpanded] = useState(false);
   const [showMessage, setShowMessage] = useState(false); // 개별 메시지 상태
   const [messageType, setMessageType] = useState(null);   
