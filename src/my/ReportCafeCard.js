@@ -9,7 +9,7 @@ const ReportCafeCard = ({ cafe }) => {
     cafeName,
     address,
     content,
-    approved,
+    status,
     wifi,
     outlets,
     desk,
@@ -21,13 +21,12 @@ const ReportCafeCard = ({ cafe }) => {
   const [showMessage, setShowMessage] = useState(false); // 개별 메시지 상태
   const [messageType, setMessageType] = useState(null);   
   const navigate = useNavigate();
-  const status = approved ? "accepted" : (cafe.deleted ? "denied" : "wait");
-
+  const cafeStatus = status === "APPROVED" ? "accepted" : (status === "REJECTED" ? "denied" : "wait");
 
   console.log("cafe", cafe);
   
   const handleNavigateToEdit = () => {
-    if (status === "accepted") {
+    if (cafeStatus === "accepted") {
       navigate(`/cafe/${cafe.cafe?.cafeId}`); // Navigate using cafeId
     } else {
       navigate(`/my/report/edit/${reportedCafeId}`);
@@ -40,7 +39,7 @@ const ReportCafeCard = ({ cafe }) => {
 
 
   const handleCheckClick = (type) => {
-    setMessageType(status); // 메시지 유형 설정
+    setMessageType(cafeStatus); // 메시지 유형 설정
     setShowMessage(true);
   };
 
@@ -109,9 +108,9 @@ const ReportCafeCard = ({ cafe }) => {
                 <div className="report-cafe-check" onClick={() => handleCheckClick("wait")}>
                   <img
                     src={
-                      status === "accepted"
+                      cafeStatus === "accepted"
                         ? "/img/report-accepted.png"
-                        : status === "denied"
+                        : cafeStatus === "denied"
                         ? "/img/report-denied.png"
                         : "/img/report-wait.png"
                     }
