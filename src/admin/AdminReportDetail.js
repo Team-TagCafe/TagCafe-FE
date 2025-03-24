@@ -33,6 +33,27 @@ const AdminReportDetail = () => {
       alert("오류 발생");
     }
   };
+  
+  const handleDelete = async () => {
+    const confirm = window.confirm("해당 제보를 삭제하시겠습니까?");
+    if (!confirm) return;
+  
+    try {
+      const res = await fetch(`http://localhost:8080/report/admin/delete/${id}`, {
+        method: "DELETE",
+      });
+      if (res.ok) {
+        alert("삭제 완료!");
+        navigate("/admin/reports");
+      } else {
+        const text = await res.text();
+        alert("삭제 실패: " + text);
+      }
+    } catch (e) {
+      console.error(e);
+      alert("오류 발생");
+    }
+  };
 
   if (!report) return <p>불러오는 중...</p>;
 
@@ -44,6 +65,7 @@ const AdminReportDetail = () => {
       <p><strong>내용:</strong> {report.content}</p>
       <p><strong>작성자:</strong> {report.userEmail}</p>
       <button onClick={handleApprove}>승인</button>
+      <button onClick={handleDelete} style={{ marginLeft: "10px"}}>삭제</button>
     </div>
   );
 };
