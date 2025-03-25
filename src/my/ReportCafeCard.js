@@ -88,7 +88,6 @@ const ReportCafeCard = ({ cafe }) => {
     },
     denied: {
       text: "카페 등록이 거부되었습니다",
-      action: "자세히 보기 >",
     },
     accepted: {
       text: "카페 등록이 완료되었습니다",

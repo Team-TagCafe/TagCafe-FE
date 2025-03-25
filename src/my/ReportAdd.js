@@ -130,6 +130,14 @@ const ReportCafeAdd = () => {
     console.log("선택된 옵션:", reportData);
 
     try {
+      const checkResponse = await fetch(`http://localhost:8080/cafes/kakao/${kakaoPlaceId}`);
+      if (checkResponse.ok) {
+        const existingCafe = await checkResponse.json();
+        if (existingCafe) {
+          alert("이미 등록된 카페입니다.");
+          return;
+        }
+      }
       const response = await fetch("http://localhost:8080/report", {
         method: "POST",
         headers: {

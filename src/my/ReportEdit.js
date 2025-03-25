@@ -68,7 +68,7 @@ const ReportEdit = () => {
         parking: cafeOptions.parking,
       };
 
-      console.log("Request body:", requestBody);
+      //console.log("Request body:", requestBody);
 
       const response = await fetch(`http://localhost:8080/report/${reportedCafeId}`, {
         method: "PUT",
@@ -167,7 +167,7 @@ const ReportEdit = () => {
 
       {showEditPopup && (
         <Popup 
-          message={`제보한 카페 "${reportData.cafeName}"의 내용이 수정되었습니다.`} 
+          message={`제보 카페 "${reportData.cafeName}"의 내용이 수정되었습니다.`} 
           onConfirm={() => {
             setShowEditPopup(false);
             navigate("/my");

@@ -4,12 +4,14 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { TopBar, BottomBar, LongButton } from "../components";
 import "./ReportAdd.css"
 import "./ReportSearch.css";
+import Popup from "../components/Popup";
 
 const ReportSearch = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [searchKeyword, setSearchKeyword] = useState(location.state?.searchKeyword);
   const [searchResults, setSearchResults] = useState([]);
+  const [showExistPopup, setShowExistPopup] = useState(false);
 
   useEffect(() => {
     const mapContainer = document.getElementById("map");
@@ -38,7 +40,17 @@ const ReportSearch = () => {
     });
   }, [searchKeyword]);
 
-  const handleSelect = (cafe) => {
+  const handleSelect = async (cafe) => {
+    const kakaoPlaceId = cafe.id;
+    const checkResponse = await fetch(`http://localhost:8080/report/cafes/kakao/${kakaoPlaceId}`);
+    if (checkResponse.status === 200) {
+      const existingCafe = await checkResponse.json();
+      if (existingCafe) {
+        setShowExistPopup(true);
+        return;
+      }
+    }
+
     navigate("/my/report/add", {
       state: {
         selectedCafe: cafe,
@@ -82,8 +94,15 @@ const ReportSearch = () => {
         ))}
       </ul>
       </section>
-
+        {showExistPopup && (
+        <Popup
+            message="이미 등록된 카페입니다."
+            onConfirm={() => setShowExistPopup(false)}
+            showCancel={false}
+        />
+        )}
     </div>
+    
   );
 };
 
