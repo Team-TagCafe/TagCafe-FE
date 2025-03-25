@@ -314,7 +314,7 @@ const CafeDetail = () => {
               <div>
                 <img src="/img/link.png" />
                 <a
-                  href="{cafe.websiteUrl}"
+                  href={cafe.websiteUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
