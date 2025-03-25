@@ -19,7 +19,10 @@ function parseOpeningHours(hoursString) {
 
     const dayShort = korToShort[dayFull.trim()];
 
-    // 24시간 영업 케이스 처리
+    if (timeRange.includes("휴무일")) {
+      return { day: dayShort, status: "휴무" };
+    }
+
     if (timeRange.includes("24시간 영업")) {
       return { day: dayShort, start: "00:00", end: "24:00" };
     }
@@ -31,6 +34,7 @@ function parseOpeningHours(hoursString) {
     return { day: dayShort, start, end };
   }).filter(Boolean);
 }
+
 
 function convertTo24Hour(timeStr) {
   const isPM = timeStr.includes("오후");
@@ -190,11 +194,13 @@ function CafeInformationDetail({ cafeId }) {
 
       {isHoursOpen && openingHours && (
         <div className="cafe-information-detail__dropdown">
-          {parseOpeningHours(openingHours).map(({ day, start, end }, idx) => (
+          {parseOpeningHours(openingHours).map(({ day, start, end, status }, idx) => (
             <div key={idx} className="cafe-information-detail__dropdown-item">
-              <strong>{day}</strong> {start} ~ {end}
+              <strong>{day}</strong>{" "}
+              {status === "휴무" ? "휴무" : `${start} ~ ${end}`}
             </div>
           ))}
+
         </div>
       )}
 
