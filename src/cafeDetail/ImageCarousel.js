@@ -23,9 +23,7 @@ const ImageCarousel = ({ images }) => {
 
   if (!images || images.length === 0) {
     return (
-      <div className="carousel-placeholder">
-        <img src="/img/cafe-img.png" alt="No Images" />
-      </div>
+      <img src="/img/default-cafe.jpg" alt="No Images" className="carousel-image" />
     );
   }
 
