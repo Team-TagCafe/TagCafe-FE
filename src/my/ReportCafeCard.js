@@ -17,19 +17,28 @@ const ReportCafeCard = ({ cafe }) => {
     parking,
   } = cafe;
   
+  
   const [isExpanded, setIsExpanded] = useState(false);
   const [showMessage, setShowMessage] = useState(false); // 개별 메시지 상태
   const [messageType, setMessageType] = useState(null);   
+  const [reviewEditText, setReviewEditText] = useState(""); // 추가된 상태
+  const [selectedOptions, setSelectedOptions] = useState([]); // 추가된 상태
+  const cafeOptions = []; // 초기화된 상태
   const navigate = useNavigate();
   const cafeStatus = status === "APPROVED" ? "accepted" : (status === "REJECTED" ? "denied" : "wait");
 
-  console.log("cafe", cafe);
   
   const handleNavigateToEdit = () => {
-    if (cafeStatus === "accepted") {
-      navigate(`/cafe/${cafe.cafe?.cafeId}`); // Navigate using cafeId
+    if (status === "PENDING") {
+      if (reportedCafeId) {
+        navigate(`/my/report/edit/${reportedCafeId}`);
+      } else {
+        alert("제보 ID가 없습니다.");
+      }
+    } else if (status === "APPROVED") {
+      navigate(`/cafe/${cafe.cafe?.cafeId}`);
     } else {
-      navigate(`/my/report/edit/${reportedCafeId}`);
+      alert("거절된 제보는 수정할 수 없습니다.");
     }
   };
 

@@ -48,7 +48,6 @@ function App() {
               <Route path="/my" element={<My />} />
               <Route path="/my/review/edit/:reviewId" element={<ReviewEdit />} />
               <Route path="/my/report/add" element={<ReporCafeAdd />} />
-              <Route path="my/report/edit/:id" element={<ReportEdit />} />
               {/* Search 컴포넌트에 onPlaceSelect 전달 */}
               <Route path="/search" element={<Search onPlaceSelect={handlePlaceSelect} />} />
               <Route path="/nickname-change" element={<NicknameChange />} />
@@ -63,6 +62,7 @@ function App() {
               <Route path="/cafe-edit" element={<CafeEdit />} />
               <Route path="/report" element={<ReportAdd />} />
               <Route path="/reportsearch" element={<ReportSearch />} />
+              <Route path="/my/report/edit/:reportedCafeId" element={<ReportEdit />} />
               <Route path="/admin/reports" element={<AdminReports />} />
               <Route path="/admin/reports/:id" element={<AdminReportDetail />} />
             </Routes>

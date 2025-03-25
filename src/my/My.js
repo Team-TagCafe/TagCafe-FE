@@ -69,7 +69,7 @@ useEffect(() => {
   fetchReviewedCafes();
   const fetchReportedCafes = async () => {
     try {
-      const response = await fetch(`http://localhost:8080/report/${userEmail}`);
+      const response = await fetch(`http://localhost:8080/report/user/${userEmail}`);
       if (!response.ok) throw new Error("제보한 카페 조회 실패");
       const data = await response.json();
       setReportedCafes(data);

@@ -43,7 +43,7 @@ const AdminReportDetail = () => {
         method: "DELETE",
       });
       if (res.ok) {
-        alert("삭제 완료!");
+        alert("반려 처리 완료!");
         navigate("/admin/reports");
       } else {
         const text = await res.text();
@@ -65,7 +65,7 @@ const AdminReportDetail = () => {
       <p><strong>내용:</strong> {report.content}</p>
       <p><strong>작성자:</strong> {report.userEmail}</p>
       <button onClick={handleApprove}>승인</button>
-      <button onClick={handleDelete} style={{ marginLeft: "10px"}}>삭제</button>
+      <button onClick={handleDelete} style={{ marginLeft: "10px"}}>반려</button>
     </div>
   );
 };
