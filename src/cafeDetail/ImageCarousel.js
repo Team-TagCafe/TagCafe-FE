@@ -4,13 +4,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./ImageCarousel.css"
 
-const images = [
-  "/img/cafe-img.png",
-  "/img/cafe-img.png",
-  "/img/cafe-img.png",
-];
-
-const ImageCarousel = () => {
+const ImageCarousel = ({ images }) => {
   const settings = {
     dots: true,
     infinite: true,
@@ -26,6 +20,14 @@ const ImageCarousel = () => {
       </div>
     ),
   };
+
+  if (!images || images.length === 0) {
+    return (
+      <div className="carousel-placeholder">
+        <img src="/img/cafe-img.png" alt="No Images" />
+      </div>
+    );
+  }
 
   return (
     <Slider {...settings}>

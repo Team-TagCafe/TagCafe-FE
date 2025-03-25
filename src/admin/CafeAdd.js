@@ -7,6 +7,7 @@ const CafeAdd = () => {
   const [searchKeyword, setSearchKeyword] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [markers, setMarkers] = useState([]);
+  const apiKey = process.env.REACT_APP_GOOGLE_API_KEY;
 
   useEffect(() => {
     const container = document.getElementById('map');
@@ -137,7 +138,7 @@ const CafeAdd = () => {
   };
 
 
-  // ✅ DB에 카페 저장
+  // DB에 카페 저장
   const saveCafeWithGoogleDetails = async (kakaoCafe) => {
     try {
       const googleDetails = await getGooglePlaceDetails(
@@ -146,10 +147,15 @@ const CafeAdd = () => {
         parseFloat(kakaoCafe.x)
       );
 
-      const photoUrl =
+      // 여러 장 사진 가져오기 (최대 5장)
+      const photoUrls =
         googleDetails.photos && googleDetails.photos.length > 0
-          ? googleDetails.photos[0].getUrl({ maxWidth: 400 })
-          : '정보 없음';
+          ? googleDetails.photos
+            .slice(0, 5)
+            .map(photo => photo.getUrl({ maxWidth: 400 }))
+          : [];
+
+
 
       const openingHours =
         googleDetails.opening_hours?.weekday_text?.length > 0
@@ -168,7 +174,7 @@ const CafeAdd = () => {
         phoneNumber: kakaoCafe.phone || '정보 없음',
         websiteUrl: website,
         openingHours: openingHours,
-        photoUrl: photoUrl,
+        photoUrls: photoUrls,
       });
 
 

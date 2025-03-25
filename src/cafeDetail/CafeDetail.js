@@ -19,6 +19,7 @@ const CafeDetail = () => {
   const [showLoginPopup, setShowLoginPopup] = useState(false);
   const userEmail = localStorage.getItem("email");
   const [reviews, setReviews] = useState([]);
+  const [imageList, setImageList] = useState([]);
 
   // 카페 정보 가져오기
   useEffect(() => {
@@ -29,6 +30,12 @@ const CafeDetail = () => {
 
         const data = await response.json();
         setCafe(data);
+
+        // ✅ 이미지 리스트 세팅 (Base64 형식이면 이 방식 사용)
+        if (data.imageBase64List && data.imageBase64List.length > 0) {
+          const images = data.imageBase64List.map(base64 => `data:image/jpeg;base64,${base64}`);
+          setImageList(images);
+        }
       } catch (error) {
         console.error(error);
       }
@@ -247,7 +254,7 @@ const CafeDetail = () => {
       </div>
       {/* 상단 이미지 슬라이드 */}
       <div className="cafe-detail-image">
-        <ImageCarousel />
+        <ImageCarousel images={imageList} />
       </div>
 
       {/* 카페 헤더 정보 */}
