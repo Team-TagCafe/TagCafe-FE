@@ -149,7 +149,7 @@ const CafeDetail = () => {
         const formattedDate = rawDate.replace(/\./g, '').replace(/ /g, '.').replace(/\.(?=[^\.]*$)/, ' ');
 
         return {
-          userName: review.userEmail.split("@")[0],
+          userName: review.userNickname,
           date: formattedDate,
           ...review,
         };
