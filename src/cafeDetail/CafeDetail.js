@@ -309,16 +309,16 @@ const CafeDetail = () => {
               </div>
               <div>
                 <img src="/img/phone.png" />
-                <span>0507-1318-2618</span>
+                <span>{cafe.phoneNumber}</span>
               </div>
               <div>
                 <img src="/img/link.png" />
                 <a
-                  href="http://www.instagram.com/cafe_stay_adorable"
+                  href="{cafe.websiteUrl}"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  http://www.instagram.com/cafe_stay_adorable
+                  {cafe.websiteUrl}
                 </a>
               </div>
             </div>
