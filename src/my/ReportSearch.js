@@ -42,15 +42,20 @@ const ReportSearch = () => {
 
   const handleSelect = async (cafe) => {
     const kakaoPlaceId = cafe.id;
-    const checkResponse = await fetch(`http://localhost:8080/report/cafes/kakao/${kakaoPlaceId}`);
-    if (checkResponse.status === 200) {
-      const existingCafe = await checkResponse.json();
-      if (existingCafe) {
-        setShowExistPopup(true);
-        return;
+  
+    try {
+      const checkResponse = await fetch(`http://localhost:8080/report/cafes/kakao/${kakaoPlaceId}`);
+      if (checkResponse.ok) {
+        const result = await checkResponse.json();
+        if (result.exists !== false) {
+          setShowExistPopup(true);
+          return;
+        }
       }
+    } catch (error) {
+      console.error("카페 확인 중 오류 발생:", error);
     }
-
+  
     navigate("/my/report/add", {
       state: {
         selectedCafe: cafe,
@@ -58,6 +63,8 @@ const ReportSearch = () => {
       },
     });
   };
+
+
 
   return (
     <div className="report-search-page">
