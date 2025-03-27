@@ -12,6 +12,7 @@ const My = () => {
   const [reviewedCafes, setReviewedCafes] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showDeletePopup, setShowDeletePopup] = useState(false);
+  const [showLoginPopup, setShowLoginPopup] = useState(false);
   const [filters, setFilters] = useState({});
   const [reportedCafes, setReportedCafes] = useState([]);
 
@@ -168,7 +169,13 @@ useEffect(() => {
       {activeTab === "reportedCafes" && (
         <button
           className="report-cafe-plus-button"
-          onClick={() => navigate("/my/report/add")}
+          onClick={() => {
+            if (!userEmail) {
+              setShowLoginPopup(true);
+              return;
+            }
+            navigate("/my/report/add");
+          }}
         >
           <img src="/img/plus.png" alt="추가버튼" />
         </button>
@@ -204,6 +211,13 @@ useEffect(() => {
           message="리뷰가 삭제되었습니다."
           onConfirm={() => setShowDeletePopup(false)}
           showCancel={false}
+      />
+    )}
+    {showLoginPopup && (
+      <Popup
+        message="로그인이 필요합니다."
+        onConfirm={() => setShowLoginPopup(false)}
+        showCancel={false}
       />
     )}
 
