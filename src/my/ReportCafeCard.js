@@ -71,7 +71,14 @@ const ReportCafeCard = ({ cafe }) => {
   if (outlets) tags.push(`콘센트: ${outlets}`);
   if (desk) tags.push(`책상: ${desk}`);
   if (restroom) tags.push(`화장실: ${restroom}`);
-  if (parking) tags.push(`주차: ${parking}`);
+  
+  const parkingValueMap = {
+    "가능_무료": "가능(무료)",
+    "가능_유료": "가능(유료)",
+    "가능_일부": "가능(일부)",
+    "불가능": "불가능",
+  };
+  if (parking) tags.push(`주차: ${parkingValueMap[parking] || parking}`);
 
   const formattedTags = tags.map((tag) => {
     let iconKey = Object.keys(tagIcons).find((key) => tag.includes(key)) || "기본";
