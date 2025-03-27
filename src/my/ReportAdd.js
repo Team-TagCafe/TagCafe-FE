@@ -26,6 +26,8 @@ const ReportCafeAdd = () => {
   const userEmail= localStorage.getItem("email");
   const [selectedCafe, setSelectedCafe] = useState(null);
   const [showOptionPopup, setShowOptionPopup] = useState(false);
+  const [showLoginPopup, setShowLoginPopup] = useState(false);
+  const [showNoCafePopup, setShowNoCafePopup] = useState(false);
 
   
   useEffect(() => {
@@ -84,12 +86,12 @@ const ReportCafeAdd = () => {
 
   const handleSubmit = async () => {
     if (!userEmail) {
-      alert("로그인이 필요합니다. 로그인 후 다시 시도해주세요.");
+      setShowLoginPopup(true);
       return;
     }
 
     if (!selectedCafe) {
-      alert("카페를 먼저 선택해주세요.");
+      setShowNoCafePopup(true);
       return;
     }
 
@@ -148,7 +150,6 @@ const ReportCafeAdd = () => {
       });
 
       if (response.ok) {
-        alert("제보가 완료되었습니다!");
         navigate("/my");
       } else {
         alert("제보에 실패했습니다.");
@@ -212,6 +213,21 @@ const ReportCafeAdd = () => {
         <Popup
           message="모든 옵션을 선택해주세요."
           onConfirm={() => setShowOptionPopup(false)}
+          showCancel={false}
+        />
+      )}
+      {showLoginPopup && (
+        <Popup
+          message="로그인이 필요합니다. 로그인 후 다시 시도해주세요."
+          onConfirm={() => setShowLoginPopup(false)}
+          showCancel={false}
+        />
+      )}
+
+      {showNoCafePopup && (
+        <Popup
+          message="카페를 먼저 선택해주세요."
+          onConfirm={() => setShowNoCafePopup(false)}
           showCancel={false}
         />
       )}
