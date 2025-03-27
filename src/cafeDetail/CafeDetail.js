@@ -342,7 +342,7 @@ const CafeDetail = () => {
                   className="cafe-detail-review-star"
                 />
                 <div className="cafe-detail-review-score">
-                  {cafe?.averageRating?.toFixed(2) ?? "0.00"}
+                  {cafe?.averageRating?.toFixed(1) ?? "0.0"}
                 </div>
                 <div className="cafe-detail-review-text">{reviews.length}개 리뷰</div>
               </div>
