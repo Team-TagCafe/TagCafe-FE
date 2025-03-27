@@ -35,7 +35,10 @@ const ReportSearch = () => {
           bounds.extend(loc);
           new kakao.maps.Marker({ map, position: loc });
         });
-        map.setBounds(bounds);
+        requestAnimationFrame(() => {
+          map.setBounds(bounds);
+          map.relayout();
+        });
       }
     });
   }, [searchKeyword]);
@@ -64,8 +67,6 @@ const ReportSearch = () => {
     });
   };
 
-
-
   return (
     <div className="report-search-page">
      <TopBar title="# My" />
@@ -90,8 +91,8 @@ const ReportSearch = () => {
       </header>
 
 
-      <section className="report-form">
-      <div id="map" style={{ width: "100%", height: "300px" }}></div>
+      <section className="report-form" style={{ height: "auto" }}>
+      <div id="map" style={{ width: "100%", height: "300px", minHeight: "300px" }}></div>
       <ul className="search-results-list">
         {searchResults.map((place) => (
           <li key={place.id} onClick={() => handleSelect(place)}>
