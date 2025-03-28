@@ -15,6 +15,7 @@ const ReportCafeCard = ({ cafe }) => {
     desk,
     restroom,
     parking,
+    cafeId
   } = cafe;
   
   
@@ -36,7 +37,7 @@ const ReportCafeCard = ({ cafe }) => {
         alert("제보 ID가 없습니다.");
       }
     } else if (status === "APPROVED") {
-      navigate(`/cafe/${cafe.cafe?.cafeId}`);
+      navigate(`/cafe/${cafeId}`);
     } else {
       alert("거절된 제보는 수정할 수 없습니다.");
     }
