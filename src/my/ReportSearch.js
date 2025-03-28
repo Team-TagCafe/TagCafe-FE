@@ -14,31 +14,13 @@ const ReportSearch = () => {
   const [showExistPopup, setShowExistPopup] = useState(false);
 
   useEffect(() => {
-    const mapContainer = document.getElementById("map");
-    if (!mapContainer || !searchKeyword) return;
+    if (!searchKeyword) return;
 
-    const mapOption = {
-      center: new kakao.maps.LatLng(37.5665, 126.9780),
-      level: 3,
-    };
-    const map = new kakao.maps.Map(mapContainer, mapOption);
     const ps = new kakao.maps.services.Places();
-
     ps.keywordSearch(searchKeyword, (data, status) => {
       if (status === kakao.maps.services.Status.OK) {
         const cafes = data.filter((place) => place.category_group_code === "CE7");
         setSearchResults(cafes);
-
-        const bounds = new kakao.maps.LatLngBounds();
-        cafes.forEach((place) => {
-          const loc = new kakao.maps.LatLng(place.y, place.x);
-          bounds.extend(loc);
-          new kakao.maps.Marker({ map, position: loc });
-        });
-        requestAnimationFrame(() => {
-          map.setBounds(bounds);
-          map.relayout();
-        });
       }
     });
   }, [searchKeyword]);
@@ -90,27 +72,24 @@ const ReportSearch = () => {
         </div>
       </header>
 
-
       <section className="report-form" style={{ height: "auto" }}>
-      <div id="map" style={{ width: "100%", height: "300px", minHeight: "300px" }}></div>
-      <ul className="search-results-list">
-        {searchResults.map((place) => (
-          <li key={place.id} onClick={() => handleSelect(place)}>
-            <strong>{place.place_name}</strong> <br />
-            <small>{place.road_address_name}</small>
-          </li>
-        ))}
-      </ul>
+        <ul className="search-results-list">
+          {searchResults.map((place) => (
+            <li key={place.id} onClick={() => handleSelect(place)}>
+              <strong>{place.place_name}</strong> <br />
+              <small>{place.road_address_name}</small>
+            </li>
+          ))}
+        </ul>
       </section>
-        {showExistPopup && (
+      {showExistPopup && (
         <Popup
             message="이미 등록된 카페입니다."
             onConfirm={() => setShowExistPopup(false)}
             showCancel={false}
         />
-        )}
+      )}
     </div>
-    
   );
 };
 
