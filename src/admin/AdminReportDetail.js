@@ -13,13 +13,32 @@ const AdminReportDetail = () => {
       .catch(console.error);
   }, [id]);
 
+  const fetchPhotosFromGoogle = (placeId) => {
+    return new Promise((resolve, reject) => {
+      const service = new window.google.maps.places.PlacesService(document.createElement("div"));
+      service.getDetails({ placeId }, (place, status) => {
+        if (status === window.google.maps.places.PlacesServiceStatus.OK && place.photos) {
+          const urls = place.photos.map(photo => photo.getUrl({ maxWidth: 400 }));
+          resolve(urls);
+        } else {
+          resolve([]); // 사진 없을 때 빈 배열 반환
+        }
+      });
+    });
+  };  
+
   const handleApprove = async () => {
     const confirm = window.confirm("해당 제보를 승인하시겠습니까?");
     if (!confirm) return;
 
     try {
+      const photos = await fetchPhotosFromGoogle(report.googlePlaceId);
+      const photoUrls = photos.slice(0, 5);
+  
       const res = await fetch(`http://localhost:8080/report/admin/approve/${id}`, {
         method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ photoUrls })
       });
       if (res.ok) {
         alert("승인 완료!");
