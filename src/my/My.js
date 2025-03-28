@@ -12,68 +12,97 @@ const My = () => {
   const [reviewedCafes, setReviewedCafes] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showDeletePopup, setShowDeletePopup] = useState(false);
-
-  const [reportedCafes, setReportedCafes] = useState([
-    {
-      id: 1,
-      name: "스테이 어도러블",
-      address: "경기 용인시 기흥구 죽전로43번길 15-3 (보정동)",
-      tags: ["와이파이 빠름", "콘센트 일부", "책상 적당함", "화장실 외부", "주차 가능(무료)"],
-      description: "카페가 조용하고 공부하기 좋습니다!",
-      status: "wait", 
-    },
-    {
-      id: 2,
-      name: "카페 테라스",
-      address: "서울 강남구 테헤란로 123",
-      tags: ["와이파이 느림", "콘센트 일부", "책상 적당함", "화장실 외부", "주차 가능(무료)"],
-      description: "테라스가 멋진 카페입니다.",
-      status: "accepted", 
-    },
-    {
-      id: 3,
-      name: "조용한 카페",
-      address: "서울 송파구 방이동 45-6",
-      tags: ["와이파이 없음", "콘센트 없음", "책상 좁음", "화장실 외부", "주차 불가능"],
-      description: "조용히 책 읽기 좋은 카페입니다.",
-      status: "denied", 
-    },
-  ]);
+  const [showLoginPopup, setShowLoginPopup] = useState(false);
+  const [filters, setFilters] = useState({});
+  const [reportedCafes, setReportedCafes] = useState([]);
 
   const userEmail = localStorage.getItem("email");
+  const token= localStorage.getItem("token");
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    const userEmail = localStorage.getItem("email");
-    
-    if (!userEmail) return; // userEmail이 없으면 요청하지 않음
-  
-    fetch(`http://localhost:8080/my/reviews?userEmail=${encodeURIComponent(userEmail)}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`,
-      },
-      credentials: "include"
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+useEffect(() => {
+  if (!userEmail) return;
+
+  const fetchReviewedCafes = async () => {
+    setLoading(true);
+    try {
+      let url = new URL(`http://localhost:8080/my/reviews`);
+      url.searchParams.append("userEmail", userEmail);
+
+      const tagNames = [];
+      const values = [];
+      Object.entries(filters).forEach(([tag, value]) => {
+        if (value) {
+          tagNames.push(tag);
+          values.push(value);
         }
-        return response.json();
-      })
-      .then((data) => {
-        //console.log("받은 리뷰 데이터:", data); 
-        setReviewedCafes(data || []); // 데이터가 없을 경우 빈 배열 설정
-      })
-      .catch((error) => {
-        console.error("리뷰 데이터를 불러오는 중 오류 발생:", error);
-        setReviewedCafes([]); // 오류 발생 시에도 빈 배열로 설정
       });
-  }, []);
+
+      // 필터가 있을 때만 필터링 엔드포인트 사용
+      if (tagNames.length > 0) {
+        url = new URL(`http://localhost:8080/my/reviews/filter`);
+        url.searchParams.append("userEmail", userEmail);
+
+        tagNames.forEach(tag => url.searchParams.append("tags", tag));
+        values.forEach(value => url.searchParams.append("values", value));
+      }
+
+      
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        },
+        credentials: "include",
+      });
+
+      if (!response.ok) throw new Error(`Failed to fetch reviews, status: ${response.status}`);
+
+      const data = await response.json();
+      setReviewedCafes(Array.isArray(data) ? data : []);
+    } catch (error) {
+      console.error("Error fetching reviews:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchReviewedCafes();
+  const fetchReportedCafes = async () => {
+    try {
+      const response = await fetch(`http://localhost:8080/report/user/${userEmail}`);
+      if (!response.ok) throw new Error("제보한 카페 조회 실패");
+      const data = await response.json();
+      setReportedCafes(data);
+    } catch (error) {
+      console.error("제보한 카페 조회 중 오류:", error);
+    }
+  };
+  fetchReportedCafes();
+}, [userEmail, filters]); // filters 변경 시 데이터 다시 로드
+
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
+  };
+
+
+  const handleFilterChange = (tag, value) => {
+    setFilters((prevFilters) => {
+      const tagIndex = prevFilters.tagNames.indexOf(tag);
+      let newTagNames = [...prevFilters.tagNames];
+      let newValues = [...prevFilters.values];
+
+      if (tagIndex === -1) {
+        newTagNames.push(tag);
+        newValues.push(value);
+      } else {
+        newTagNames.splice(tagIndex, 1);
+        newValues.splice(tagIndex, 1);
+      }
+
+      return { tagNames: newTagNames, values: newValues };
+    });
   };
 
   const handleDelete = async (reviewId) => {
@@ -116,7 +145,13 @@ const My = () => {
 
   return (
   <div className="my-page">
-    <TopBar title="# My" showSearch showTags onSearchPlaceChange />
+    <TopBar
+      title="# My"
+      showSearch
+      showTags
+      onSearchPlaceChange={() => {}}
+      onFilterChange={setFilters} 
+    />
 
     <div className="my-tabs">
       <button
@@ -134,7 +169,13 @@ const My = () => {
       {activeTab === "reportedCafes" && (
         <button
           className="report-cafe-plus-button"
-          onClick={() => navigate("/my/report/add")}
+          onClick={() => {
+            if (!userEmail) {
+              setShowLoginPopup(true);
+              return;
+            }
+            navigate("/my/report/add");
+          }}
         >
           <img src="/img/plus.png" alt="추가버튼" />
         </button>
@@ -158,8 +199,8 @@ const My = () => {
       ) : (
         <div className="report-cafe-list">
           <p className="cafe-count">총 {reportedCafes.length}개</p>
-          {reportedCafes.map((cafe) => (
-            <ReportCafeCard key={cafe.id} cafe={cafe} />
+          {reportedCafes.map((cafe, index) => (
+            <ReportCafeCard key={index} cafe={cafe} />
           ))}
         </div>
       )}
@@ -170,6 +211,13 @@ const My = () => {
           message="리뷰가 삭제되었습니다."
           onConfirm={() => setShowDeletePopup(false)}
           showCancel={false}
+      />
+    )}
+    {showLoginPopup && (
+      <Popup
+        message="로그인이 필요합니다."
+        onConfirm={() => setShowLoginPopup(false)}
+        showCancel={false}
       />
     )}
 

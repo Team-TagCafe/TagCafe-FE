@@ -4,14 +4,42 @@ import TagGroup from "../components/TagGroup";
 import "./ReportCafeCard.css";
 
 const ReportCafeCard = ({ cafe }) => {
-  const { cafeId, name , address, description, tags, status } = cafe;
+  const {
+    reportedCafeId,
+    cafeName,
+    address,
+    content,
+    status,
+    wifi,
+    outlets,
+    desk,
+    restroom,
+    parking,
+  } = cafe;
+  
+  
   const [isExpanded, setIsExpanded] = useState(false);
   const [showMessage, setShowMessage] = useState(false); // 개별 메시지 상태
   const [messageType, setMessageType] = useState(null);   
+  const [reviewEditText, setReviewEditText] = useState(""); // 추가된 상태
+  const [selectedOptions, setSelectedOptions] = useState([]); // 추가된 상태
+  const cafeOptions = []; // 초기화된 상태
   const navigate = useNavigate();
+  const cafeStatus = status === "APPROVED" ? "accepted" : (status === "REJECTED" ? "denied" : "wait");
 
+  
   const handleNavigateToEdit = () => {
-    navigate(`/my/report/edit/${cafe.id}`);
+    if (status === "PENDING") {
+      if (reportedCafeId) {
+        navigate(`/my/report/edit/${reportedCafeId}`);
+      } else {
+        alert("제보 ID가 없습니다.");
+      }
+    } else if (status === "APPROVED") {
+      navigate(`/cafe/${cafe.cafe?.cafeId}`);
+    } else {
+      alert("거절된 제보는 수정할 수 없습니다.");
+    }
   };
 
   const toggleDetails = () => {
@@ -20,7 +48,7 @@ const ReportCafeCard = ({ cafe }) => {
 
 
   const handleCheckClick = (type) => {
-    setMessageType(cafe.status); // 메시지 유형 설정
+    setMessageType(cafeStatus); // 메시지 유형 설정
     setShowMessage(true);
   };
 
@@ -38,11 +66,24 @@ const ReportCafeCard = ({ cafe }) => {
   };
 
 
+  const tags = [];
+  if (wifi) tags.push(`와이파이: ${wifi}`);
+  if (outlets) tags.push(`콘센트: ${outlets}`);
+  if (desk) tags.push(`책상: ${desk}`);
+  if (restroom) tags.push(`화장실: ${restroom}`);
+  
+  const parkingValueMap = {
+    "가능_무료": "가능(무료)",
+    "가능_유료": "가능(유료)",
+    "가능_일부": "가능(일부)",
+    "불가능": "불가능",
+  };
+  if (parking) tags.push(`주차: ${parkingValueMap[parking] || parking}`);
+
   const formattedTags = tags.map((tag) => {
-    // 태그 키워드 기반 아이콘 매칭
-    let iconKey = Object.keys(tagIcons).find((key) => tag.includes(key)) || "기본"; // 기본값 추가 가능
+    let iconKey = Object.keys(tagIcons).find((key) => tag.includes(key)) || "기본";
     return {
-      icon: tagIcons[iconKey], 
+      icon: tagIcons[iconKey],
       text: tag,
     };
   });
@@ -54,7 +95,6 @@ const ReportCafeCard = ({ cafe }) => {
     },
     denied: {
       text: "카페 등록이 거부되었습니다",
-      action: "자세히 보기 >",
     },
     accepted: {
       text: "카페 등록이 완료되었습니다",
@@ -67,7 +107,7 @@ const ReportCafeCard = ({ cafe }) => {
         <div className="report-cafe-header">
             <div className="report-cafe-info">
                 <div className="report-cafe-toggle">
-                    <h3 className="report-cafe-name">{cafe.name}</h3>
+                    <h3 className="report-cafe-name">{cafeName}</h3>
                     <button className="report-cafe-toggle-button" onClick={toggleDetails}>
                     <img
                     src={
@@ -79,16 +119,25 @@ const ReportCafeCard = ({ cafe }) => {
                     />
                     </button>
                 </div>
-                <p className="report-cafe-address">{cafe.address}</p>
+                <p className="report-cafe-address">{address}</p>
                 <div className="report-cafe-check" onClick={() => handleCheckClick("wait")}>
-                  <img src="/img/report-wait.png" alt="Check" />
+                  <img
+                    src={
+                      cafeStatus === "accepted"
+                        ? "/img/report-accepted.png"
+                        : cafeStatus === "denied"
+                        ? "/img/report-denied.png"
+                        : "/img/report-wait.png"
+                    }
+                    alt="Check"
+                  />
                 </div>
             </div>
         </div>
 
         {isExpanded && (
         <div className="report-cafe-details">
-            <p className="report-cafe-description">{cafe.description}</p>
+            <p className="report-cafe-description">{content}</p>
             <TagGroup tags={formattedTags} />
         </div>
         )}

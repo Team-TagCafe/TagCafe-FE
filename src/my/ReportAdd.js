@@ -1,21 +1,68 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+/*global kakao*/
+import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { TopBar, BottomBar, LongButton } from "../components";
 import CafeInformation from "../components/CafeInformation";
+import Popup from "../components/Popup";
 import "./ReportAdd.css"
+ 
+const mapParkingOption = (option) => {
+  const mapping = {
+      "가능(무료)": "가능_무료",
+      "가능(유료)": "가능_유료",
+      "불가능": "불가능",
+      "가능(일부)": "가능_일부"
+  };
+  return mapping[option] || "불가능"; // 기본값 설정
+};
 
 const ReportCafeAdd = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [reportText, setReportText] = useState("");
   const [searchValue, setSearchValue] = useState("");
+  const [searchKeyword, setSearchKeyword] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const userEmail= localStorage.getItem("email");
+  const [selectedCafe, setSelectedCafe] = useState(null);
+  const [showOptionPopup, setShowOptionPopup] = useState(false);
+  const [showLoginPopup, setShowLoginPopup] = useState(false);
+  const [showNoCafePopup, setShowNoCafePopup] = useState(false);
 
+  
+  useEffect(() => {
+    if (location.state) {
+      const { selectedCafe, searchKeyword } = location.state;
+      if (selectedCafe) setSelectedCafe(selectedCafe);
+      if (searchKeyword) setSearchKeyword(searchKeyword);
+    }
+  }, [location]);
 
-  const handleSearchChange = (event) => {
-    setSearchValue(event.target.value); // 검색 값 업데이트
+  const handleCafeSearch = () => {
+    if (!searchKeyword.trim()) {
+      alert("검색어를 입력해주세요.");
+      return;
+    }
+
+    const places = new kakao.maps.services.Places();
+    places.keywordSearch(searchKeyword, (data, status) => {
+      if (status === kakao.maps.services.Status.OK) {
+        const cafeResults = data.filter((place) => place.category_group_code === "CE7");
+        setSearchResults(cafeResults);
+      } else {
+        alert("검색 결과가 없습니다.");
+      }
+    });
   };
+  const handleSearchClick = () => {
 
-  const handleSearchFocus = () => {
-    navigate("/report/search"); //report 카페검색 임시 페이지
+    navigate("/reportsearch", {
+      state: {
+        searchKeyword,
+        selectedCafe,
+        from: "reportAdd",
+      },
+    });
   };
 
   const handleReportTextChange = (event) => {
@@ -23,11 +70,11 @@ const ReportCafeAdd = () => {
   };
 
   const [cafeOptions, setCafeOptions] = useState({
-    와이파이: "",
-    콘센트: "",
-    책상: "",
-    화장실: "",
-    주차: "",
+    wifi: "",
+    outlets: "",
+    desk: "",
+    restroom: "",
+    parking: "",
   });
 
   const handleCafeOptionChange = (category, option) => {
@@ -37,9 +84,80 @@ const ReportCafeAdd = () => {
     }));
   };
 
-  const handleSubmit = () => {
-    alert("제보가 완료되었습니다!");
-    navigate("/my");
+  const handleSubmit = async () => {
+    if (!userEmail) {
+      setShowLoginPopup(true);
+      return;
+    }
+
+    if (!selectedCafe) {
+      setShowNoCafePopup(true);
+      return;
+    }
+
+    const isOptionMissing = Object.values(cafeOptions).some(option => option === "");
+    if (isOptionMissing) {
+      setShowOptionPopup(true);
+      return;
+    }
+
+    const {
+      id: kakaoPlaceId,
+      place_name,
+      road_address_name,
+      x,
+      y,
+      phone,
+      place_url,
+    } = selectedCafe;
+
+
+    const reportData = {
+      userEmail,
+      kakaoPlaceId,
+      cafeName: place_name,
+      address: road_address_name,
+      latitude: y,
+      longitude: x,
+      phoneNumber: phone || "",
+      websiteUrl: place_url || "",
+      content: reportText,
+      wifi: cafeOptions.wifi,
+      outlets: cafeOptions.outlets,
+      desk: cafeOptions.desk,
+      restroom: cafeOptions.restroom,
+      parking: mapParkingOption(cafeOptions.parking),
+    };
+
+    console.log("선택된 옵션:", reportData);
+
+    try {
+      const checkResponse = await fetch(`http://localhost:8080/report/cafes/kakao/${kakaoPlaceId}`);
+      if (checkResponse.ok) {
+        const result = await checkResponse.json();
+        if (result.exists !== false) {
+          alert("이미 등록된 카페입니다.");
+          return;
+        }
+      }
+      
+      const response = await fetch("http://localhost:8080/report", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(reportData),
+      });
+
+      if (response.ok) {
+        navigate("/my");
+      } else {
+        alert("제보에 실패했습니다.");
+      }
+    } catch (error) {
+      console.error("제보 중 오류 발생:", error);
+      alert("서버 오류로 제보에 실패했습니다.");
+    }
   };
 
   return (
@@ -57,13 +175,13 @@ const ReportCafeAdd = () => {
         <div className="report-add-search">
           <input
             type="text"
-            value={searchValue}
-            onChange={handleSearchChange}
-            onFocus={handleSearchFocus}
             className="report-search-input"
-            placeholder="지역, 카페 이름으로 검색"
+            placeholder="카페를 검색해보세요 (지도에서 선택)"
+            value={searchKeyword}
+            readOnly
+            onClick={handleSearchClick}
           />
-          <button className="report-search-button">
+          <button className="report-search-button" onClick={handleSearchClick}>
             <img src="/img/search.png" alt="Search" />
           </button>
         </div>
@@ -91,6 +209,28 @@ const ReportCafeAdd = () => {
         </div>
       </section>
 
+      {showOptionPopup && (
+        <Popup
+          message="모든 옵션을 선택해주세요."
+          onConfirm={() => setShowOptionPopup(false)}
+          showCancel={false}
+        />
+      )}
+      {showLoginPopup && (
+        <Popup
+          message="로그인이 필요합니다. 로그인 후 다시 시도해주세요."
+          onConfirm={() => setShowLoginPopup(false)}
+          showCancel={false}
+        />
+      )}
+
+      {showNoCafePopup && (
+        <Popup
+          message="카페를 먼저 선택해주세요."
+          onConfirm={() => setShowNoCafePopup(false)}
+          showCancel={false}
+        />
+      )}
       <BottomBar />
     </div>
   );
