@@ -1,4 +1,4 @@
-/*global kakao*/
+/*global kakao, google*/
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { TopBar, BottomBar, LongButton } from "../components";
@@ -28,8 +28,10 @@ const ReportCafeAdd = () => {
   const [showOptionPopup, setShowOptionPopup] = useState(false);
   const [showLoginPopup, setShowLoginPopup] = useState(false);
   const [showNoCafePopup, setShowNoCafePopup] = useState(false);
+  const [rating, setRating] = useState(3); 
 
-  
+  const handleRatingClick = (value) => setRating(value);
+
   useEffect(() => {
     if (location.state) {
       const { selectedCafe, searchKeyword } = location.state;
@@ -84,6 +86,32 @@ const ReportCafeAdd = () => {
     }));
   };
 
+  const getGooglePlaceDetails = (placeName, lat, lng) => {
+    return new Promise((resolve, reject) => {
+      const service = new window.google.maps.places.PlacesService(document.createElement("div"));
+      const request = {
+        location: new google.maps.LatLng(lat, lng),
+        radius: 100,
+        query: placeName,
+      };
+  
+      service.textSearch(request, (results, status) => {
+        if (status === google.maps.places.PlacesServiceStatus.OK && results.length > 0) {
+          const placeId = results[0].place_id;
+          service.getDetails({ placeId }, (details, detailStatus) => {
+            if (detailStatus === google.maps.places.PlacesServiceStatus.OK) {
+              resolve(details);
+            } else {
+              reject("장소 상세 정보 조회 실패");
+            }
+          });
+        } else {
+          reject("장소 검색 실패");
+        }
+      });
+    });
+  };
+  
   const handleSubmit = async () => {
     if (!userEmail) {
       setShowLoginPopup(true);
@@ -95,7 +123,7 @@ const ReportCafeAdd = () => {
       return;
     }
 
-    const isOptionMissing = Object.values(cafeOptions).some(option => option === "");
+    const isOptionMissing = Object.values(cafeOptions).some((option) => option === "");
     if (isOptionMissing) {
       setShowOptionPopup(true);
       return;
@@ -108,31 +136,44 @@ const ReportCafeAdd = () => {
       x,
       y,
       phone,
-      place_url,
     } = selectedCafe;
-
-
-    const reportData = {
-      userEmail,
-      kakaoPlaceId,
-      cafeName: place_name,
-      address: road_address_name,
-      latitude: y,
-      longitude: x,
-      phoneNumber: phone || "",
-      websiteUrl: place_url || "",
-      content: reportText,
-      wifi: cafeOptions.wifi,
-      outlets: cafeOptions.outlets,
-      desk: cafeOptions.desk,
-      restroom: cafeOptions.restroom,
-      parking: mapParkingOption(cafeOptions.parking),
-    };
-
-    console.log("선택된 옵션:", reportData);
-
+  
     try {
-      const checkResponse = await fetch(`http://localhost:8080/report/cafes/kakao/${kakaoPlaceId}`);
+      // 구글에서 추가 정보 요청
+      const googleDetails = await getGooglePlaceDetails(place_name, parseFloat(y), parseFloat(x));
+  
+      const website = googleDetails.website || "정보 없음";
+      const openingHours =
+        googleDetails.opening_hours?.weekday_text?.length > 0
+          ? googleDetails.opening_hours.weekday_text.join(", ")
+          : "정보 없음";
+  
+      const reportData = {
+        userEmail,
+        kakaoPlaceId,
+        googlePlaceId: googleDetails.place_id,
+        cafeName: place_name,
+        address: road_address_name,
+        latitude: y,
+        longitude: x,
+        phoneNumber: phone || "",
+        websiteUrl: website,
+        openingHours: openingHours,
+        content: reportText,
+        wifi: cafeOptions.wifi,
+        outlets: cafeOptions.outlets,
+        desk: cafeOptions.desk,
+        restroom: cafeOptions.restroom,
+        parking: mapParkingOption(cafeOptions.parking),
+        rating,
+      };
+  
+      console.log("최종 reportData:", reportData);
+  
+      // 중복 확인
+      const checkResponse = await fetch(
+        `http://localhost:8080/report/cafes/kakao/${kakaoPlaceId}`
+      );
       if (checkResponse.ok) {
         const result = await checkResponse.json();
         if (result.exists !== false) {
@@ -188,6 +229,20 @@ const ReportCafeAdd = () => {
       </header>
 
       <section className="report-form">
+        <div className="report-cafe-rating-container">
+          <h4>평점</h4>
+          <div className="report-cafe-rating">
+            {[1, 2, 3, 4, 5].map((value) => (
+              <span
+                key={value}
+                className={value <= rating ? "star selected" : "star"}
+                onClick={() => handleRatingClick(value)}
+              >
+                ★
+              </span>
+            ))}
+          </div>
+        </div>
         <CafeInformation onChange={handleCafeOptionChange} />
 
         <div className="report-text-form">

@@ -63,39 +63,34 @@ const Home = () => {
 
   /* ---------- 초기 Kakao 지도 설정 ---------- */
   useEffect(() => {
+    const loadKakaoMap = () => {
+      if (window.kakao && window.kakao.maps) {
+        // 위치 기반 초기화
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            initializeMap(position.coords.latitude, position.coords.longitude);
+          },
+          () => {
+            initializeMap(37.498095, 127.027610); // 강남역
+          }
+        );
+      } else {
+        // kakao가 아직 준비 안됐으면 재시도
+        setTimeout(loadKakaoMap, 300);
+      }
+    };
+  
     const resizeListener = () => {
       setInnerWidth(window.innerWidth);
       setInnerHeight(window.innerHeight);
     };
     window.addEventListener("resize", resizeListener);
-
-    if (!window.kakao || !window.kakao.maps) {
-      console.error("❌ Kakao 지도 API가 로드되지 않았습니다.");
-      return;
-    }
-
-    // 사용자의 위치 권한 요청
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          // 사용자가 위치 권한 허용한 경우
-          const userLat = position.coords.latitude;
-          const userLng = position.coords.longitude;
-
-          initializeMap(userLat, userLng); // 사용자 위치로 지도 초기화
-        },
-        (error) => {
-          console.warn("❌ 위치 권한 거부됨, 기본 위치 사용 (강남역)");
-          initializeMap(37.498095, 127.027610); // 기본 위치 강남역으로 초기화
-        }
-      );
-    } else {
-      console.error("이 브라우저에서는 Geolocation을 지원하지 않습니다.");
-      initializeMap(37.498095, 127.027610); // 기본 위치 강남역으로 초기화
-    }
-
+  
+    loadKakaoMap();  // 💡 이거 한 줄로 처리
+  
     return () => window.removeEventListener("resize", resizeListener);
   }, []);
+  
 
 
   /* ---------- 지도 초기화 함수 ---------- */
@@ -367,21 +362,42 @@ const Home = () => {
   };
 
   /* ---------- 현재 위치로 지도 중심 이동 ---------- */
-  const moveToUserLocation = () => {
+  const moveToUserLocation = () => {  
     if (navigator.geolocation && map) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const userLat = position.coords.latitude;
-          const userLng = position.coords.longitude;
-          const userLocation = new kakao.maps.LatLng(userLat, userLng);
-          map.setCenter(userLocation);
-        },
-        (error) => {
-          console.error('사용자 위치를 가져오는 중 오류 발생:', error.message);
-        }
-      );
+      try {
+        let called = false; // 콜백 호출 여부 추적
+  
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            called = true;
+  
+            const userLat = position.coords.latitude;
+            const userLng = position.coords.longitude;
+            const userLocation = new kakao.maps.LatLng(userLat, userLng);
+            map.setCenter(userLocation);
+            },
+          (error) => {
+            called = true;
+            console.error("[❌ 위치 오류 발생]", error);
+            alert(`위치 정보를 가져오지 못했습니다: ${error.message}`);
+          },
+          {
+            enableHighAccuracy: true,
+            timeout: 5000,
+            maximumAge: 0,
+          }
+        );
+  
+        setTimeout(() => {
+          if (!called) {
+            console.warn("🚨 getCurrentPosition 콜백이 호출되지 않았습니다.");
+          }
+        }, 6000);
+      } catch (e) {
+        console.error("[❌ geolocation try-catch 예외]", e);
+      }
     } else {
-      console.error('이 브라우저에서는 geolocation을 지원하지 않습니다.');
+      console.error("[❌ geolocation 미지원 or map 없음]");
     }
   };
 

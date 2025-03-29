@@ -11,7 +11,7 @@
   .tag-group-row {
     display: flex;
     flex-direction: row;
-    gap: 8px; /* 태그 간 간격 */
+    gap: 6px; /* 태그 간 간격 */
   }
   
   .tag-group-item {

@@ -18,6 +18,8 @@ const CafeDetail = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [showLoginPopup, setShowLoginPopup] = useState(false);
   const userEmail = localStorage.getItem("email");
+  const [reviews, setReviews] = useState([]);
+  const [imageList, setImageList] = useState([]);
 
   // 카페 정보 가져오기
   useEffect(() => {
@@ -28,6 +30,12 @@ const CafeDetail = () => {
 
         const data = await response.json();
         setCafe(data);
+
+        // ✅ 이미지 리스트 세팅 (Base64 형식이면 이 방식 사용)
+        if (data.imageBase64List && data.imageBase64List.length > 0) {
+          const images = data.imageBase64List.map(base64 => `data:image/jpeg;base64,${base64}`);
+          setImageList(images);
+        }
       } catch (error) {
         console.error(error);
       }
@@ -126,39 +134,53 @@ const CafeDetail = () => {
     navigate(`/cafe/${cafeId}/review-write`, { state: { cafe } });
   };
 
-  const [reviews, setReviews] = useState([
-    {
-      userName: "커피스터디",
-      date: "12.20 금",
-      rating: 4,
-      content: "카페가 조용하고 공부하기 좋습니다!",
-      tags: ["와이파이 빠름", "콘센트 일부", "책상 적당함", "화장실 외부", "주차 가능(무료)"],
-    },
-    {
-      userName: "음료러버",
-      date: "12.22 일",
-      rating: 5,
-      content: "음료가 정말 맛있고 분위기가 너무 좋아요!",
-      tags: ["와이파이 빠름", "콘센트 일부", "책상 적당함", "화장실 외부", "주차 가능(무료)"],
-    },
-    {
-      userName: "공부러버",
-      date: "12.25 수",
-      rating: 4.5,
-      content: "조용하고 공부하기 좋았습니다. 추천합니다!",
-      tags: ["와이파이 빠름", "콘센트 일부", "책상 적당함", "화장실 외부", "주차 가능(무료)"],
-    },
-  ]);
+  // 리뷰 불러오기
+  const fetchReviews = async () => {
+    try {
+      const response = await fetch(`http://localhost:8080/reviews/${cafeId}`);
+      if (!response.ok) {
+        throw new Error("리뷰 데이터를 불러오지 못했습니다.");
+      }
+
+      const data = await response.json();
+
+      const processed = data.map((review) => {
+        const [year, month, day, hour, minute, second] = review.createdAt;
+        const dateObj = new Date(year, month - 1, day, hour, minute, second);
+        const rawDate = dateObj.toLocaleDateString("ko-KR", {
+          month: "numeric",
+          day: "numeric",
+          weekday: "short",
+        }); // 예: "3. 23. 토"
+
+        const formattedDate = rawDate.replace(/\./g, '').replace(/ /g, '.').replace(/\.(?=[^\.]*$)/, ' ');
+
+        return {
+          userName: review.userNickname,
+          date: formattedDate,
+          ...review,
+        };
+      });
+
+      setReviews(processed);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const averageRating =
     reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length;
+
+  useEffect(() => {
+    fetchReviews();
+  }, [activeTab, cafeId]);
 
   // 마커 이미지 설정
   const imageSrc = '/img/map-cafe.png';
   const imageSize = new kakao.maps.Size(17, 17);
   const imageOption = { offset: new kakao.maps.Point(5, 5) };
   const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
-  
+
   useEffect(() => {
     if (activeTab !== "cafe-detail-info" || !cafe) {
       setMap(null);
@@ -220,11 +242,11 @@ const CafeDetail = () => {
   return (
     <div className="cafe-detail-page">
       {showLoginPopup && (
-          <Popup
-              message="로그인이 필요합니다"
-              onConfirm={() => setShowLoginPopup(false)}
-              showCancel={false}
-          />
+        <Popup
+          message="로그인이 필요합니다"
+          onConfirm={() => setShowLoginPopup(false)}
+          showCancel={false}
+        />
       )}
       {/* 뒤로가기 버튼 */}
       <div className="cafe-detail-back-button" onClick={handleBackClick}>
@@ -232,7 +254,7 @@ const CafeDetail = () => {
       </div>
       {/* 상단 이미지 슬라이드 */}
       <div className="cafe-detail-image">
-        <ImageCarousel />
+        <ImageCarousel images={imageList} />
       </div>
 
       {/* 카페 헤더 정보 */}
@@ -294,18 +316,23 @@ const CafeDetail = () => {
               </div>
               <div>
                 <img src="/img/phone.png" />
-                <span>0507-1318-2618</span>
+                <span>{cafe.phoneNumber}</span>
               </div>
               <div>
                 <img src="/img/link.png" />
-                <a
-                  href="http://www.instagram.com/cafe_stay_adorable"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  http://www.instagram.com/cafe_stay_adorable
-                </a>
+                {cafe.websiteUrl && cafe.websiteUrl !== "정보 없음" ? (
+                  <a
+                    href={cafe.websiteUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {cafe.websiteUrl}
+                  </a>
+                ) : (
+                  <span>정보 없음</span>
+                )}
               </div>
+
             </div>
           </div>
         )}
@@ -319,7 +346,9 @@ const CafeDetail = () => {
                   alt="Star Icon"
                   className="cafe-detail-review-star"
                 />
-                <div className="cafe-detail-review-score">{averageRating.toFixed(2)}</div>
+                <div className="cafe-detail-review-score">
+                  {cafe?.averageRating?.toFixed(1) ?? "0.0"}
+                </div>
                 <div className="cafe-detail-review-text">{reviews.length}개 리뷰</div>
               </div>
               <button className="cafe-detail-review-write-btn"
@@ -343,11 +372,6 @@ const CafeDetail = () => {
           />
         )}
       </div>
-
-
-
-
-      {/* 하단 바 */}
       <BottomBar />
     </div>
   );

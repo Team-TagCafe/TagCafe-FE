@@ -1,40 +1,40 @@
 import React from "react";
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import "./ImageCarousel.css"
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/pagination";
+import { Pagination } from "swiper/modules";
+import "./ImageCarousel.css";
 
-const images = [
-  "/img/cafe-img.png",
-  "/img/cafe-img.png",
-  "/img/cafe-img.png",
-];
-
-const ImageCarousel = () => {
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    customPaging: (i) => (
-      <div className="custom-dot"></div>
-    ),
-    appendDots: (dots) => (
-      <div style={{ bottom: "0px" }}>
-        <ul className="image-carousel-dots"> {dots} </ul>
-      </div>
-    ),
-  };
+const ImageCarousel = ({ images }) => {
+  if (!images || images.length === 0) {
+    return (
+      <img
+        src="/img/default-cafe.jpg"
+        alt="No Images"
+        className="carousel-image"
+      />
+    );
+  }
 
   return (
-    <Slider {...settings}>
+    <Swiper
+      loop={true}
+      pagination={{ clickable: true }}
+      modules={[Pagination]}
+      spaceBetween={0}
+      slidesPerView={1}
+      className="image-carousel-swiper"
+    >
       {images.map((image, index) => (
-        <div key={index}>
-          <img src={image} alt={`Slide ${index}`} className="carousel-image" />
-        </div>
+        <SwiperSlide key={index}>
+          <img
+            src={image}
+            alt={`Slide ${index}`}
+            className="carousel-image"
+          />
+        </SwiperSlide>
       ))}
-    </Slider>
+    </Swiper>
   );
 };
 

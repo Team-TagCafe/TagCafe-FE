@@ -18,6 +18,7 @@ const ReportEdit = () => {
   const [cafeOptions, setCafeOptions] = useState({});
   const [selectedOptions, setSelectedOptions] = useState({});
   const [reportEditText, setReportEditText] = useState("");
+  const [rating, setRating] = useState(0);
   const [loading, setLoading] = useState(false);
   const [showEditPopup, setShowEditPopup] = useState(false);
   const [error, setError] = useState(null);
@@ -44,6 +45,7 @@ const ReportEdit = () => {
         setCafeOptions(options);
         setSelectedOptions(options);
         setReportEditText(data.content || "");
+        setRating(data.rating || 0);
       } catch (error) {
         setError(error.message);
       } finally {
@@ -61,6 +63,7 @@ const ReportEdit = () => {
     
       const requestBody = {
         content: reportEditText,
+        rating,
         wifi: cafeOptions.wifi,
         outlets: cafeOptions.outlets,
         desk: cafeOptions.desk,
@@ -140,6 +143,20 @@ const ReportEdit = () => {
       )}
 
       <section className="my-form">
+        <div className="my-rating-container">
+          <h4>평점</h4>
+          <div className="my-rating">
+            {[1, 2, 3, 4, 5].map((value) => (
+              <span
+                key={value}
+                className={value <= rating ? "star selected" : "star"}
+                onClick={() => setRating(value)}
+              >
+                ★
+              </span>
+            ))}
+          </div>
+        </div>
         <CafeInformation onChange={handleCafeOptionChange} selectedOptions={selectedOptions} />
 
         <div className="my-edit-form">
