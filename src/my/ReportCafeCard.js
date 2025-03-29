@@ -15,7 +15,8 @@ const ReportCafeCard = ({ cafe }) => {
     desk,
     restroom,
     parking,
-    cafeId
+    cafeId,
+    rating = 0,
   } = cafe;
   
   
@@ -108,7 +109,9 @@ const ReportCafeCard = ({ cafe }) => {
         <div className="report-cafe-header">
             <div className="report-cafe-info">
                 <div className="report-cafe-toggle">
-                    <h3 className="report-cafe-name">{cafeName}</h3>
+                    <h3 className="report-cafe-name">
+                      {cafeName}                       
+                    </h3>
                     <button className="report-cafe-toggle-button" onClick={toggleDetails}>
                     <img
                     src={

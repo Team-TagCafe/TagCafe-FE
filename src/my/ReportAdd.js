@@ -28,8 +28,10 @@ const ReportCafeAdd = () => {
   const [showOptionPopup, setShowOptionPopup] = useState(false);
   const [showLoginPopup, setShowLoginPopup] = useState(false);
   const [showNoCafePopup, setShowNoCafePopup] = useState(false);
+  const [rating, setRating] = useState(3); 
 
-  
+  const handleRatingClick = (value) => setRating(value);
+
   useEffect(() => {
     if (location.state) {
       const { selectedCafe, searchKeyword } = location.state;
@@ -163,6 +165,7 @@ const ReportCafeAdd = () => {
         desk: cafeOptions.desk,
         restroom: cafeOptions.restroom,
         parking: mapParkingOption(cafeOptions.parking),
+        rating,
       };
   
       console.log("최종 reportData:", reportData);
@@ -226,6 +229,20 @@ const ReportCafeAdd = () => {
       </header>
 
       <section className="report-form">
+        <div className="report-cafe-rating-container">
+          <h4>평점</h4>
+          <div className="report-cafe-rating">
+            {[1, 2, 3, 4, 5].map((value) => (
+              <span
+                key={value}
+                className={value <= rating ? "star selected" : "star"}
+                onClick={() => handleRatingClick(value)}
+              >
+                ★
+              </span>
+            ))}
+          </div>
+        </div>
         <CafeInformation onChange={handleCafeOptionChange} />
 
         <div className="report-text-form">
