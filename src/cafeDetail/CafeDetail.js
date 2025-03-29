@@ -320,14 +320,19 @@ const CafeDetail = () => {
               </div>
               <div>
                 <img src="/img/link.png" />
-                <a
-                  href={cafe.websiteUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {cafe.websiteUrl}
-                </a>
+                {cafe.websiteUrl && cafe.websiteUrl !== "정보 없음" ? (
+                  <a
+                    href={cafe.websiteUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {cafe.websiteUrl}
+                  </a>
+                ) : (
+                  <span>정보 없음</span>
+                )}
               </div>
+
             </div>
           </div>
         )}
