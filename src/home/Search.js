@@ -19,7 +19,7 @@ const Search = () => {
 
         const fetchSearchResults = async () => {
             try {
-                const response = await fetch(`http://localhost:8080/cafes/search?query=${inputValue}`);
+                const response = await fetch(`/api/cafes/search?query=${inputValue}`);
                 const data = await response.json();
                 setResults(data);
             } catch (error) {
@@ -36,7 +36,7 @@ const Search = () => {
     };
 
     const handleResultClick = (place) => {
-        navigate('/home', { state: {place }});
+        navigate('/home', { state: { place } });
     };
 
     const handleSearchClick = () => {

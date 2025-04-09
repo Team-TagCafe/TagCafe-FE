@@ -5,13 +5,13 @@ import { TopBar, BottomBar, LongButton } from "../components";
 import CafeInformation from "../components/CafeInformation";
 import Popup from "../components/Popup";
 import "./ReportAdd.css"
- 
+
 const mapParkingOption = (option) => {
   const mapping = {
-      "가능(무료)": "가능_무료",
-      "가능(유료)": "가능_유료",
-      "불가능": "불가능",
-      "가능(일부)": "가능_일부"
+    "가능(무료)": "가능_무료",
+    "가능(유료)": "가능_유료",
+    "불가능": "불가능",
+    "가능(일부)": "가능_일부"
   };
   return mapping[option] || "불가능"; // 기본값 설정
 };
@@ -23,12 +23,12 @@ const ReportCafeAdd = () => {
   const [searchValue, setSearchValue] = useState("");
   const [searchKeyword, setSearchKeyword] = useState("");
   const [searchResults, setSearchResults] = useState([]);
-  const userEmail= localStorage.getItem("email");
+  const userEmail = localStorage.getItem("email");
   const [selectedCafe, setSelectedCafe] = useState(null);
   const [showOptionPopup, setShowOptionPopup] = useState(false);
   const [showLoginPopup, setShowLoginPopup] = useState(false);
   const [showNoCafePopup, setShowNoCafePopup] = useState(false);
-  const [rating, setRating] = useState(3); 
+  const [rating, setRating] = useState(3);
 
   const handleRatingClick = (value) => setRating(value);
 
@@ -94,7 +94,7 @@ const ReportCafeAdd = () => {
         radius: 100,
         query: placeName,
       };
-  
+
       service.textSearch(request, (results, status) => {
         if (status === google.maps.places.PlacesServiceStatus.OK && results.length > 0) {
           const placeId = results[0].place_id;
@@ -111,7 +111,7 @@ const ReportCafeAdd = () => {
       });
     });
   };
-  
+
   const handleSubmit = async () => {
     if (!userEmail) {
       setShowLoginPopup(true);
@@ -137,17 +137,17 @@ const ReportCafeAdd = () => {
       y,
       phone,
     } = selectedCafe;
-  
+
     try {
       // 구글에서 추가 정보 요청
       const googleDetails = await getGooglePlaceDetails(place_name, parseFloat(y), parseFloat(x));
-  
+
       const website = googleDetails.website || "정보 없음";
       const openingHours =
         googleDetails.opening_hours?.weekday_text?.length > 0
           ? googleDetails.opening_hours.weekday_text.join(", ")
           : "정보 없음";
-  
+
       const reportData = {
         userEmail,
         kakaoPlaceId,
@@ -167,12 +167,12 @@ const ReportCafeAdd = () => {
         parking: mapParkingOption(cafeOptions.parking),
         rating,
       };
-  
+
       console.log("최종 reportData:", reportData);
-  
+
       // 중복 확인
       const checkResponse = await fetch(
-        `http://localhost:8080/report/cafes/kakao/${kakaoPlaceId}`
+        `/api/report/cafes/kakao/${kakaoPlaceId}`
       );
       if (checkResponse.ok) {
         const result = await checkResponse.json();
@@ -181,8 +181,8 @@ const ReportCafeAdd = () => {
           return;
         }
       }
-      
-      const response = await fetch("http://localhost:8080/report", {
+
+      const response = await fetch("/api/report", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -206,11 +206,11 @@ const ReportCafeAdd = () => {
       <TopBar title="# My" />
 
       <header className="report-cafe-add-header">
-        <div className="report-header-container"> 
-        <button className="back-button" onClick={() => navigate("/my")}>
-          <img src="/img/back-button.png" alt="뒤로가기" />
-        </button>
-        <h2>카페 제보</h2>
+        <div className="report-header-container">
+          <button className="back-button" onClick={() => navigate("/my")}>
+            <img src="/img/back-button.png" alt="뒤로가기" />
+          </button>
+          <h2>카페 제보</h2>
         </div>
 
         <div className="report-add-search">

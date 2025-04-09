@@ -25,7 +25,7 @@ const CafeDetail = () => {
   useEffect(() => {
     const fetchCafeData = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/cafes/${cafeId}`);
+        const response = await fetch(`/api/cafes/${cafeId}`);
         if (!response.ok) throw new Error("Failed to fetch cafe data");
 
         const data = await response.json();
@@ -52,7 +52,7 @@ const CafeDetail = () => {
         }
 
         // userId 가져오기
-        const response = await fetch(`http://localhost:8080/users/id?email=${storedEmail}`, {
+        const response = await fetch(`/api/users/id?email=${storedEmail}`, {
           credentials: "include",
         });
 
@@ -74,7 +74,7 @@ const CafeDetail = () => {
 
     const checkSavedCafe = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/saved-cafes?userId=${userId}`, {
+        const response = await fetch(`/api/saved-cafes?userId=${userId}`, {
           credentials: "include",
         });
 
@@ -103,7 +103,7 @@ const CafeDetail = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:8080/saved-cafes/${cafeId}?userId=${userId}`, {
+      const response = await fetch(`/api/saved-cafes/${cafeId}?userId=${userId}`, {
         method: "PATCH",
         mode: "cors",
         credentials: "include",
@@ -137,7 +137,7 @@ const CafeDetail = () => {
   // 리뷰 불러오기
   const fetchReviews = async () => {
     try {
-      const response = await fetch(`http://localhost:8080/reviews/${cafeId}`);
+      const response = await fetch(`/api/reviews/${cafeId}`);
       if (!response.ok) {
         throw new Error("리뷰 데이터를 불러오지 못했습니다.");
       }

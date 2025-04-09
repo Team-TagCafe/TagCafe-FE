@@ -27,9 +27,9 @@ const ReportSearch = () => {
 
   const handleSelect = async (cafe) => {
     const kakaoPlaceId = cafe.id;
-  
+
     try {
-      const checkResponse = await fetch(`http://localhost:8080/report/cafes/kakao/${kakaoPlaceId}`);
+      const checkResponse = await fetch(`/api/report/cafes/kakao/${kakaoPlaceId}`);
       if (checkResponse.ok) {
         const result = await checkResponse.json();
         if (result.exists !== false) {
@@ -40,7 +40,7 @@ const ReportSearch = () => {
     } catch (error) {
       console.error("카페 확인 중 오류 발생:", error);
     }
-  
+
     navigate("/my/report/add", {
       state: {
         selectedCafe: cafe,
@@ -51,14 +51,14 @@ const ReportSearch = () => {
 
   return (
     <div className="report-search-page">
-     <TopBar title="# My" />
+      <TopBar title="# My" />
 
-     <header className="report-cafe-add-header">
-        <div className="report-header-container"> 
-        <button className="back-button" onClick={() => navigate("/my/report/add")}>
-          <img src="/img/back-button.png" alt="뒤로가기" />
-        </button>
-        <h2>카페 검색</h2>
+      <header className="report-cafe-add-header">
+        <div className="report-header-container">
+          <button className="back-button" onClick={() => navigate("/my/report/add")}>
+            <img src="/img/back-button.png" alt="뒤로가기" />
+          </button>
+          <h2>카페 검색</h2>
         </div>
 
         <div className="report-add-search">
@@ -68,7 +68,7 @@ const ReportSearch = () => {
             placeholder="카페명을 검색하세요"
             value={searchKeyword}
             onChange={(e) => setSearchKeyword(e.target.value)}
-            />
+          />
         </div>
       </header>
 
@@ -84,9 +84,9 @@ const ReportSearch = () => {
       </section>
       {showExistPopup && (
         <Popup
-            message="이미 등록된 카페입니다."
-            onConfirm={() => setShowExistPopup(false)}
-            showCancel={false}
+          message="이미 등록된 카페입니다."
+          onConfirm={() => setShowExistPopup(false)}
+          showCancel={false}
         />
       )}
     </div>

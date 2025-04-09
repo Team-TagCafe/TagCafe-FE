@@ -165,7 +165,7 @@ const CafeAdd = () => {
       const website = googleDetails.website || '정보 없음';
       console.log("📦 구글 상세 정보:", googleDetails);
 
-      await axios.post('http://localhost:8080/cafes', {
+      await axios.post('/api/cafes', {
         kakaoPlaceId: kakaoCafe.id,
         cafeName: kakaoCafe.place_name,
         latitude: parseFloat(kakaoCafe.y),

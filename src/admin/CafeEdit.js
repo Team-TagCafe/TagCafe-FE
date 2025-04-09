@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:8080/cafes";
+const API_BASE_URL = "/api/cafes";
 
 const CafeEdit = () => {
   const [cafes, setCafes] = useState([]);

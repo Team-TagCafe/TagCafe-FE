@@ -85,7 +85,7 @@ function CafeInformationDetail({ cafeId }) {
     // 태그 정보 가져오기
     const fetchTags = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/cafes/${cafeId}/tags`);
+        const response = await fetch(`/api/cafes/${cafeId}/tags`);
         if (!response.ok) throw new Error("태그 데이터를 불러오는 중 오류 발생");
 
         const data = await response.json();
@@ -98,7 +98,7 @@ function CafeInformationDetail({ cafeId }) {
     // 카페 상세 정보 가져오기
     const fetchCafeInfo = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/cafes/${cafeId}`);
+        const response = await fetch(`/api/cafes/${cafeId}`);
         if (!response.ok) throw new Error("카페 정보를 불러오는 중 오류 발생");
 
         const data = await response.json();
