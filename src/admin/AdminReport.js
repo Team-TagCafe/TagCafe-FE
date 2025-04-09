@@ -6,7 +6,7 @@ const AdminReports = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("http://localhost:8080/report/admin/all")      
+    fetch("/api/report/admin/all")
       .then((res) => res.json())
       .then(setAllReports)
       .catch(console.error);
@@ -28,7 +28,7 @@ const AdminReports = () => {
         </ul>
       </section>
 
-    <br></br>
+      <br></br>
       <section>
         <h3>승인됨</h3>
         <ul className="admin-report-list">

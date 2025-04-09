@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Hamburger.css";
-import TextInput from "../components/TextInput"; 
-import LongButton from "../components/LongButton"; 
+import TextInput from "../components/TextInput";
+import LongButton from "../components/LongButton";
 import Popup from "../components/Popup";
 
 function NicknameChangePage() {
   const navigate = useNavigate();
-  const [isPopupOpen, setIsPopupOpen] = useState(false); 
-  const [nickname, setNickname] = useState(""); 
-  const [newNickname, setNewNickname] = useState(""); 
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [nickname, setNickname] = useState("");
+  const [newNickname, setNewNickname] = useState("");
 
   useEffect(() => {
-    const savedNickname = localStorage.getItem("nickname") || "태카"; 
+    const savedNickname = localStorage.getItem("nickname") || "태카";
     setNickname(savedNickname);
     setNewNickname(savedNickname);
   }, []);
@@ -30,38 +30,38 @@ function NicknameChangePage() {
       alert("닉네임은 2~15자 이내로 입력해주세요.");
       return;
     }
-    
+
     const email = localStorage.getItem("email");
     console.log("📌 현재 이메일 값:", email);
-  
+
     if (!email) {
       alert("로그인 정보가 없습니다. 다시 로그인해주세요.");
       return;
     }
-  
+
     try {
       const formData = new URLSearchParams();
       formData.append("email", email);
       formData.append("newNickname", newNickname);
-  
+
       console.log("📌 닉네임 변경 요청 데이터:", formData.toString()); // ✅ 확인용 로그 추가
-  
-      const response = await fetch("http://localhost:8080/users/nickname", {
+
+      const response = await fetch("/api/users/nickname", {
         method: "PUT",
-        headers: { 
-            "Content-Type": "application/json",
-            "Accept": "application/json",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
         },
         body: JSON.stringify({
-            email: localStorage.getItem("email"),
-            newNickname: newNickname,
+          email: localStorage.getItem("email"),
+          newNickname: newNickname,
         }),
         credentials: "include",
         mode: "cors",
-    });
+      });
 
       console.log("📌 서버 응답 상태 코드:", response.status); // ✅ 응답 상태 확인
-  
+
       if (response.ok) {
         localStorage.setItem("nickname", newNickname);
         setNickname(newNickname);

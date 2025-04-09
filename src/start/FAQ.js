@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import "./FAQ.css";
 import "./Policy.css";
 import { TopBar } from "../components";
@@ -12,7 +12,7 @@ const FAQ = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:8080/faq/qa", {
+    fetch("/api/faq/qa", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -60,9 +60,9 @@ const FAQ = () => {
       return;
     }
 
-    const userEmail = localStorage.getItem("email"); 
+    const userEmail = localStorage.getItem("email");
 
-    fetch("http://localhost:8080/faq/feedback", {  // 절대 경로로 수정
+    fetch("/api/faq/feedback", {  // 절대 경로로 수정
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -73,7 +73,7 @@ const FAQ = () => {
       }),
     })
       .then((response) => {
-        console.log("응답 상태 코드:", response.status);  
+        console.log("응답 상태 코드:", response.status);
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
@@ -81,14 +81,14 @@ const FAQ = () => {
       })
       .then((data) => {
         console.log("서버 응답 데이터:", data);
-        alert(data.message || "피드백이 정상적으로 제출되었습니다!");  
+        alert(data.message || "피드백이 정상적으로 제출되었습니다!");
         setFeedbackText(""); // 입력 필드 초기화
       })
       .catch((error) => {
         console.error("피드백 제출 중 오류 발생:", error);
         alert("오류가 발생했습니다. 다시 시도해주세요.");
       });
-};
+  };
 
   return (
     <div className="faq-page">
@@ -144,7 +144,7 @@ const FAQ = () => {
           />
           <div className="feedback-char-counter">
             {feedbackText.length}/200 {/* 현재 글자 수와 최대 글자 수 표시 */}
-          </div>          
+          </div>
           <LongButton optionText="제출하기" onClick={handleSubmitFeedback} />
         </div>
       )}

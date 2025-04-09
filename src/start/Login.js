@@ -1,14 +1,14 @@
 import React, { useEffect, useContext } from "react";
 import "./Login.css";
 import { useNavigate, useLocation } from "react-router-dom";
-import AuthContext from "../context/AuthContext"; 
+import AuthContext from "../context/AuthContext";
 
 function LoginPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const { login } = useContext(AuthContext);  // AuthContext에서 login 함수 가져오기
   const { handleGuestLogin } = useContext(AuthContext);
- 
+
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const nickname = params.get("nickname");
@@ -20,20 +20,20 @@ function LoginPage() {
       localStorage.setItem("nickname", nickname);
       localStorage.setItem("email", email);
       localStorage.setItem("token", token);
-      login(token, nickname, email); 
+      login(token, nickname, email);
       navigate("/home");
     }
   }, [location, login, navigate]);
 
- 
+
   const handleLogin = () => {
     console.log("카카오톡으로 로그인 버튼 클릭됨");
-    window.location.href = "http://localhost:8080/oauth/kakao/login";
+    window.location.href = "/api/oauth/kakao/login";
   };
 
   const handleGuestAccess = () => {
     console.log("로그인 없이 사용하기 클릭됨");
-    handleGuestLogin(); 
+    handleGuestLogin();
     navigate("/home");
   };
 
@@ -55,7 +55,7 @@ function LoginPage() {
       <button className="kakao-login-button" onClick={handleLogin}>
         <img src="/img/kakao.png" alt="kakao icon" className="kakao-icon" />
         카카오톡으로 로그인
-      </button>     
+      </button>
 
       <div className="login-footer" onClick={handleGuestAccess}>
         로그인 없이 <span className="login-use">사용하기</span>

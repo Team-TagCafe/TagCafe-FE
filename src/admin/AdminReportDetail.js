@@ -7,8 +7,8 @@ const AdminReportDetail = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch(`http://localhost:8080/report/admin/pending/${id}`)      
-    .then((res) => res.json())
+    fetch(`/api/report/admin/pending/${id}`)
+      .then((res) => res.json())
       .then(setReport)
       .catch(console.error);
   }, [id]);
@@ -25,7 +25,7 @@ const AdminReportDetail = () => {
         }
       });
     });
-  };  
+  };
 
   const handleApprove = async () => {
     const confirm = window.confirm("해당 제보를 승인하시겠습니까?");
@@ -34,8 +34,8 @@ const AdminReportDetail = () => {
     try {
       const photos = await fetchPhotosFromGoogle(report.googlePlaceId);
       const photoUrls = photos.slice(0, 5);
-  
-      const res = await fetch(`http://localhost:8080/report/admin/approve/${id}`, {
+
+      const res = await fetch(`/api/report/admin/approve/${id}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ photoUrls })
@@ -52,13 +52,13 @@ const AdminReportDetail = () => {
       alert("오류 발생");
     }
   };
-  
+
   const handleDelete = async () => {
     const confirm = window.confirm("해당 제보를 삭제하시겠습니까?");
     if (!confirm) return;
-  
+
     try {
-      const res = await fetch(`http://localhost:8080/report/admin/delete/${id}`, {
+      const res = await fetch(`/api/report/admin/delete/${id}`, {
         method: "DELETE",
       });
       if (res.ok) {
@@ -84,7 +84,7 @@ const AdminReportDetail = () => {
       <p><strong>내용:</strong> {report.content}</p>
       <p><strong>작성자:</strong> {report.userEmail}</p>
       <button onClick={handleApprove}>승인</button>
-      <button onClick={handleDelete} style={{ marginLeft: "10px"}}>반려</button>
+      <button onClick={handleDelete} style={{ marginLeft: "10px" }}>반려</button>
     </div>
   );
 };

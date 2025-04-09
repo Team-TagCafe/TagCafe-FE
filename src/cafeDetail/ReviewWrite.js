@@ -16,7 +16,7 @@ const ReviewWrite = () => {
     };
 
     const [content, setContent] = useState("");
-    const [rating, setRating] = useState(3); 
+    const [rating, setRating] = useState(3);
     const [cafeOptions, setCafeOptions] = useState({
         wifi: "",
         outlets: "",
@@ -37,9 +37,9 @@ const ReviewWrite = () => {
             return updatedOptions;
         });
     };
-    
+
     const userEmail = localStorage.getItem("email");
-    
+
     if (!userEmail) {
         alert("로그인이 필요합니다. 로그인 후 다시 시도해주세요.");
         return;
@@ -76,7 +76,7 @@ const ReviewWrite = () => {
         //console.log("서버로 보낼 데이터:", reviewData); 
 
         try {
-            const response = await fetch("http://localhost:8080/reviews/create", {
+            const response = await fetch("/api/reviews/create", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

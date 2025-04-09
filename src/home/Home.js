@@ -79,18 +79,18 @@ const Home = () => {
         setTimeout(loadKakaoMap, 300);
       }
     };
-  
+
     const resizeListener = () => {
       setInnerWidth(window.innerWidth);
       setInnerHeight(window.innerHeight);
     };
     window.addEventListener("resize", resizeListener);
-  
+
     loadKakaoMap();  // 💡 이거 한 줄로 처리
-  
+
     return () => window.removeEventListener("resize", resizeListener);
   }, []);
-  
+
 
 
   /* ---------- 지도 초기화 함수 ---------- */
@@ -133,7 +133,7 @@ const Home = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:8080/cafes/area?minLat=${bounds.minLat}&maxLat=${bounds.maxLat}&minLng=${bounds.minLng}&maxLng=${bounds.maxLng}`
+        `/api/cafes/area?minLat=${bounds.minLat}&maxLat=${bounds.maxLat}&minLng=${bounds.minLng}&maxLng=${bounds.maxLng}`
       );
       const data = await response.json();
 
@@ -152,7 +152,7 @@ const Home = () => {
     "가능(유료)": "가능_유료",
     "가능(일부)": "가능_일부",
     "불가능": "불가능"
-};
+  };
 
 
   /* ---------- 필터링된 카페 조회 ---------- */
@@ -177,7 +177,7 @@ const Home = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:8080/cafes/filter?tagNames=${encodeURIComponent(tagNames.join(','))}&values=${encodeURIComponent(values.join(','))}`,
+        `/api/cafes/filter?tagNames=${encodeURIComponent(tagNames.join(','))}&values=${encodeURIComponent(values.join(','))}`,
         {
           method: "GET",
           headers: {
@@ -325,7 +325,7 @@ const Home = () => {
     content.addEventListener('click', () => {
       setPopupContent({
         name: cafeName,
-        address: cafeAddress, 
+        address: cafeAddress,
         id: cafeId
       });
       setShowPopup(true);
@@ -350,7 +350,7 @@ const Home = () => {
   /* ---------- 카페 태그 가져오기 ---------- */
   const fetchCafeTags = async (cafeId) => {
     try {
-      const response = await fetch(`http://localhost:8080/cafes/${cafeId}/tags`);
+      const response = await fetch(`/api/cafes/${cafeId}/tags`);
       if (!response.ok) {
         throw new Error("태그 데이터를 불러오는 중 오류 발생");
       }
@@ -362,20 +362,20 @@ const Home = () => {
   };
 
   /* ---------- 현재 위치로 지도 중심 이동 ---------- */
-  const moveToUserLocation = () => {  
+  const moveToUserLocation = () => {
     if (navigator.geolocation && map) {
       try {
         let called = false; // 콜백 호출 여부 추적
-  
+
         navigator.geolocation.getCurrentPosition(
           (position) => {
             called = true;
-  
+
             const userLat = position.coords.latitude;
             const userLng = position.coords.longitude;
             const userLocation = new kakao.maps.LatLng(userLat, userLng);
             map.setCenter(userLocation);
-            },
+          },
           (error) => {
             called = true;
             console.error("[❌ 위치 오류 발생]", error);
@@ -387,7 +387,7 @@ const Home = () => {
             maximumAge: 0,
           }
         );
-  
+
         setTimeout(() => {
           if (!called) {
             console.warn("🚨 getCurrentPosition 콜백이 호출되지 않았습니다.");

@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Hamburger.css"
-import TextInput from "../components/TextInput"; 
-import LongButton from "../components/LongButton"; 
+import TextInput from "../components/TextInput";
+import LongButton from "../components/LongButton";
 import Popup from "../components/Popup";
 
 function Delete({ onClose }) {
-  const [isPopupOpen, setIsPopupOpen] = useState(false); 
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [nickname, setNickname] = useState("");
   const navigate = useNavigate();
   const KAKAO_CLIENT_ID = process.env.REACT_APP_KAKAO_CLIENT_ID;
@@ -16,16 +16,16 @@ function Delete({ onClose }) {
   };
 
   const handleConfirm = async () => {
-  setIsPopupOpen(false);
+    setIsPopupOpen(false);
 
-  const userEmail = localStorage.getItem("email"); // ✅ 로컬 스토리지에서 이메일 가져오기
+    const userEmail = localStorage.getItem("email"); // ✅ 로컬 스토리지에서 이메일 가져오기
     if (!userEmail) {
       alert("로그인이 필요합니다.");
       return;
     }
 
     try {
-      const response = await fetch(`http://localhost:8080/users/delete?email=${userEmail}`, {
+      const response = await fetch(`/api/users/delete?email=${userEmail}`, {
         method: "DELETE",
         credentials: "include",
       });
@@ -58,11 +58,11 @@ function Delete({ onClose }) {
   };
 
   const openPopup = () => {
-    setIsPopupOpen(true); 
+    setIsPopupOpen(true);
   };
 
   const handleBack = () => {
-    navigate(-1); 
+    navigate(-1);
   };
 
   return (

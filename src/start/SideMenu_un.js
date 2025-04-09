@@ -3,27 +3,27 @@ import { useNavigate } from "react-router-dom";
 import "./SideMenu_un.css";
 import SideMenuButton from "../components/SideMenuButton"
 
-const SideMenu_un = ({  }) => {
+const SideMenu_un = ({ }) => {
   const navigate = useNavigate();
-  const [isMenuOpen, setIsMenuOpen] = useState(true); 
+  const [isMenuOpen, setIsMenuOpen] = useState(true);
   const handlePrivacyPolicy = () => {
-    navigate("/privacy-policy"); 
+    navigate("/privacy-policy");
   };
 
   const handleServicePolicy = () => {
-    navigate("/service-policy"); 
+    navigate("/service-policy");
   };
 
   const handleLocationPolicy = () => {
-    navigate("/location-policy"); 
+    navigate("/location-policy");
   };
 
   const handleFAQQA = () => {
-    navigate("/faq-qa"); 
+    navigate("/faq-qa");
   };
-  
-  const handleLogin=()=>{
-    window.location.href = "http://localhost:8080/oauth/kakao/login";
+
+  const handleLogin = () => {
+    window.location.href = "/api/oauth/kakao/login";
 
   }
 
@@ -53,14 +53,14 @@ const SideMenu_un = ({  }) => {
             <img src="/img/user.png" alt="Profile" />
           </div>
           <div className="profile-info">
-            <div className="profile-login"  onClick={handleLogin}  style={{ cursor: "pointer" }} >로그인하기 <span className="profile-arrow">&gt;</span></div>
+            <div className="profile-login" onClick={handleLogin} style={{ cursor: "pointer" }} >로그인하기 <span className="profile-arrow">&gt;</span></div>
           </div>
         </div>
         <div className="side-menu-body">
-            <SideMenuButton buttonType="button1" optionText="개인정보처리방침" onClick={handlePrivacyPolicy} />
-            <SideMenuButton buttonType="button1" optionText="서비스 이용약관" onClick={handleServicePolicy}/>
-            <SideMenuButton buttonType="button1" optionText="위치서비스 약관" onClick={handleLocationPolicy}/>
-            <SideMenuButton buttonType="button1" optionText="FAQ" onClick={handleFAQQA}/>
+          <SideMenuButton buttonType="button1" optionText="개인정보처리방침" onClick={handlePrivacyPolicy} />
+          <SideMenuButton buttonType="button1" optionText="서비스 이용약관" onClick={handleServicePolicy} />
+          <SideMenuButton buttonType="button1" optionText="위치서비스 약관" onClick={handleLocationPolicy} />
+          <SideMenuButton buttonType="button1" optionText="FAQ" onClick={handleFAQQA} />
         </div>
       </div>
     </>
