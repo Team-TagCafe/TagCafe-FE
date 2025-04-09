@@ -37,20 +37,20 @@ const ReviewEdit = () => {
 
     const fetchReview = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/my/reviews/${reviewId}`, {
+        const response = await fetch(`/api/my/reviews/${reviewId}`, {
           method: "GET",
           headers: {
             "Cache-Control": "no-cache",
             "Pragma": "no-cache",
           },
         });
-    
+
         if (!response.ok) {
           throw new Error(`HTTP Error! Status: ${response.status}`);
         }
-    
+
         const data = await response.json();
-    
+
         setReviewData(data.review);
         setReviewEditText(data.review.content);
         setRating(data.review.rating);
@@ -106,7 +106,7 @@ const ReviewEdit = () => {
   const handleSubmit = async () => {
     try {
       setLoading(true);
-      
+
       const requestBody = {
         content: reviewEditText,
         rating,
@@ -117,7 +117,7 @@ const ReviewEdit = () => {
         parking: cafeOptions.parking,
       };
 
-      const response = await fetch(`http://localhost:8080/my/reviews/${reviewId}`, {
+      const response = await fetch(`/api/my/reviews/${reviewId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -170,8 +170,8 @@ const ReviewEdit = () => {
           </div>
         </div>
 
-       <CafeInformation onChange={handleCafeOptionChange} selectedOptions={selectedOptions} />
-        
+        <CafeInformation onChange={handleCafeOptionChange} selectedOptions={selectedOptions} />
+
         <div className="my-edit-form">
           <textarea
             className="my-edit-textarea"
@@ -194,8 +194,8 @@ const ReviewEdit = () => {
         <Popup
           message="리뷰가 수정되었습니다."
           onConfirm={() => {
-              setShowEditPopup(false);
-              navigate("/my");
+            setShowEditPopup(false);
+            navigate("/my");
           }}
           showCancel={false}
         />

@@ -27,7 +27,7 @@ const ReportEdit = () => {
     const fetchReportData = async () => {
       setLoading(true);
       try {
-        const response = await fetch(`http://localhost:8080/report/${reportedCafeId}`);
+        const response = await fetch(`/api/report/${reportedCafeId}`);
         if (!response.ok) throw new Error('Network response was not ok');
         const data = await response.json();
 
@@ -60,7 +60,7 @@ const ReportEdit = () => {
     try {
       setLoading(true);
 
-    
+
       const requestBody = {
         content: reportEditText,
         rating,
@@ -73,7 +73,7 @@ const ReportEdit = () => {
 
       //console.log("Request body:", requestBody);
 
-      const response = await fetch(`http://localhost:8080/report/${reportedCafeId}`, {
+      const response = await fetch(`/api/report/${reportedCafeId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -82,14 +82,14 @@ const ReportEdit = () => {
       });
 
       if (!response.ok) throw new Error('Network response was not ok');
-      
+
       setShowEditPopup(true);
     } catch (error) {
-        console.error("Error updating report:", error);
-        alert("제보 수정에 실패했습니다.");
-      } finally {
-        setLoading(false);
-      }
+      console.error("Error updating report:", error);
+      alert("제보 수정에 실패했습니다.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleCafeOptionChange = (category, option) => {
@@ -183,12 +183,12 @@ const ReportEdit = () => {
       <BottomBar />
 
       {showEditPopup && (
-        <Popup 
-          message={`제보 카페 "${reportData.cafeName}"의 내용이 수정되었습니다.`} 
+        <Popup
+          message={`제보 카페 "${reportData.cafeName}"의 내용이 수정되었습니다.`}
           onConfirm={() => {
             setShowEditPopup(false);
             navigate("/my");
-        }}
+          }}
           showCancel={false}
         />
       )}
