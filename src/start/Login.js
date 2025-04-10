@@ -27,7 +27,7 @@ function LoginPage() {
 
 
   const handleLogin = () => {
-    console.log("카카오톡으로 로그인 버튼 클릭됨");
+    console.log("카카오톡으로 로그인");
     window.location.href = "/api/oauth/kakao/login";
   };
 
