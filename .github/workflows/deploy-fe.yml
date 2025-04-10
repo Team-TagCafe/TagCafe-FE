@@ -3,7 +3,7 @@ name: Deploy React Frontend to EC2
 on:
   push:
     branches:
-      - ㅡmaster
+      - master
     paths:
       - "src/**"
       - "public/**"
