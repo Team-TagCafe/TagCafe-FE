@@ -27,6 +27,7 @@ import AdminReportDetail from './admin/AdminReportDetail';
 import ReportAdd from "./my/ReportAdd";
 import ReportSearch from "./my/ReportSearch";
 
+
 function App() {
   const [selectedPlace, setSelectedPlace] = useState(null); // 선택된 장소 상태
 
@@ -65,6 +66,7 @@ function App() {
               <Route path="/my/report/edit/:reportedCafeId" element={<ReportEdit />} />
               <Route path="/admin/reports" element={<AdminReports />} />
               <Route path="/admin/reports/:id" element={<AdminReportDetail />} />
+              <Route path="/oauth/kakao/callback" element={<Login />} />
             </Routes>
           </BrowserRouter>
         </div>
