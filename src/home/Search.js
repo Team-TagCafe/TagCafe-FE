@@ -19,7 +19,7 @@ const Search = () => {
 
         const fetchSearchResults = async () => {
             try {
-                const response = await fetch(`/api/cafes/search?query=${inputValue}`);
+                const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/cafes/search?query=${inputValue}`);
                 const data = await response.json();
                 setResults(data);
             } catch (error) {

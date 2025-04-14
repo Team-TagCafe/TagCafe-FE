@@ -21,7 +21,7 @@ const SavedCafeCard = ({ cafe }) => {
         const storedEmail = localStorage.getItem("email");
         if (!storedEmail) return;
 
-        const response = await fetch(`/api/users/id?email=${storedEmail}`, {
+        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/users/id?email=${storedEmail}`, {
           credentials: "include",
         });
 
@@ -40,7 +40,7 @@ const SavedCafeCard = ({ cafe }) => {
   useEffect(() => {
     const fetchTags = async () => {
       try {
-        const response = await fetch(`/api/cafes/${cafeId}/tags`);
+        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/cafes/${cafeId}/tags`);
         if (!response.ok) throw new Error("태그 데이터를 가져오는 중 오류 발생");
         const data = await response.json();
 
@@ -67,7 +67,7 @@ const SavedCafeCard = ({ cafe }) => {
     }
 
     try {
-      await fetch(`/api/saved-cafes/${cafeId}?userId=${userId}`, {
+      await fetch(`${process.env.REACT_APP_API_BASE_URL}/saved-cafes/${cafeId}?userId=${userId}`, {
         method: "PATCH",
         credentials: "include",
         headers: {
@@ -89,7 +89,7 @@ const SavedCafeCard = ({ cafe }) => {
     }
 
     try {
-      const response = await fetch(`/api/saved-cafes/${cafeId}/visited?userId=${userId}`, {
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/saved-cafes/${cafeId}/visited?userId=${userId}`, {
         method: "PATCH",
         credentials: "include",
         headers: {

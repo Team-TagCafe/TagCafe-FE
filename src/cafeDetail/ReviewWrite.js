@@ -76,7 +76,7 @@ const ReviewWrite = () => {
         //console.log("서버로 보낼 데이터:", reviewData); 
 
         try {
-            const response = await fetch("/api/reviews/create", {
+            const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/reviews/create`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

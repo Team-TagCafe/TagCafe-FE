@@ -172,7 +172,7 @@ const ReportCafeAdd = () => {
 
       // 중복 확인
       const checkResponse = await fetch(
-        `/api/report/cafes/kakao/${kakaoPlaceId}`
+        `${process.env.REACT_APP_API_BASE_URL}/report/cafes/kakao/${kakaoPlaceId}`
       );
       if (checkResponse.ok) {
         const result = await checkResponse.json();
@@ -182,7 +182,7 @@ const ReportCafeAdd = () => {
         }
       }
 
-      const response = await fetch("/api/report", {
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/report`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

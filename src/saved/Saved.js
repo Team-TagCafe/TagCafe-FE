@@ -17,7 +17,7 @@ const Saved = () => {
         if (!storedEmail) {
           return;
         }
-        const response = await fetch(`/api/users/id?email=${storedEmail}`, {
+        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/users/id?email=${storedEmail}`, {
           credentials: "include",
         });
 
@@ -39,7 +39,7 @@ const Saved = () => {
     const fetchSavedCafes = async () => {
       setLoading(true);
       try {
-        const url = new URL(`/api/saved-cafes/filter`);
+        const url = new URL(`${process.env.REACT_APP_API_BASE_URL}/saved-cafes/filter`);
         url.searchParams.append("userId", userId);
 
         // 필터 값이 있으면 API 요청에 추가

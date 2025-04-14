@@ -12,7 +12,7 @@ const FAQ = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/faq/qa", {
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/faq/qa`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -62,7 +62,7 @@ const FAQ = () => {
 
     const userEmail = localStorage.getItem("email");
 
-    fetch("/api/faq/feedback", {  // 절대 경로로 수정
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/faq/feedback`, {  // 절대 경로로 수정
       method: "POST",
       headers: {
         "Content-Type": "application/json",

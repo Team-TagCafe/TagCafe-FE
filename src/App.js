@@ -66,7 +66,6 @@ function App() {
               <Route path="/my/report/edit/:reportedCafeId" element={<ReportEdit />} />
               <Route path="/admin/reports" element={<AdminReports />} />
               <Route path="/admin/reports/:id" element={<AdminReportDetail />} />
-              <Route path="/oauth/kakao/callback" element={<Login />} />
             </Routes>
           </BrowserRouter>
         </div>

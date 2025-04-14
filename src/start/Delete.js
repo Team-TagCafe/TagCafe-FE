@@ -25,7 +25,7 @@ function Delete({ onClose }) {
     }
 
     try {
-      const response = await fetch(`/api/users/delete?email=${userEmail}`, {
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/users/delete?email=${userEmail}`, {
         method: "DELETE",
         credentials: "include",
       });

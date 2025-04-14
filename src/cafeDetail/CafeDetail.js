@@ -1,4 +1,5 @@
 /*global kakao*/
+
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { BottomBar, Bookmark, CafeInformationDetail, Popup } from "../components";
@@ -25,7 +26,7 @@ const CafeDetail = () => {
   useEffect(() => {
     const fetchCafeData = async () => {
       try {
-        const response = await fetch(`/api/cafes/${cafeId}`);
+        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/cafes/${cafeId}`);
         if (!response.ok) throw new Error("Failed to fetch cafe data");
 
         const data = await response.json();
@@ -52,7 +53,7 @@ const CafeDetail = () => {
         }
 
         // userId 가져오기
-        const response = await fetch(`/api/users/id?email=${storedEmail}`, {
+        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/users/id?email=${storedEmail}`, {
           credentials: "include",
         });
 
@@ -74,7 +75,7 @@ const CafeDetail = () => {
 
     const checkSavedCafe = async () => {
       try {
-        const response = await fetch(`/api/saved-cafes?userId=${userId}`, {
+        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/saved-cafes?userId=${userId}`, {
           credentials: "include",
         });
 
@@ -103,7 +104,7 @@ const CafeDetail = () => {
     }
 
     try {
-      const response = await fetch(`/api/saved-cafes/${cafeId}?userId=${userId}`, {
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/saved-cafes/${cafeId}?userId=${userId}`, {
         method: "PATCH",
         mode: "cors",
         credentials: "include",
@@ -137,7 +138,7 @@ const CafeDetail = () => {
   // 리뷰 불러오기
   const fetchReviews = async () => {
     try {
-      const response = await fetch(`/api/reviews/${cafeId}`);
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/reviews/${cafeId}`);
       if (!response.ok) {
         throw new Error("리뷰 데이터를 불러오지 못했습니다.");
       }

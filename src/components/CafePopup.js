@@ -10,7 +10,7 @@ const CafePopup = ({ cafeName, cafeAddress, cafeId, onClose }) => {
     useEffect(() => {
         const fetchTags = async () => {
             try {
-                const response = await fetch(`/api/cafes/${cafeId}/tags`);
+                const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/cafes/${cafeId}/tags`);
                 if (!response.ok) {
                     throw new Error("태그 데이터를 불러오는 중 오류 발생");
                 }
