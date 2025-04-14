@@ -98,7 +98,7 @@ function CafeInformationDetail({ cafeId }) {
     // 카페 상세 정보 가져오기
     const fetchCafeInfo = async () => {
       try {
-        const response = await fetch(`/api/cafes/${cafeId}`);
+        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/cafes/${cafeId}`);
         if (!response.ok) throw new Error("카페 정보를 불러오는 중 오류 발생");
 
         const data = await response.json();

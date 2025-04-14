@@ -1,5 +1,3 @@
-/*global kakao*/
-
 import React, { useEffect, useState, useCallback, useContext } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { BottomBar, TopBar, LocationReset, CafePopup, Popup } from '../components';
@@ -177,7 +175,7 @@ const Home = () => {
 
     try {
       const response = await fetch(
-        `/api/cafes/filter?tagNames=${encodeURIComponent(tagNames.join(','))}&values=${encodeURIComponent(values.join(','))}`,
+        `${process.env.REACT_APP_API_BASE_URL}/cafes/filter?tagNames=${encodeURIComponent(tagNames.join(','))}&values=${encodeURIComponent(values.join(','))}`,
         {
           method: "GET",
           headers: {
@@ -350,7 +348,7 @@ const Home = () => {
   /* ---------- 카페 태그 가져오기 ---------- */
   const fetchCafeTags = async (cafeId) => {
     try {
-      const response = await fetch(`/api/cafes/${cafeId}/tags`);
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/cafes/${cafeId}`);
       if (!response.ok) {
         throw new Error("태그 데이터를 불러오는 중 오류 발생");
       }
