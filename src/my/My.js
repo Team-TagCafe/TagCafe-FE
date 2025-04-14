@@ -25,7 +25,7 @@ const My = () => {
     const fetchReviewedCafes = async () => {
       setLoading(true);
       try {
-        let url = new URL(`/api/my/reviews`);
+        let url = new URL(`${process.env.REACT_APP_API_BASE_URL}/my/reviews`);
         url.searchParams.append("userEmail", userEmail);
 
         const tagNames = [];
@@ -39,7 +39,7 @@ const My = () => {
 
         // 필터가 있을 때만 필터링 엔드포인트 사용
         if (tagNames.length > 0) {
-          url = new URL(`/api/my/reviews/filter`);
+          url = new URL(`${process.env.REACT_APP_API_BASE_URL}/my/reviews/filter`);
           url.searchParams.append("userEmail", userEmail);
 
           tagNames.forEach(tag => url.searchParams.append("tags", tag));
@@ -70,7 +70,7 @@ const My = () => {
     fetchReviewedCafes();
     const fetchReportedCafes = async () => {
       try {
-        const response = await fetch(`/api/report/user/${userEmail}`);
+        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/report/user/${userEmail}`);
         if (!response.ok) throw new Error("제보한 카페 조회 실패");
         const data = await response.json();
         setReportedCafes(data);
@@ -110,7 +110,7 @@ const My = () => {
       setLoading(true);
       const token = localStorage.getItem("token");
 
-      const response = await fetch(`/api/my/reviews/${reviewId}`, {
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/my/reviews/${reviewId}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

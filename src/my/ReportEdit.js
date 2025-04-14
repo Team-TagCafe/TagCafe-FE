@@ -27,7 +27,7 @@ const ReportEdit = () => {
     const fetchReportData = async () => {
       setLoading(true);
       try {
-        const response = await fetch(`/api/report/${reportedCafeId}`);
+        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/report/${reportedCafeId}`);
         if (!response.ok) throw new Error('Network response was not ok');
         const data = await response.json();
 
@@ -60,7 +60,6 @@ const ReportEdit = () => {
     try {
       setLoading(true);
 
-
       const requestBody = {
         content: reportEditText,
         rating,
@@ -73,7 +72,7 @@ const ReportEdit = () => {
 
       //console.log("Request body:", requestBody);
 
-      const response = await fetch(`/api/report/${reportedCafeId}`, {
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/report/${reportedCafeId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -105,8 +104,6 @@ const ReportEdit = () => {
       [category]: newOptionValue,
     }));
   };
-
-
 
   return (
     <div className="my-edit-page">

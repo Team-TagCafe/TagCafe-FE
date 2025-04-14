@@ -7,7 +7,7 @@ const AdminReportDetail = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch(`/api/report/admin/pending/${id}`)
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/report/admin/pending/${id}`)
       .then((res) => res.json())
       .then(setReport)
       .catch(console.error);
@@ -35,7 +35,7 @@ const AdminReportDetail = () => {
       const photos = await fetchPhotosFromGoogle(report.googlePlaceId);
       const photoUrls = photos.slice(0, 5);
 
-      const res = await fetch(`/api/report/admin/approve/${id}`, {
+      const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/report/admin/approve/${id}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ photoUrls })
@@ -58,7 +58,7 @@ const AdminReportDetail = () => {
     if (!confirm) return;
 
     try {
-      const res = await fetch(`/api/report/admin/delete/${id}`, {
+      const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/report/admin/delete/${id}`, {
         method: "DELETE",
       });
       if (res.ok) {

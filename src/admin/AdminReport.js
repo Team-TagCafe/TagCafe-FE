@@ -6,7 +6,7 @@ const AdminReports = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("/api/report/admin/all")
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/report/admin/all`)
       .then((res) => res.json())
       .then(setAllReports)
       .catch(console.error);

@@ -1,4 +1,3 @@
-/*global kakao*/
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { TopBar, BottomBar, LongButton } from "../components";
@@ -29,7 +28,7 @@ const ReportSearch = () => {
     const kakaoPlaceId = cafe.id;
 
     try {
-      const checkResponse = await fetch(`/api/report/cafes/kakao/${kakaoPlaceId}`);
+      const checkResponse = await fetch(`${process.env.REACT_APP_API_BASE_URL}/report/cafes/kakao/${kakaoPlaceId}`);
       if (checkResponse.ok) {
         const result = await checkResponse.json();
         if (result.exists !== false) {

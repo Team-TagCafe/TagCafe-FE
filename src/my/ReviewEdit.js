@@ -37,7 +37,7 @@ const ReviewEdit = () => {
 
     const fetchReview = async () => {
       try {
-        const response = await fetch(`/api/my/reviews/${reviewId}`, {
+        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/my/reviews/${reviewId}`, {
           method: "GET",
           headers: {
             "Cache-Control": "no-cache",
@@ -117,7 +117,7 @@ const ReviewEdit = () => {
         parking: cafeOptions.parking,
       };
 
-      const response = await fetch(`/api/my/reviews/${reviewId}`, {
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/my/reviews/${reviewId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

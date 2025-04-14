@@ -23,10 +23,8 @@ const SideMenu_un = ({ }) => {
   };
 
   const handleLogin = () => {
-    window.location.href = "/api/oauth/kakao/login";
-
+    window.location.href = `${process.env.REACT_APP_API_BASE_URL}/oauth/kakao/login`;
   }
-
 
   const handleOverlayClick = (event) => {
     // 클릭한 대상이 오버레이 자신인지 확인
@@ -38,7 +36,6 @@ const SideMenu_un = ({ }) => {
   if (!isMenuOpen) {
     return null;
   }
-
 
   return (
     <>

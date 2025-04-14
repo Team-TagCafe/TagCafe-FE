@@ -46,7 +46,7 @@ function NicknameChangePage() {
 
       console.log("📌 닉네임 변경 요청 데이터:", formData.toString()); // ✅ 확인용 로그 추가
 
-      const response = await fetch("/api/users/nickname", {
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/users/nickname`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

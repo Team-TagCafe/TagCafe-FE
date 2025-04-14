@@ -133,7 +133,7 @@ const Home = () => {
 
     try {
       const response = await fetch(
-        `/api/cafes/area?minLat=${bounds.minLat}&maxLat=${bounds.maxLat}&minLng=${bounds.minLng}&maxLng=${bounds.maxLng}`
+        `${process.env.REACT_APP_API_BASE_URL}/cafes/area?minLat=${bounds.minLat}&maxLat=${bounds.maxLat}&minLng=${bounds.minLng}&maxLng=${bounds.maxLng}`
       );
       const data = await response.json();
 
