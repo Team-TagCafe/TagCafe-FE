@@ -1,3 +1,5 @@
+/*global kakao*/
+
 import React, { useEffect, useState, useCallback, useContext } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { BottomBar, TopBar, LocationReset, CafePopup, Popup } from '../components';
