@@ -51,14 +51,22 @@ function getBusinessStatus(parsedHours) {
   const todayIdx = now.getDay(); // 0 = 일, 1 = 월
   const dayMap = ["일", "월", "화", "수", "목", "금", "토"];
   const today = dayMap[todayIdx];
-  const nowTime = now.getHours().toString().padStart(2, "0") + ":" + now.getMinutes().toString().padStart(2, "0");
+  const nowMinutes = now.getHours() * 60 + now.getMinutes(); // 현재 시각 (분)
 
   const todayInfo = parsedHours.find((entry) => entry.day === today);
   if (!todayInfo) return "정보 없음";
 
-  if (nowTime < todayInfo.start) {
+  const startMinutes = timeToMinutes(todayInfo.start);
+  let endMinutes = timeToMinutes(todayInfo.end);
+
+  // end가 00:00이면 다음날 0시 -> 24:00으로
+  if (todayInfo.end === "00:00") {
+    endMinutes = 24 * 60; // 1440분
+  }
+
+  if (nowMinutes < startMinutes) {
     return `곧 영업 시작 ${todayInfo.start}부터`;
-  } else if (nowTime >= todayInfo.start && nowTime < todayInfo.end) {
+  } else if (nowMinutes >= startMinutes && nowMinutes < endMinutes) {
     return `영업중 ${todayInfo.end}까지`;
   } else {
     // 다음날 정보 찾아서 표시
@@ -72,6 +80,10 @@ function getBusinessStatus(parsedHours) {
   }
 }
 
+function timeToMinutes(timeStr) {
+  const [hour, minute] = timeStr.split(":").map(Number);
+  return hour * 60 + minute;
+}
 
 function CafeInformationDetail({ cafeId }) {
   const [isHoursOpen, setIsHoursOpen] = useState(false); // 운영시간 토글 상태
