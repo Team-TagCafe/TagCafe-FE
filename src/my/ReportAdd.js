@@ -93,12 +93,13 @@ const ReportCafeAdd = () => {
         location: new google.maps.LatLng(lat, lng),
         radius: 100,
         query: placeName,
+        language: "ko",
       };
 
       service.textSearch(request, (results, status) => {
         if (status === google.maps.places.PlacesServiceStatus.OK && results.length > 0) {
           const placeId = results[0].place_id;
-          service.getDetails({ placeId }, (details, detailStatus) => {
+          service.getDetails({ placeId, language: "ko" }, (details, detailStatus) => {
             if (detailStatus === google.maps.places.PlacesServiceStatus.OK) {
               resolve(details);
             } else {
