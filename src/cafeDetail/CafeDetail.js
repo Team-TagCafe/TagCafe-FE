@@ -32,10 +32,13 @@ const CafeDetail = () => {
         const data = await response.json();
         setCafe(data);
 
-        // ✅ 이미지 리스트 세팅 (Base64 형식이면 이 방식 사용)
-        if (data.imageBase64List && data.imageBase64List.length > 0) {
-          const images = data.imageBase64List.map(base64 => `data:image/jpeg;base64,${base64}`);
-          setImageList(images);
+        // 이미지 리스트 세팅 - Base64 사용 (삭제 예정)
+        // if (data.imageBase64List && data.imageBase64List.length > 0) {
+        //   const images = data.imageBase64List.map(base64 => `data:image/jpeg;base64,${base64}`);
+        //   setImageList(images);
+        // }
+        if (data.imageUrls && data.imageUrls.length > 0) {
+          setImageList(data.imageUrls);
         }
       } catch (error) {
         console.error(error);
