@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import './CafePopup.css';
 import TagGroup from '../components/TagGroup';
 
-const CafePopup = ({ cafeName, cafeAddress, cafeId, onClose }) => {
+const CafePopup = ({ cafeName, cafeAddress, cafeId, thumbnailUrl, onClose }) => {
     const navigate = useNavigate();
     const [tags, setTags] = useState([]);
 
@@ -74,7 +74,7 @@ const CafePopup = ({ cafeName, cafeAddress, cafeId, onClose }) => {
                 <button className="cafe-popup-close-btn" onClick={onClose}>✕</button>
                 <div className="cafe-popup-box">
                     <div className="cafe-popup-image">
-                        <img src='/img/map-cafe.png'></img>
+                        <img src={thumbnailUrl || '/img/map-cafe.png'} alt="cafe-thumbnail" />
                     </div>
                     <div className="cafe-popup-content">
                         {/* 검색 결과 */}
