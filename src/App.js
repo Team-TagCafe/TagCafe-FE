@@ -26,6 +26,7 @@ import AdminReports from './admin/AdminReport';
 import AdminReportDetail from './admin/AdminReportDetail';
 import ReportAdd from "./my/ReportAdd";
 import ReportSearch from "./my/ReportSearch";
+import AdminDeleteCafe from './admin/AdminDeleteCafe';
 
 
 function App() {
@@ -66,6 +67,7 @@ function App() {
               <Route path="/my/report/edit/:reportedCafeId" element={<ReportEdit />} />
               <Route path="/admin/reports" element={<AdminReports />} />
               <Route path="/admin/reports/:id" element={<AdminReportDetail />} />
+              <Route path="/admin/delete-cafe" element={<AdminDeleteCafe />} />
             </Routes>
           </BrowserRouter>
         </div>
