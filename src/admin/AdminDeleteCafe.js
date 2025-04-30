@@ -1,12 +1,10 @@
-
-
 import { useEffect, useState } from 'react';
 
 const AdminDeleteCafe = () => {
   const [cafes, setCafes] = useState([]);
 
   useEffect(() => {
-    fetch('/cafes/admin/delete-cafe')
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/cafes/admin/delete-cafe`)      
       .then(res => res.json())
       .then(data => setCafes(data));
   }, []);
@@ -14,8 +12,8 @@ const AdminDeleteCafe = () => {
   const handleDelete = (cafeId) => {
     if (!window.confirm('정말 삭제하시겠습니까?')) return;
 
-    fetch(`/cafes/admin/delete-cafe/${cafeId}`, {
-      method: 'DELETE'
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/cafes/admin/delete-cafe/${cafeId}`, {
+         method: 'DELETE'
     })
       .then(res => {
         if (res.ok) {
