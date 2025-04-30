@@ -56,6 +56,10 @@ function getBusinessStatus(parsedHours) {
   const todayInfo = parsedHours.find((entry) => entry.day === today);
   if (!todayInfo) return "정보 없음";
 
+  if (todayInfo.status === "휴무") {
+    return "휴무";
+  }
+
   const startMinutes = timeToMinutes(todayInfo.start);
   let endMinutes = timeToMinutes(todayInfo.end);
 

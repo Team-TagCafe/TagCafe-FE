@@ -4,7 +4,7 @@ import "./SavedCafeCard.css";
 import { Bookmark, VisitStatus } from "../components";
 
 const SavedCafeCard = ({ cafe }) => {
-  const { cafeId, cafeName, address, visited } = cafe;
+  const { cafeId, cafeName, address, visited, thumbnailImageUrl } = cafe;
   const [isVisited, setIsVisited] = useState(visited);
   const [userId, setUserId] = useState(null);
   const [tags, setTags] = useState([]);
@@ -113,7 +113,7 @@ const SavedCafeCard = ({ cafe }) => {
       <div className="saved-cafe-image-container">
         <img
           className="saved-cafe-image"
-          src="/img/cafe-img.png"
+          src={thumbnailImageUrl || "/img/default-cafe.jpg"}
         // alt={place_name}
         />
         <div className="saved-cafe-bookmark-overlay" onClick={handleBookmarkClick}>

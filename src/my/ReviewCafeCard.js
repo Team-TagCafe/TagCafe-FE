@@ -65,7 +65,7 @@ const ReviewCafeCard = ({ cafe, onEdit, onDeleteConfirmed }) => {
     .sort((a, b) => a.order - b.order);
 
   const toggleMenu = () => setMenuVisible((prev) => !prev);
-  
+
   const handleEdit = () => {
     onEdit(cafeId);
     setMenuVisible(false);
@@ -75,7 +75,7 @@ const ReviewCafeCard = ({ cafe, onEdit, onDeleteConfirmed }) => {
     setMenuVisible(false);
   };
   const confirmDelete = () => {
-    onDeleteConfirmed(cafe.reviewId); 
+    onDeleteConfirmed(cafe.reviewId);
     setPopupVisible(false);
   };
   const cancelDelete = () => setPopupVisible(false);
@@ -83,7 +83,11 @@ const ReviewCafeCard = ({ cafe, onEdit, onDeleteConfirmed }) => {
   return (
     <div className="review-cafe-card">
       <div className="review-cafe-image-container">
-        <img className="review-cafe-image" src="/img/cafe-img.png" alt="카페 이미지" />
+        <img
+          className="review-cafe-image"
+          src={cafe.thumbnailImageUrl || "/img/default-cafe.jpg"}
+          alt="카페 이미지"
+        />
         <button className="review-view-details" onClick={() => navigate(`/cafe/${cafeId}`)}>카페 상세보기 &gt;</button>
       </div>
 

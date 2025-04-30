@@ -231,11 +231,13 @@ const Home = () => {
       });
 
       newMarkers.push(marker);
-      const overlay = createCustomOverlay(markerPosition, cafe.cafeName, cafe.address, cafe.cafeId);
+      const overlay = createCustomOverlay(markerPosition, cafe);
       newOverlays.push(overlay);
 
       kakao.maps.event.addListener(marker, "click", () => {
-        setPopupContent({ name: cafe.cafeName, address: cafe.address, id: cafe.cafeId });
+        const thumbnail = cafe.thumbnailImageUrl || null;
+
+        setPopupContent({ name: cafe.cafeName, address: cafe.address, id: cafe.cafeId, thumbnailUrl: thumbnail, });
         setShowPopup(true);
 
         if (map) {
@@ -315,7 +317,10 @@ const Home = () => {
 
 
   /* ---------- 지도 카페명 표시 CustomOverlay 생성  ---------- */
-  const createCustomOverlay = (markerPosition, cafeName, cafeAddress, cafeId) => {
+  const createCustomOverlay = (markerPosition, cafe) => {
+    const { cafeName, address: cafeAddress, cafeId, imageUrls } = cafe;
+    const thumbnailUrl = cafe.thumbnailImageUrl || null;
+
     const content = document.createElement('div');
     content.className = 'label';
     content.innerText = cafeName;
@@ -326,7 +331,8 @@ const Home = () => {
       setPopupContent({
         name: cafeName,
         address: cafeAddress,
-        id: cafeId
+        id: cafeId,
+        thumbnailUrl
       });
       setShowPopup(true);
       fetchCafeTags(cafeId);
@@ -433,6 +439,7 @@ const Home = () => {
             cafeName={popupContent.name}
             cafeAddress={popupContent.address}
             cafeId={popupContent.id}
+            thumbnailUrl={popupContent.thumbnailUrl}
             onClose={() => setShowPopup(false)}
           />}
 

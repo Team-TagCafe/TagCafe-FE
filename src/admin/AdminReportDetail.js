@@ -18,7 +18,7 @@ const AdminReportDetail = () => {
       const service = new window.google.maps.places.PlacesService(document.createElement("div"));
       service.getDetails({ placeId }, (place, status) => {
         if (status === window.google.maps.places.PlacesServiceStatus.OK && place.photos) {
-          const urls = place.photos.map(photo => photo.getUrl({ maxWidth: 400 }));
+          const urls = place.photos.map(photo => photo.getUrl({ maxWidth: 1600 }));
           resolve(urls);
         } else {
           resolve([]); // 사진 없을 때 빈 배열 반환

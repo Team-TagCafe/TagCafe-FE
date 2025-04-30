@@ -113,6 +113,52 @@ const ReportCafeAdd = () => {
     });
   };
 
+  const formatOpeningHours = (weekdayTextArray) => {
+    if (!Array.isArray(weekdayTextArray) || weekdayTextArray.length === 0) {
+      return "정보 없음";
+    }
+
+    return weekdayTextArray
+      .map((entry) => {
+        const [day, timeRange] = entry.split(": ");
+        if (!day || !timeRange || !timeRange.includes("~")) return `${day}: 휴무일`;
+
+        let [startRaw, endRaw] = timeRange.split("~").map(s => s.trim());
+
+        const startMatch = startRaw.match(/(오전|오후)?\s*(\d{1,2}):(\d{2})/);
+        const endMatch = endRaw.match(/(오전|오후)?\s*(\d{1,2}):(\d{2})/);
+
+        if (!startMatch || !endMatch) return `${day}: 정보 없음`;
+
+        // 시작
+        let startPeriod = startMatch[1]; // 오전/오후
+        let startHour = parseInt(startMatch[2], 10);
+        let startMinute = startMatch[3];
+
+        // 끝
+        let endPeriod = endMatch[1]; // 오전/오후
+        let endHour = parseInt(endMatch[2], 10);
+        let endMinute = endMatch[3];
+
+        // 오전/오후 누락된 경우, 시작시간 기준으로 맞춰주기
+        if (!endPeriod) {
+          endPeriod = startPeriod || (endHour >= 12 ? "오후" : "오전");
+        }
+
+        if (!startPeriod) {
+          startPeriod = startHour >= 12 ? "오후" : "오전";
+        }
+
+        // 0시는 오전 12시 처리
+        if (startHour === 0) startHour = 12;
+        if (endHour === 0) endHour = 12;
+
+        return `${day}: ${startPeriod} ${startHour}:${startMinute} ~ ${endPeriod} ${endHour}:${endMinute}`;
+      })
+      .join(", ");
+  };
+
+
   const handleSubmit = async () => {
     if (!userEmail) {
       setShowLoginPopup(true);
@@ -146,7 +192,7 @@ const ReportCafeAdd = () => {
       const website = googleDetails.website || "정보 없음";
       const openingHours =
         googleDetails.opening_hours?.weekday_text?.length > 0
-          ? googleDetails.opening_hours.weekday_text.join(", ")
+          ? formatOpeningHours(googleDetails.opening_hours.weekday_text)
           : "정보 없음";
 
       const reportData = {
