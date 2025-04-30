@@ -92,7 +92,6 @@ const SideMenu = () => {
             <SideMenuButton buttonType="button1" optionText="FAQ" onClick={handleFAQQA} />
             <SideMenuButton buttonType="button2" optionText="로그아웃" onClick={handleLogoutClick} />
             <SideMenuButton buttonType="button2" optionText="회원탈퇴" onClick={handleDelete} />
-            <SideMenuButton buttonType="button2" optionText="관리자페이지" />
           </div>
         </div>
       </div>
