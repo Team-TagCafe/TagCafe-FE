@@ -33,12 +33,12 @@ jobs:
           cd build
           zip -r ../build.zip .
 
-          - name: Add SSH key
-          run: |
-            echo "$EC2_KEY" > key.pem
-            chmod 600 key.pem
-          env:
-            EC2_KEY: ${{ secrets.EC2_KEY }}
+      - name: Add SSH key
+        run: |
+          echo "$EC2_KEY" > key.pem
+          chmod 600 key.pem
+        env:
+          EC2_KEY: ${{ secrets.EC2_KEY }}
   
       - name: Add EC2 host to known_hosts
         run: |
