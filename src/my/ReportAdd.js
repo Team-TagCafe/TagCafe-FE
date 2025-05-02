@@ -203,7 +203,7 @@ const ReportCafeAdd = () => {
         address: road_address_name,
         latitude: y,
         longitude: x,
-        phoneNumber: phone || "",
+        phoneNumber: phone || "정보 없음",
         websiteUrl: website,
         openingHours: openingHours,
         content: reportText,
