@@ -47,7 +47,7 @@ function convertTo24Hour(timeStr) {
 }
 
 function getBusinessStatus(parsedHours) {
-  const now = new Date();
+  const now = new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Seoul" }));
   const todayIdx = now.getDay(); // 0 = 일, 1 = 월
   const dayMap = ["일", "월", "화", "수", "목", "금", "토"];
   const today = dayMap[todayIdx];
