@@ -120,8 +120,21 @@ const ReportCafeAdd = () => {
 
     return weekdayTextArray
       .map((entry) => {
-        const [day, timeRange] = entry.split(": ");
-        if (!day || !timeRange || !timeRange.includes("~")) return `${day}: 휴무일`;
+        // 예외 항목 (요일 없는 문구)
+        if (!entry.includes(":")) {
+          if (entry.includes("시간이 달라질 수 있음")) return "기타: 시간 변동 가능";
+          return `기타: ${entry}`;
+        }
+
+        const colonIndex = entry.indexOf(":");
+        const day = entry.slice(0, colonIndex);
+        const timeRange = entry.slice(colonIndex + 1).trim();
+
+        if (!day || !timeRange) return `${day}: 정보 없음`;
+
+        if (timeRange.includes("휴무일")) return `${day}: 휴무일`;
+        if (timeRange.includes("24시간 영업")) return `${day}: 24시간 영업`;
+        if (timeRange.includes("시간이 달라질 수 있음")) return `${day}: 시간 변동 가능`;
 
         let [startRaw, endRaw] = timeRange.split("~").map(s => s.trim());
 
@@ -203,7 +216,7 @@ const ReportCafeAdd = () => {
         address: road_address_name,
         latitude: y,
         longitude: x,
-        phoneNumber: phone || "",
+        phoneNumber: phone || "정보 없음",
         websiteUrl: website,
         openingHours: openingHours,
         content: reportText,
