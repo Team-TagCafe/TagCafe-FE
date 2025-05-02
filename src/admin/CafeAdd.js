@@ -152,7 +152,7 @@ const CafeAdd = () => {
         googleDetails.photos && googleDetails.photos.length > 0
           ? googleDetails.photos
             .slice(0, 5)
-            .map(photo => photo.getUrl({ maxWidth: 400 }))
+            .map(photo => photo.getUrl({ maxWidth: 1600 }))
           : [];
 
 

@@ -60,7 +60,7 @@ function App() {
               <Route path="/faq-qa" element={<FAQ />} />
               <Route path="/cafe/:id" element={<CafeDetail />} />
               <Route path="/cafe/:id/review-write" element={<ReviewWrite />} />
-              <Route path="/cafe-add" element={<CafeAdd />} />
+              <Route path="/admin/cafe-add" element={<CafeAdd />} />
               <Route path="/cafe-edit" element={<CafeEdit />} />
               <Route path="/report" element={<ReportAdd />} />
               <Route path="/reportsearch" element={<ReportSearch />} />
